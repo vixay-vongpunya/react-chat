@@ -1,9 +1,12 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;600&display=swap");
+
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+  padding: 0;
+  font-family: 'Roboto',-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -14,3 +17,67 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+:root{
+  --primary-color:#105D5E;
+  --sencondary-color:#B6C6BE;
+  --hover-color:#e5e5e5;
+  --hover-text:#cccccc;
+  --bg-color:#e9e9e9;
+  --text-color: black;
+
+  --font-h1: 60px;
+  --font-h2: 32px;
+  --font-h3: 24px;
+  --font-h4: 18px;
+  --font-p: 14px;
+
+  --border-radius: 0.5rem;
+  --small-border-radius: 0.2rem;
+  --border-color: #dddddd;
+  --background-color: #eeeeee;
+
+
+  --small-image: 50px;
+  --medium-image: 70px;
+  --large-image: 150px;
+
+}
+
+p, h1, h2, h3, h4, h5{
+  font-family: 'Roboto';
+}
+
+p{
+  font-size: var(--font-p);
+}
+h1{
+  font-size: var(--font-h1);
+}
+h2{
+  font-family:'Roboto';
+  font-size: var(--font-h2);
+}
+h3{
+  font-size: var(--font-h3);
+}
+h4{
+  font-size: var(--font-h4);
+}
+
+
+@layer utilities {
+  /* for Chrome, safari, opera */
+  .no-scrollbar::-webkit-scrollbar{
+    display:none;
+    
+  }
+  
+  /* for IE, Edge, Firefox */
+  .no-scrollbar{
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+}
+
+
