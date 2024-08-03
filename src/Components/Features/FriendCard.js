@@ -33,7 +33,7 @@ function FriendCard(props) {
                 : "added"
               : "Add Friend"
           }
-          disable={props.isFriend ? true : false}
+          disabled={props.isFriend ? true : false}
           onClick={addFriend}
         />
       </div>

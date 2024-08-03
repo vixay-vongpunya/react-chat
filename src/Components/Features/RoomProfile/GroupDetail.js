@@ -8,9 +8,9 @@ import { Popup } from "semantic-ui-react";
 import { server } from "./../../../Actions/Index";
 import {
   updateGroupDetail,
-  updateProfile,
-  updateBackground,
-} from "../../../Actions/Room-Action";
+  updateGroupProfile,
+  updateGroupBackground,
+} from "../../../Actions/Group-Action";
 import ImageModal from "../ImageModal";
 import Button from "./../../Common/Button";
 import Textarea from "./../../Common/Textarea";
@@ -56,8 +56,8 @@ const NameContainer = styled.div`
 function GroupDetail({
   room,
   updateGroupDetail,
-  updateProfile,
-  updateBackground,
+  updateGroupProfile,
+  updateGroupBackground,
 }) {
   const [modalOpen, setModalOpen] = useState(false);
   const [profileSelected, setProfileSelected] = useState("");
@@ -66,9 +66,12 @@ function GroupDetail({
   const [bio, setBio] = useState("");
   const [name, setName] = useState("");
   useState(() => {
-    setBio(room.profile.bio);
+    if (room.profile) {
+      setBio(room.profile.bio);
+    }
+
     setName(room.name);
-  }, []);
+  }, [room]);
   const updateImage = (dataUrl) => {
     if (!dataUrl) {
       return;
@@ -78,10 +81,10 @@ function GroupDetail({
     try {
       if (profileSelected) {
         data.append("profile_image", dataUrl);
-        updateProfile(room.id, data, dataUrl);
+        updateGroupProfile(room.id, data, dataUrl);
       } else {
         data.append("background_image", dataUrl);
-        updateBackground(room.id, data, dataUrl);
+        updateGroupBackground(room.id, data, dataUrl);
       }
     } catch (error) {
       console.log(error);
@@ -193,6 +196,6 @@ function GroupDetail({
 
 export default connect(null, {
   updateGroupDetail,
-  updateProfile,
-  updateBackground,
+  updateGroupProfile,
+  updateGroupBackground,
 })(GroupDetail);

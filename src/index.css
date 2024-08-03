@@ -36,6 +36,7 @@ code {
   --small-border-radius: 0.2rem;
   --border-color: #dddddd;
   --background-color: #eeeeee;
+  --background-color: #eeeeee;
 
 
   --small-image: 50px;
@@ -46,6 +47,7 @@ code {
 
 p, h1, h2, h3, h4, h5{
   font-family: 'Roboto';
+
 }
 
 p{
@@ -64,6 +66,7 @@ h3{
 h4{
   font-size: var(--font-h4);
 }
+
 
 
 @layer utilities {

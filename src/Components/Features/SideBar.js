@@ -7,9 +7,8 @@ import { useState } from "react";
 import { styled } from "styled-components";
 import SmallUserCard from "./SmallUserCard";
 import { connect } from "react-redux";
-
-import { useEffect } from "react";
-import { fetchUser } from "../../Actions/User-Action";
+import { useAuth } from "./../../Utils/useAuth";
+import { clearState } from "../../Actions/User-Action";
 const Nav = styled.nav`
   height: 100%;
   display: flex;
@@ -53,8 +52,9 @@ const StyledItem = styled.div`
   }
 `;
 
-function SideBar({ user }) {
+function SideBar({ user, clearState }) {
   const [clickedItem, setClickedItem] = useState("");
+  const { logout } = useAuth();
   return (
     <Nav>
       <Link to="/user/Profile">
@@ -126,8 +126,10 @@ function SideBar({ user }) {
         </li>
         <li>
           <StyledItem
-            $isActive={clickedItem === "logOut"}
-            onClick={() => setClickedItem("logOut")}
+            onClick={() => {
+              logout();
+              clearState();
+            }}
           >
             <span>
               <BsBoxArrowLeft size={16} color="red" />
@@ -144,4 +146,4 @@ function mapStatToProps(state) {
     user: state.userStore.data,
   };
 }
-export default connect(mapStatToProps, {})(SideBar);
+export default connect(mapStatToProps, { clearState })(SideBar);

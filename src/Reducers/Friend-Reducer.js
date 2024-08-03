@@ -7,6 +7,7 @@ const defaultState = {
 export default (state = defaultState, action = {}) => {
   switch (action.type) {
     case "FETCH_FRIENDS": {
+      console.log("check data pass", action.payload);
       return {
         ...state,
         data: action.payload,
@@ -42,6 +43,9 @@ export default (state = defaultState, action = {}) => {
           (item) => item.friendship_id != action.payload.friendship_id
         ),
       };
+    }
+    case "RESET": {
+      return defaultState;
     }
 
     default:

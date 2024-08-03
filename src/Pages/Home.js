@@ -1,5 +1,5 @@
-import FullFriendList from "../Components/Features/FullFriendList";
-import { changeRoom, fetchRooms } from "../Actions/Room-Action";
+import FriendList from "../Components/Features/FriendList";
+import { changeRoom } from "../Actions/Room-Action";
 import { connect } from "react-redux";
 import { useEffect, useState } from "react";
 import { useOutletContext } from "react-router-dom";
@@ -10,17 +10,12 @@ const Container = styled.div`
   height: 100%;
   display: flex;
   flex-direction: column;
-  padding: 0px 5px;
-  gap: 10px;
 `;
 
 function Home(props) {
   const [roomList, setRoomList] = useState([]);
   const [clickedId, setClickedId] = useState(null);
   const { message } = useOutletContext();
-  useEffect(() => {
-    if (props.rooms.length === 0) props.fetchRooms();
-  }, []);
 
   //append new message
   useEffect(() => {
@@ -33,22 +28,22 @@ function Home(props) {
   }, [message]);
 
   useEffect(() => {
+    //this state updates alot since i append messages in background
     setRoomList(props.rooms);
   }, [props.rooms]);
 
   const changeRoom = (friend) => {
     setClickedId(friend.email ? "user" + friend.id : "group" + friend.id);
-    const data = friend;
-    props.changeRoom(data);
+    console.log("data2", friend);
+    props.changeRoom(friend);
   };
 
   return (
     <Container>
       <h2>Chats</h2>
-      <FullFriendList
+      <FriendList
         onClick={changeRoom}
         roomList={roomList}
-        height={630}
         clickedId={clickedId}
       />
     </Container>
@@ -62,6 +57,5 @@ function mapStateToProps(state) {
   };
 }
 export default connect(mapStateToProps, {
-  fetchRooms,
   changeRoom,
 })(Home);

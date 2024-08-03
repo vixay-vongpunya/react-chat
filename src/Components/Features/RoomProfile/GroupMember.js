@@ -25,6 +25,7 @@ const Container = styled.div`
   overflow-y: auto;
 `;
 function GroupMember({ users, user, options, optionType, handleOption }) {
+  //need to handle updating member role at roomsStore not selected room
   return (
     <Container className="no-scrollbar">
       <Wrapper>

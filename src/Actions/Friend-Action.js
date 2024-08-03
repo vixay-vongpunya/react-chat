@@ -1,14 +1,14 @@
 import { server } from "./Index";
 
 export function fetchFriends() {
-  return (dispatch) => {
-    server.get("./friends").then((response) => {
-      const friends = response.data.data.sort((a, b) => {
-        return new Date(b.created_at) - new Date(a.created_at);
-      });
-      console.log(response);
-      dispatch({ type: "FETCH_FRIEND", payload: friends });
+  //duplicate action in case needed not being used at the moment
+  return async (dispatch) => {
+    const response = await server.get("./friends");
+    const friends = response.data.data.sort((a, b) => {
+      return new Date(b.created_at) - new Date(a.created_at);
     });
+    console.log("f", response);
+    dispatch({ type: "FETCH_FRIEND", payload: friends });
   };
 }
 export function sendFriendRequest() {

@@ -1,10 +1,9 @@
-import { useMemo, useEffect, useState } from "react";
 import { connect } from "react-redux";
 import styled from "styled-components";
+import { useMemo, useState, useEffect } from "react";
+import GroupRoomListCard from "./GroupRoomListCard";
+import SearchBar from "../../Custom/SearchBar";
 
-import SearchBar from "../Custom/SearchBar";
-import RoomListCard from "../Custom/RoomListCard";
-import FriendList from "./FriendList";
 const Container = styled.div`
   width: 100%;
   height: 100%;
@@ -16,12 +15,19 @@ const Container = styled.div`
   gap: 10px;
 `;
 const Wrapper = styled.div`
-  width: 90%;
   border-radius: 0.5rem;
-  overflow-y: auto;
+  max-height: 450px;
+  overflow-y: scroll;
   padding: 0px 5px;
 `;
-function FullFriendList(props) {
+
+const RoomListDiv = styled.div`
+  // height: 430px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+`;
+function GroupFriendList(props) {
   const [keyword, setKeyword] = useState("");
   const roomList = useMemo(() => {
     if (keyword.trim() != "") {
@@ -50,6 +56,15 @@ function FullFriendList(props) {
       });
     }
   }, [props.message]);
+  const friendList = roomList.map((friend, index) => (
+    <GroupRoomListCard
+      key={friend?.pivot ? "pivot" + friend.id : friend.id}
+      friend={friend}
+      onClick={props.onClick}
+      clickedId={props.clickedId}
+      index={index}
+    />
+  ));
 
   return (
     <Container>
@@ -59,11 +74,7 @@ function FullFriendList(props) {
         placeholder="search..."
       />
       <Wrapper className="no-scrollbar">
-        <FriendList
-          roomList={roomList}
-          height={props.height}
-          onClick={props.onClick}
-        />
+        <RoomListDiv>{friendList}</RoomListDiv>
       </Wrapper>
     </Container>
   );
@@ -74,4 +85,4 @@ function mapStateToProps(state) {
     userMessage: state.messageStore.userMessage,
   };
 }
-export default connect(mapStateToProps, {})(FullFriendList);
+export default connect(mapStateToProps, {})(GroupFriendList);

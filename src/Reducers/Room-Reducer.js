@@ -3,27 +3,24 @@ const defaultState = {
   data: [],
   loading: true,
 };
+const filterRoom = (room, data) => {
+  if (room.id === data.id) {
+    if (data.users && !room.email) {
+      return data;
+    } else if (!data.users && room.email) {
+      return data;
+    }
+  }
+  return room;
+};
 
 export default (state = defaultState, action = {}) => {
   switch (action.type) {
     case "FETCH_ROOMS": {
-      const rooms = action.payload.slice().sort((a, b) => {
-        const dateA = new Date(
-          a.latest_message ? a.latest_message.created_at : a.created_at
-        );
-        const dateB = new Date(
-          b.latest_message ? b.latest_message.created_at : b.created_at
-        );
-
-        if (!a.latest_message?.created_at) return 1;
-        if (!b.latest_message?.created_at) return -1;
-
-        return dateB - dateA;
-      });
-
       return {
         ...state,
-        rooms: rooms,
+        rooms: action.payload,
+        loading: false,
       };
     }
     case "DELETE_FRIENDSHIP": {
@@ -48,32 +45,83 @@ export default (state = defaultState, action = {}) => {
       };
     }
 
-    case "UPDATE_GROUP_DETAIL":
+    case "DELETE_MESSAGE": {
       return {
         ...state,
-        data: {
-          ...state.data,
-          bio: action.payload.bio,
-          name: action.payload.name,
-        },
+        data: state.data.messages.filter(
+          (message) => message.id !== action.payload.id
+        ),
+      };
+    }
+
+    case "ADD_MESSAGES_TO_ROOM":
+      return {
+        ...state,
+        rooms: state.rooms.map((room) => {
+          if (room.id === action.payload.room_id) {
+            if (action.payload.is_group && !room.email) {
+              return {
+                ...room,
+                messages: action.payload.messages,
+              };
+            } else if (!action.payload.is_group && room.email) {
+              return {
+                ...room,
+                messages: action.payload.messages,
+              };
+            }
+          }
+          return room;
+        }),
       };
 
-    case "UPDATE_PROFILE_IMAGE":
+    case "UPDATE_ROOM_MESSAGE":
+      const updatedRoom = action.payload;
       return {
         ...state,
-        data: {
-          ...state.data,
-          profile: { ...state.data.profile, profile_image: action.payload },
-        },
+        rooms: state.rooms.map((room) => filterRoom(room, updatedRoom)),
       };
-    case "UPDATE_BACKGROUND_IMAGE":
+
+    case "UPDATE_GROUP_DETAIL":
+      const data = {
+        ...state.data,
+        bio: action.payload.bio,
+        name: action.payload.name,
+      };
       return {
         ...state,
-        data: {
-          ...state.data,
-          profile: { ...state.data.profile, background_image: action.payload },
-        },
+        data: data,
+        rooms: state.rooms.map((room) => {
+          filterRoom(room, data);
+        }),
       };
+
+    case "UPDATE_GROUP_PROFILE_IMAGE":
+      const updatedGroupProfile = {
+        ...state.data,
+        profile: { ...state.data.profile, profile_image: action.payload },
+      };
+
+      return {
+        ...state,
+        data: updatedGroupProfile,
+        rooms: state.rooms.map((room) => filterRoom(room, updatedGroupProfile)),
+      };
+    case "UPDATE_GROUP_BACKGROUND_IMAGE":
+      const updatedGroupBackground = {
+        ...state.data,
+        profile: { ...state.data.profile, background_image: action.payload },
+      };
+      return {
+        ...state,
+        data: updatedGroupBackground,
+        rooms: state.rooms.map((room) =>
+          filterRoom(room, updatedGroupBackground)
+        ),
+      };
+    case "RESET": {
+      return defaultState;
+    }
     default:
       return state;
   }

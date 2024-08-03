@@ -7,20 +7,14 @@ import {
 } from "semantic-ui-react";
 function RoomProfilePlaceholder() {
   return (
-    <div className="border border-solid border-gray-200 rounded-md  p-2">
-      <Placeholder inverted>
-        <PlaceholderHeader image>
-          <PlaceholderLine />
-          <PlaceholderLine />
-        </PlaceholderHeader>
-        <PlaceholderHeader image>
-          <PlaceholderLine />
-          <PlaceholderLine />
-        </PlaceholderHeader>
-        <PlaceholderHeader image>
-          <PlaceholderLine />
-          <PlaceholderLine />
-        </PlaceholderHeader>
+    <div className="p-2">
+      <Placeholder fluid>
+        <PlaceholderLine />
+        <PlaceholderLine />
+        <PlaceholderLine />
+        <PlaceholderLine />
+        <PlaceholderLine />
+        <PlaceholderLine />
         <PlaceholderParagraph>
           <PlaceholderLine />
           <PlaceholderLine />

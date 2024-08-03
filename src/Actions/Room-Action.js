@@ -1,19 +1,10 @@
 import { server } from "./Index";
 import FormatDate from "./../Utils/FormatDate";
 export function changeRoom(data) {
-  return async (dispatch) => {
-    let newData = data;
-    if (data && data.pivot) {
-      try {
-        const response = await server.get(`./group/${data.id}`);
-        newData = response.data.data;
-      } catch (error) {
-        console.error(error);
-      }
-    }
+  return (dispatch) => {
     dispatch({
       type: "CHANGE_ROOM",
-      payload: newData,
+      payload: data,
     });
   };
 }
@@ -22,19 +13,19 @@ export function fetchRooms() {
   let rooms = [];
   console.log("once");
   return async (dispatch) => {
-    await server.get("./groups/").then((response) => {
-      rooms = response.data.data;
-      dispatch({ type: "FETCH_GROUPS", payload: response.data.data });
-    });
-    await server.get("./friends").then((response) => {
-      rooms = [...rooms, ...response.data.data];
-      dispatch({ type: "FETCH_FRIENDS", payload: response.data.data });
-    });
+    //this action will be called at first connection and there is duplicate action is respect action files
+    const groups = await server.get("./groups/");
+    rooms = groups.data.data;
+    dispatch({ type: "FETCH_GROUPS", payload: rooms });
+
+    const friends = await server.get("./friends");
+    rooms = [...rooms, ...friends.data.data];
+    console.log("friends", friends);
+    dispatch({ type: "FETCH_FRIENDS", payload: friends.data.data });
+
     rooms = rooms.map((room) => {
       if (room.latest_message) {
-        const format_date = FormatDate({
-          date: room.latest_message.created_at,
-        });
+        const format_date = FormatDate(room.latest_message.created_at);
         room = {
           ...room,
           latest_message: { ...room.latest_message, format_date: format_date },
@@ -42,34 +33,29 @@ export function fetchRooms() {
       }
       return room;
     });
+    rooms = rooms.slice().sort((a, b) => {
+      const dateA = new Date(
+        a.latest_message ? a.latest_message.created_at : a.created_at
+      );
+      const dateB = new Date(
+        b.latest_message ? b.latest_message.created_at : b.created_at
+      );
+
+      if (!a.latest_message?.created_at) return 1;
+      if (!b.latest_message?.created_at) return -1;
+
+      return dateB - dateA;
+    });
     dispatch({ type: "FETCH_ROOMS", payload: rooms });
+    return rooms;
   };
 }
 
-export function updateGroupDetail(id, data) {
-  console.log("here na", id, data);
+export function addMessagesToRooms(messages, roomId, isGroup) {
   return (dispatch) => {
-    server.put(`./group/detail/${id}`, data).then((response) => {
-      console.log(response);
-      dispatch({ type: "UPDATE_GROUP_DETAIL", payload: data });
+    dispatch({
+      type: "ADD_MESSAGES_TO_ROOM",
+      payload: { messages: messages, room_id: roomId, is_group: isGroup },
     });
-  };
-}
-export function updateProfile(id, data, dataUrl) {
-  return (dispatch) => {
-    server
-      .post(`./group/profile/${id}`, data)
-      .then((response) =>
-        dispatch({ type: "UPDATE_PROFILE_IMAGE", payload: dataUrl })
-      );
-  };
-}
-export function updateBackground(id, data, dataUrl) {
-  return (dispatch) => {
-    server
-      .post(`./group/background/${id}`, data)
-      .then((response) =>
-        dispatch({ type: "UPDATE_BACKGROUND_IMAGE", payload: dataUrl })
-      );
   };
 }

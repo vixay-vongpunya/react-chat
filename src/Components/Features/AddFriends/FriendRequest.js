@@ -12,7 +12,7 @@ import Button from "./../../Common/Button";
 import RoomListCard from "./../../Custom/RoomListCard";
 
 const RoomListDiv = styled.div`
-  height: 500px;
+  height: 517px;
 `;
 
 const CardWrapper = styled.div`
@@ -41,7 +41,6 @@ const RequestContainer = styled.div`
   background-color: var(--background-color);
   border-radius: 0.5rem;
   padding: 8px 10px;
-  gap: 1rem;
 `;
 const RequestWrapper = styled.div`
   display: flex;

@@ -2,12 +2,23 @@ import { server } from "./Index";
 
 export function fetchGroups() {
   return (dispatch) => {
+    //duplicate action in case needed not being used at the moment
     server.get("./groups/").then((response) => {
       console.log("groups", response.data.data);
       dispatch({ type: "FETCH_GROUPS", payload: response.data.data });
     });
   };
 }
+export function fetchGroupDetail(id) {
+  return (dispatch) => {
+    //dispatch to room reducer
+    server.get(`./group/${id}`).then((response) => {
+      console.log("group detail", response.data.data);
+      dispatch({ type: "UPDATE_GROUP_DETAIL", payload: response.data.data });
+    });
+  };
+}
+
 export function leaveGroup(group) {
   console.log("before", group);
   return (dispatch) => {
@@ -44,5 +55,33 @@ export function removeFromAdmin(groupId, data) {
       console.log("admin to member", response.data.data);
       dispatch({ type: "REMOVE_FROM_ADMIN", payload: response.data.data });
     });
+  };
+}
+
+export function updateGroupDetail(id, data) {
+  console.log("here na", id, data);
+  return (dispatch) => {
+    server.put(`./group/detail/${id}`, data).then((response) => {
+      console.log(response);
+      dispatch({ type: "UPDATE_GROUP_DETAIL", payload: data });
+    });
+  };
+}
+export function updateGroupProfile(id, data, dataUrl) {
+  return (dispatch) => {
+    server
+      .post(`./group/profile/${id}`, data)
+      .then((response) =>
+        dispatch({ type: "UPDATE_GROUP_PROFILE_IMAGE", payload: dataUrl })
+      );
+  };
+}
+export function updateGroupBackground(id, data, dataUrl) {
+  return (dispatch) => {
+    server
+      .post(`./group/background/${id}`, data)
+      .then((response) =>
+        dispatch({ type: "UPDATE_GROUP_BACKGROUND_IMAGE", payload: dataUrl })
+      );
   };
 }

@@ -67,12 +67,9 @@ function AddFriend({ friends }) {
     }
   }, [location.search]);
   const findFriend = (event) => {
-    setLoading(true);
     if (email.trim() !== "" && event.key === "Enter") {
-      navigate(`/friends/search?email=${email}`);
-    } else {
-      setFriend([]);
       setLoading(true);
+      navigate(`/friends/search?email=${email}`);
     }
   };
   return (

@@ -1,24 +1,22 @@
 function AppendMessage(message, roomList) {
-  if (message.destination_type === "user") {
-    let record = [];
-    let array = roomList.filter((room) => {
-      if (room.friendship_id === message.destination_id) {
-        record = { ...room, latest_message: message };
-        return;
-      } else return room;
-    });
-    if (record) return [record, ...array];
-  } else {
-    //type group
-    let record = [];
-    let array = roomList.filter((room) => {
-      if (room.profile && room.profile.group_id === message.destination_id) {
-        record = { ...room, latest_message: message };
-        return;
-      } else return room;
-    });
-    if (record) return [record, ...array];
+  const msg = { ...message, format_date: "Now" };
+  let updatedRooms = [...roomList];
+
+  const index = updatedRooms.findIndex((room) => {
+    if (msg.destination_type === "user") {
+      return room.friendship_id === msg.destination_id;
+    } else {
+      return room.id === msg.destination_id && !room.email;
+    }
+  });
+
+  if (index !== -1) {
+    const updatedRoom = { ...updatedRooms[index], latest_message: msg };
+    updatedRooms.splice(index, 1);
+    updatedRooms.unshift(updatedRoom);
   }
+
+  return updatedRooms;
 }
 
 export default AppendMessage;

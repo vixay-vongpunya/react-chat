@@ -17,15 +17,19 @@ const NameBox = styled.div`
   align-items: center;
   padding-left: 10px;
 `;
-function ChatHeader({ profile_image, name, handleProfileOpened }) {
+function ChatHeader({ profile_image, room, handleProfileOpened }) {
   return (
     <Container>
-      <Wrapper onClick={() => handleProfileOpened()}>
+      <Wrapper onClick={handleProfileOpened}>
         <div className="image-box">
-          <ChatImage src={profile_image} name={name} size="--medium-image" />
+          <ChatImage
+            src={profile_image}
+            name={room.name}
+            size="--medium-image"
+          />
         </div>
         <NameBox>
-          <p>{name}</p>
+          <p>{room.name}</p>
           <p>active</p>
         </NameBox>
       </Wrapper>

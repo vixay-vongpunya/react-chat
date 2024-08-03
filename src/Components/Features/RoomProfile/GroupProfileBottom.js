@@ -2,6 +2,7 @@ import { Accordion, ModalActions, ModalContent } from "semantic-ui-react";
 import { connect } from "react-redux";
 
 import { server } from "../../../Actions/Index";
+import { fetchGroupDetail } from "../../../Actions/Group-Action";
 import { useState, useEffect } from "react";
 import GroupMember from "./GroupMember";
 import RoomProfilePlaceholder from "../../Custom/RoomProfilePlaceholder";
@@ -34,27 +35,33 @@ const friendOptions = [
   { key: 2, text: "view profile", value: 2 },
 ];
 
-const filterFriends = (roomDetail, friends) => {
-  console.log("test2", roomDetail);
+const filterFriends = (users, friends) => {
+  console.log("users", users);
   return friends.filter(
-    (friend) => !roomDetail.users?.some((user) => user.id == friend.id)
+    (friend) => !users?.some((user) => user.id == friend.id)
   );
 };
 
-function GroupProfileBottom({ user, room, friends, roomData }) {
-  const [loading, setLoading] = useState(true);
-  const [roomDetail, setRoomDetail] = useState("");
+function GroupProfileBottom({ user, room, friends, fetchGroupDetail }) {
+  const [loading, setLoading] = useState(false);
+  const [roomDetail, setRoomDetail] = useState({});
   const [friendList, setFriendList] = useState([]);
   const [profileOpened, setProfileOpened] = useState(false);
   const [openedProfile, setOpenedProfile] = useState([]);
   let memberOptions = "";
   useEffect(() => {
-    setLoading(true);
-    console.log("2", roomData);
-    setRoomDetail(roomData);
-    setFriendList(filterFriends(roomData, friends));
-    setLoading(false);
-  }, [roomData.users]);
+    console.log("2", room);
+    if (!room.users && room.pivot) {
+      console.log("is trigeered");
+      setLoading(true);
+      fetchGroupDetail(room.id);
+    } else {
+      setLoading(false);
+      setRoomDetail(room);
+      console.log("friends", room);
+      setFriendList(filterFriends(room.users, friends));
+    }
+  }, [room]);
 
   const handleOption = (value, friend, optionType) => {
     console.log(optionType);
@@ -131,10 +138,10 @@ function GroupProfileBottom({ user, room, friends, roomData }) {
             .then((response) => {
               setRoomDetail((prev) => ({
                 ...prev,
-                pivot: null,
                 users: prev.users.filter((user) => user.id !== friend.id),
               }));
-
+              const data = friend;
+              delete data.pivot;
               setFriendList((prev) => [...prev, friend]);
             });
         }
@@ -208,7 +215,7 @@ function GroupProfileBottom({ user, room, friends, roomData }) {
   ];
 
   return (
-    <div className="h-full w-full">
+    <div className="h-full w-full overflow-auto no-scrollbar">
       <ul>
         <li>
           <DetailWrapper>
@@ -238,7 +245,10 @@ function GroupProfileBottom({ user, room, friends, roomData }) {
 function mapStateToProps(state) {
   return {
     user: state.userStore.data,
-    roomData: state.roomStore.data,
+
+    friends: state.friendStore.data,
   };
 }
-export default connect(mapStateToProps, {})(GroupProfileBottom);
+export default connect(mapStateToProps, { fetchGroupDetail })(
+  GroupProfileBottom
+);

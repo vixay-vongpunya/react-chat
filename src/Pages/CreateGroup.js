@@ -1,6 +1,7 @@
+import { BsX } from "react-icons/bs";
 import Input from "./../Components/Common/Input";
 import ChatImage from "./../Components/Common/ChatImage";
-import FullFriendList from "../Components/Features/FullFriendList";
+import GroupFriendList from "../Components/Features//CreateGroup/GroupFriendList";
 import Button from "./../Components/Common/Button";
 import { server } from "../Actions/Index";
 import { useState, useEffect } from "react";
@@ -11,12 +12,8 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   height: 100%;
-  padding: 0px 5px;
-  gap: 10px;
 `;
 const Wrapper = styled.div`
-  height: 100%;
-  width: 100%;
   display: flex;
   flex-direction: column;
   background-color: var(--background-color);
@@ -26,20 +23,40 @@ const Wrapper = styled.div`
   }
 `;
 const SelectedContainer = styled.div`
-  height: 90px;
-  display: flex;
-  flex-direction: row;
-  overflow-x: scroll;
-  align-items: center;
-  gap: 10px;
-  margin: 0px 10px;
+  overflow-x: auto;
+  .list-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+    margin: 0px 10px;
+    padding: 5px;
+  }
+  .selected-box {
+    position: relative;
+    display: flex;
+    justify-content: flex-end;
+    flex-shrink: 0;
+  }
+  .icon {
+    position: absolute;
+    cursor: pointer;
+    margin-top: -3px;
+    margin-right: -5px;
+    background-color: white;
+    border-radius: 50%;
+  }
 `;
 
 const FormContainer = styled.div`
   height: 100%;
   display: grid;
-  grid-template-rows: 2fr 7fr;
-  gap: 10px;
+  grid-template-rows: 2fr 8fr;
+
+  box-sizing: border-box;
+  & > :nth-child(1) {
+    margin-bottom: 10px;
+  }
 `;
 function CreateGroup(props) {
   const [selectedFriend, setSelectedFriend] = useState([]);
@@ -60,7 +77,12 @@ function CreateGroup(props) {
       navigate("/home");
     });
   };
-  const onClick = (friend) => {
+  const onClick = (friend, index) => {
+    setRoomList((prevRoomList) =>
+      prevRoomList.map((room, i) =>
+        i === index ? { ...room, clicked: !room.clicked } : room
+      )
+    );
     if (selectedFriend.find((selected) => selected.id == friend.id)) {
       setSelectedFriend(
         selectedFriend.filter((selected) => friend !== selected)
@@ -72,11 +94,21 @@ function CreateGroup(props) {
   const groupNameHandler = (event) => {
     setGroupName(event.target.value);
   };
+  const cancelSelection = (friend, index) => {
+    setRoomList((prev) =>
+      prev.map((room) =>
+        room.id === friend.id ? { ...room, clicked: false } : room
+      )
+    );
+    const newSelectedFriends = [...selectedFriend];
+    newSelectedFriends.splice(index, 1);
+    setSelectedFriend(newSelectedFriends);
+  };
   return (
     <Container>
       <h2>Create Group</h2>
       <FormContainer>
-        <Wrapper className="pb-3">
+        <Wrapper>
           <div className="input-container">
             <Input
               type="text"
@@ -86,17 +118,26 @@ function CreateGroup(props) {
             />
           </div>
           <SelectedContainer className="no-scrollbar">
-            {selectedFriend.map((friend) => (
-              <ChatImage
-                key={friend?.id}
-                src={friend.profile?.profile_image}
-                size="--medium-image"
-              />
-            ))}
+            <div className="list-container">
+              {selectedFriend.map((friend, index) => (
+                <div className="selected-box">
+                  <ChatImage
+                    key={friend?.id}
+                    src={friend.profile?.profile_image}
+                    size="--medium-image"
+                  />
+                  <BsX
+                    className="icon"
+                    size={24}
+                    onClick={() => cancelSelection(friend, index)}
+                  />
+                </div>
+              ))}
+            </div>
           </SelectedContainer>
         </Wrapper>
         <Wrapper>
-          <FullFriendList onClick={onClick} roomList={roomList} height={420} />
+          <GroupFriendList onClick={onClick} roomList={roomList} />
           <div className="flex justify-end  pr-5 pb-2">
             <Button onClick={createGroup} text="create" primary />
           </div>

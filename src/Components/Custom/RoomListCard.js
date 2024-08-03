@@ -5,15 +5,11 @@ const RoomListCardDiv = styled.div`
   width: 100%;
   cursor: pointer;
   margin-bottom: 5px;
-  padding: 5px 0px;
+  padding: 5px 10px;
   background-color: ${(props) =>
     props.$friend.email
-      ? "user" + props.$friend.id === props.clickedId
-        ? "var(--hover-color)"
-        : ""
-      : "group" + props.$friend.id === props.clickedId
-      ? "var(--hover-color)"
-      : ""};
+      ? "user" + props.$friend.id === props.clickedId && "var(--hover-color)"
+      : "group" + props.$friend.id === props.clickedId && "var(--hover-color)"};
 `;
 const RoomDetail = styled.div`
   display: grid;
@@ -28,6 +24,7 @@ const MessageContainer = styled.div`
   }
 `;
 function RoomListCard({ friend, onClick, clickedId }) {
+  console.log("clcikedID", clickedId);
   return (
     <RoomListCardDiv
       onClick={() => onClick && onClick(friend)}

@@ -5,6 +5,12 @@ import { connect } from "react-redux";
 import { useState, useEffect } from "react";
 import { styled } from "styled-components";
 import { fetchUser } from "../Actions/User-Action";
+import { addMessagesToRooms, fetchRooms } from "../Actions/Room-Action";
+import { fetchMessage } from "../Actions/Message-Action";
+import { useAuth } from "./../Utils/useAuth";
+import InitializePusher from "../InitializePusher";
+import { server } from "./../Actions/Index";
+import "semantic-ui-css/semantic.min.css";
 const Container = styled.div`
   height: 100vh;
   width: 100vw;
@@ -32,46 +38,97 @@ const Container = styled.div`
     }
   }
 `;
-function Layout({ user, room, groups, fetchUser }) {
+function Layout({
+  user,
+  rooms,
+  selectedRoom,
+  groups,
+  fetchUser,
+  fetchRooms,
+  fetchMessage,
+  addMessagesToRooms,
+}) {
   const [message, setMessage] = useState("");
-  useEffect(() => {
-    if (user.length === 0) fetchUser();
-  }, []);
-  useEffect(() => {
-    const groupMessageListeners = groups.map((group) => {
-      const groupMessageListener = window.Echo.private(
-        `group.message.${group.id}`
-      );
-      groupMessageListener.listen("MessageSent", (response) => {
-        console.log("group Message", response);
-        setMessage(response.message);
-      });
-      groupMessageListener.listen("MessageDeleted", (response) => {
-        console.log("group Message", response);
-        setMessage(response.message);
-      });
-      return groupMessageListener;
-    });
+  const { isAuthtenticated } = useAuth();
 
-    return () => {
-      groupMessageListeners.forEach((groupMessage) => {
-        groupMessage.stopListening("MessageSent");
-        groupMessage.stopListening("MessageDeleted");
-      });
+  //fetch initial data
+  useEffect(() => {
+    const fetchUserData = async () => {
+      //since useAuth detects when route is changed doesnt applied to refreshing page need to get token
+      const token = localStorage.getItem("chat_token");
+      server.defaults.headers.Authorization = `Bearer ${token}`;
+      await fetchUser();
     };
+    fetchUserData();
+  }, []);
+
+  useEffect(() => {
+    InitializePusher();
+  }, [user]);
+
+  useEffect(() => {
+    if (rooms.length === 0) {
+      const fetchData = async () => {
+        const rooms = await fetchRooms();
+        console.log("before", rooms);
+        try {
+          for (const room of rooms) {
+            const messages = await fetchMessage(room);
+            const isGroup = room.email ? false : true;
+            addMessagesToRooms(messages, room.id, isGroup);
+            console.log("msg", messages);
+          }
+          console.log("times");
+        } catch (error) {
+          console.log(error);
+        }
+      };
+      fetchData();
+    }
+  }, [user]);
+
+  //Realtime event listener
+  useEffect(() => {
+    console.log("grops", groups);
+    if (groups.length !== 0) {
+      const groupMessageListeners = groups.map((group) => {
+        const groupMessageListener = window.Echo.private(
+          `group.message.${group.id}`
+        );
+        groupMessageListener.listen("MessageSent", (response) => {
+          console.log("group Message", response);
+          setMessage(response.message);
+        });
+        groupMessageListener.listen("MessageDeleted", (response) => {
+          console.log("group Message", response);
+          setMessage(response.message);
+        });
+        return groupMessageListener;
+      });
+
+      return () => {
+        groupMessageListeners.forEach((groupMessage) => {
+          groupMessage.stopListening("MessageSent");
+          groupMessage.stopListening("MessageDeleted");
+        });
+      };
+    }
   }, [groups]);
   useEffect(() => {
-    const userMessage = window.Echo.private(`message.${user.id}`);
-    userMessage.listen("MessageSent", (response) => {
-      setMessage(response.message);
-    });
-    userMessage.listen("MessageDeleted", (response) => {});
+    if (user.length > 0) {
+      const userMessage = window.Echo.private(`message.${user.id}`);
+      userMessage.listen("MessageSent", (response) => {
+        setMessage(response.message);
+      });
+      userMessage.listen("MessageDeleted", (response) => {});
 
-    return () => {
-      userMessage.stopListening("MessageSent");
-      userMessage.stopListening("MessageDeleted");
-    };
+      return () => {
+        userMessage.stopListening("MessageSent");
+        userMessage.stopListening("MessageDeleted");
+      };
+    }
   }, [user]);
+
   return (
     <Container>
       <SideBar />
@@ -81,16 +138,26 @@ function Layout({ user, room, groups, fetchUser }) {
         </div>
       </div>
       <div className="chat-room-container">
-        {room && room.id ? <ChatRoom message={message} /> : <p>welcome!</p>}
+        {selectedRoom && selectedRoom.id ? (
+          <ChatRoom message={message} />
+        ) : (
+          <p>welcome!</p>
+        )}
       </div>
     </Container>
   );
 }
 function mapStateToProps(state) {
   return {
-    room: state.roomStore.data,
+    selectedRoom: state.roomStore.data,
     user: state.userStore.data,
     groups: state.groupStore.data,
+    rooms: state.roomStore.rooms,
   };
 }
-export default connect(mapStateToProps, { fetchUser })(Layout);
+export default connect(mapStateToProps, {
+  fetchUser,
+  fetchRooms,
+  fetchMessage,
+  addMessagesToRooms,
+})(Layout);

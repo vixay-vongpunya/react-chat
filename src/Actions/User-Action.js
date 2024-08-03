@@ -1,15 +1,22 @@
-import { server } from "./Index";
 import axios from "axios";
-export function login(data) {
-  return (dispatch) => {
-    axios.get("http://localhost:8000/sanctum/csrf-cookie").then((a) => {
-      server.post("http://localhost:8000/api/login", data).then((response) => {
-        localStorage.setItem("token", response.data.token);
-        dispatch({ type: "FETCH_USER_DATA", payload: response.data.data });
-      });
-    });
-  };
-}
+import { server } from "./Index";
+
+export const pendingLogin = (data) => async (dispatch) => {
+  console.log("arrived");
+  await axios.get("http://localhost:8000/sanctum/csrf-cookie");
+  const response = await server.post("http://localhost:8000/api/login", data);
+  console.log("here", response.data.token);
+  return response.data.token;
+};
+
+export const signup = (data) => async (dispatch) => {
+  console.log("arrived");
+  await axios.get("http://localhost:8000/sanctum/csrf-cookie");
+  const response = await server.post("http://localhost:8000/api/signup", data);
+  console.log("here", response.data.token);
+  return response.data.token;
+};
+
 export function fetchUser() {
   console.log("times");
   return (dispatch) => {
@@ -17,5 +24,12 @@ export function fetchUser() {
       console.log("user", response);
       dispatch({ type: "FETCH_USER_DATA", payload: response.data.data });
     });
+  };
+}
+
+export function clearState() {
+  return (dispatch) => {
+    console.log("clear");
+    dispatch({ type: "RESET" });
   };
 }

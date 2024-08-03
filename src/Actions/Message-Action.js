@@ -16,12 +16,14 @@ export function sendMessage(data) {
       });
   };
 }
-export function fetchMessage(id, type) {
-  return (dispatch) => {
-    server.get(`./message/${id}?type=${type}`).then((response) => {
-      console.log(response);
-      dispatch({ type: "FETCH_MESSAGE", payload: response.data.data });
-    });
+export function fetchMessage(room) {
+  const type = room.email ? "user" : "group";
+  const id = room.email ? room.friendship_id : room.id;
+  return async (dispatch) => {
+    const response = await server.get(`./room/${id}/messages?type=${type}`);
+    const messages = response.data.data;
+    dispatch({ type: "FETCH_MESSAGE", payload: messages });
+    return messages;
   };
 }
 export function addMessage(message) {
@@ -29,8 +31,11 @@ export function addMessage(message) {
     dispatch({ type: "ADD_MESSAGE", payload: message });
   };
 }
-export function deleteMessage(message) {
+export function updateRoomMessage(room) {
   return (dispatch) => {
-    dispatch({ type: "DELETE_MESSAGE", payload: message });
+    dispatch({
+      type: "UPDATE_ROOM_MESSAGE",
+      payload: room,
+    });
   };
 }

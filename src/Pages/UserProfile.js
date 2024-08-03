@@ -36,8 +36,7 @@ function UserProfile({ user }) {
   const [profileSelected, setProfileSelected] = useState(false);
   const [profileImage, setProfileImage] = useState(null);
   const [backgroundImage, setBackgroundImage] = useState(null);
-  const backgroundInputRef = useRef(null);
-  const profileInputRef = useRef(null);
+
   useEffect(() => {
     if (!user) fetchUser();
     console.log(user);
@@ -92,13 +91,6 @@ function UserProfile({ user }) {
                     setModalOpen(true);
                     setProfileSelected(true);
                   }}
-                  // onClick={() => profileInputRef.current.click()}
-                />
-                <input
-                  className="hidden"
-                  type="file"
-                  ref={profileInputRef}
-                  onChange={(event) => setProfileImage(event.target.files[0])}
                 />
               </div>
 
@@ -116,12 +108,6 @@ function UserProfile({ user }) {
                   setModalOpen(true);
                   setProfileSelected(false);
                 }}
-              />
-              <input
-                className="hidden"
-                type="file"
-                ref={backgroundInputRef}
-                onChange={(event) => setBackgroundImage(event.target.files[0])}
               />
             </div>
           </div>

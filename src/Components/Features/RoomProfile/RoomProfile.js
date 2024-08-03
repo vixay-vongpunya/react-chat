@@ -9,7 +9,6 @@ import { useNavigate } from "react-router-dom";
 import { changeRoom } from "../../../Actions/Room-Action";
 function RoomProfile({
   room,
-  friends,
   leaveGroup,
   unFriend,
   handleProfileOpened,
@@ -29,15 +28,16 @@ function RoomProfile({
     await changeRoom(null);
     navigate("/home");
   };
+  console.log("3de", room);
 
   return (
-    <div className="h-full flex flex-col">
+    <div className="h-full w-full flex flex-col">
       <ProfileImage room={room} handleProfileOpened={handleProfileOpened} />
       <div className="h-3/5 w-full overflow-auto">
         {room.email ? (
           <FriendProfileBottom friend={room} />
         ) : (
-          <GroupProfileBottom room={room} friends={friends} />
+          <GroupProfileBottom room={room} />
         )}
       </div>
       <div className="p-2 ">
@@ -51,9 +51,5 @@ function RoomProfile({
     </div>
   );
 }
-function mapStateToProps(state) {
-  return { friends: state.friendStore.data };
-}
-export default connect(mapStateToProps, { leaveGroup, unFriend, changeRoom })(
-  RoomProfile
-);
+
+export default connect(null, { leaveGroup, unFriend, changeRoom })(RoomProfile);

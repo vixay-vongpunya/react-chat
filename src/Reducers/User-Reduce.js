@@ -11,6 +11,9 @@ export default (state = defaultState, action = {}) => {
         data: action.payload,
       };
     }
+    case "RESET": {
+      return defaultState;
+    }
     default:
       return state;
   }

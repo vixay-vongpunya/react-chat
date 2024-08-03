@@ -3,17 +3,25 @@ import { connect } from "react-redux";
 import { useEffect, useState, useRef } from "react";
 import { server } from "./../../../../Actions/Index";
 import { styled } from "styled-components";
-import { deleteMessage } from "../../../../Actions/Message-Action";
-import { fetchMessage } from "../../../../Actions/Message-Action";
+import FormatDate from "../../../../Utils/FormatDate";
+import {
+  fetchMessage,
+  updateRoomMessage,
+} from "../../../../Actions/Message-Action";
+import File from "../../File";
+
 const SenderDiv = styled.div`
-  display:flex;
-  flex-direction:column;
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  padding: 2px;
   .sender-name {
+    margin: 0px;
+    margin-top: 10px;
     display: ${(props) =>
       props.$destinationType === "group" && !props.$isPrevId
         ? "block"
-        : "none"}}; 
-    margin-top:5px;    
+        : "none"};
   }
 `;
 const Container = styled.div`
@@ -26,62 +34,80 @@ const Container = styled.div`
 const MessageContainer = styled.div`
   width: 100%;
   display: flex;
-  flex-direction: row-reverse;
+  justify-content: flex-end;
   padding: 2px;
 `;
 const MessageBox = styled.div`
   display: flex;
-  span {
+  align-items: center;
+  flex-direction: row;
+  height: 100%;
+  width: 80%;
+  .message {
     border: solid 1px black;
     border-radius: var(--border-radius);
     padding: 2px 5px;
-    display: "block";
+    display: block;
+    margin: 0px;
   }
 `;
 function Body(props) {
-  const { user, message, room, userMessage, roomMessages, groups } = props;
+  const {
+    user,
+    message,
+    selectedRoom,
+    userMessage,
+    updateRoomMessage,
+    groups,
+  } = props;
   const [HoveredIndex, setHoveredIndex] = useState(null);
   const [messages, setMessages] = useState([]);
+  const [room, setRoom] = useState();
+
   const messageEndRef = useRef([]);
 
   useEffect(() => {
-    //loading messages
-    if (room) {
-      console.log("23", room);
-      const type = room.email ? "user" : "group";
-      const id = room.email ? room.friendship_id : room.id;
-      props.fetchMessage(id, type);
-    }
-  }, [room]);
+    // need the check room.id since when updating profile image causes unexpected outdated data update. referred to at room-reducer(update_group_profile)
+    // group and normal room can possibly have the same id, so message wont change
+    if (room && selectedRoom.id !== room.id) {
+      // in case the room doesnt have latest_message
+      // i dont want to update redux everytime. So, only update just before selectedRoom is changed
+      let latest_message = null;
+      if (messages.length !== 0) {
+        const formattedDate = FormatDate(messages[0].created_at);
+        latest_message = { ...messages[0], format_date: formattedDate };
+      }
 
-  useEffect(() => {
-    if (roomMessages) {
-      console.log("just vef", roomMessages);
-      setMessages(roomMessages);
+      const newRoomData = {
+        ...room,
+        messages: messages,
+        latest_message: latest_message,
+      };
+      console.log("new data", newRoomData);
+      updateRoomMessage(newRoomData);
     }
-  }, [roomMessages]);
+
+    setMessages(selectedRoom.messages);
+    setRoom(selectedRoom);
+  }, [selectedRoom]);
 
   useEffect(() => {
     if (userMessage) {
       setMessages((prev) => [userMessage, ...prev]);
-      scrollToBottom();
     }
   }, [userMessage]);
 
   useEffect(() => {
-    //when it is user-user
     if (
       message.destination_type === "group" &&
       message.destination_id === room.id
     ) {
       setMessages((prev) => [message, ...prev]);
-      scrollToBottom();
     } else if (
       message.destination_type === "user" &&
       message.destination_id === room.friendship_id
     ) {
       setMessages((prev) => [message, ...prev]);
-      scrollToBottom();
     }
   }, [message]);
 
@@ -91,15 +117,16 @@ function Body(props) {
     }
   };
 
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages]);
+
   const deleteMessage = (message) => {
-    const socketId = window.Echo.socketId();
     server
-      .delete(`message/${message.id}`, {
-        headers: {
-          "X-Socket-ID": socketId,
-        },
-      })
-      .then((response) => props.deleteMessage(message));
+      .delete(`message/${message.id}`)
+      .then((response) =>
+        setMessages((prev) => prev.filter((msg) => msg.id !== message.id))
+      );
   };
 
   const messageList = messages.map((message, index) => {
@@ -109,47 +136,70 @@ function Body(props) {
       <div key={message.id}>
         {user.id === message.sender_id ? (
           <MessageContainer>
-            <MessageBox
-              onMouseEnter={() => setHoveredIndex(index)}
-              onMouseLeave={() => setHoveredIndex(null)}
-            >
-              <span>{message.content}</span>
+            <MessageBox>
+              <div className="w-full h-full flex justify-end">
+                <div className="flex items-center">
+                  <div
+                    className={` ${
+                      HoveredIndex === index ? "visible" : "invisible"
+                    }`}
+                    onMouseEnter={() => setHoveredIndex(index)}
+                    onMouseLeave={() => setHoveredIndex(null)}
+                  >
+                    <MessageTool
+                      message={message}
+                      user={user}
+                      deleteMessage={deleteMessage}
+                    />
+                  </div>
+                </div>
+
+                <div
+                  className="message"
+                  onMouseEnter={() => setHoveredIndex(index)}
+                  onMouseLeave={() => setHoveredIndex(null)}
+                >
+                  {message.message_type === "file" ? (
+                    <File file={message.file} file_name={message.content} />
+                  ) : (
+                    <p>{message.content}</p>
+                  )}
+                </div>
+              </div>
             </MessageBox>
-            <div
-              className={` ${HoveredIndex === index ? "visible" : "invisible"}`}
-              onMouseEnter={() => setHoveredIndex(index)}
-              onMouseLeave={() => setHoveredIndex(null)}
-            >
-              <MessageTool
-                message={message}
-                user={user}
-                deleteMessage={deleteMessage}
-              />
-            </div>
           </MessageContainer>
         ) : (
           <SenderDiv
             $destinationType={message.destination_type}
             $isPrevId={isPrevId}
           >
-            <span className="sender-name">{message.sender.name}</span>
+            <p className="sender-name">{message.sender.name}</p>
             <MessageBox>
-              <span
-                onMouseEnter={() => setHoveredIndex(index)}
-                onMouseLeave={() => setHoveredIndex(null)}
-              >
-                {message.content}{" "}
-              </span>
               <div
-                className={` ${HoveredIndex === index ? "block" : "hidden"}`}
+                className="message"
                 onMouseEnter={() => setHoveredIndex(index)}
                 onMouseLeave={() => setHoveredIndex(null)}
               >
-                <MessageTool
-                  message={message}
-                  user={user}
-                  deleteMessage={deleteMessage}
-                />
+                {message.message_type === "file" ? (
+                  <File file={message.file} file_name={message.content} />
+                ) : (
+                  <p>{message.content}</p>
+                )}
+              </div>
+              <div className="flex h-full">
+                <div
+                  className={`${
+                    HoveredIndex === index ? "visible" : "invisible"
+                  }`}
+                  onMouseEnter={() => setHoveredIndex(index)}
+                  onMouseLeave={() => setHoveredIndex(null)}
+                >
+                  <MessageTool
+                    message={message}
+                    user={user}
+                    deleteMessage={deleteMessage}
+                  />
+                </div>
               </div>
             </MessageBox>
           </SenderDiv>
@@ -167,10 +217,11 @@ function Body(props) {
 function mapStateToProps(state) {
   return {
     userMessage: state.messageStore.userMessage,
-    roomMessages: state.messageStore.data,
     loading: state.messageStore.loading,
     user: state.userStore.data,
     groups: state.groupStore.data,
   };
 }
-export default connect(mapStateToProps, { deleteMessage, fetchMessage })(Body);
+export default connect(mapStateToProps, { updateRoomMessage, fetchMessage })(
+  Body
+);

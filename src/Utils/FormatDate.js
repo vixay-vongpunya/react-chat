@@ -1,4 +1,4 @@
-function FormatDate({ date }) {
+function FormatDate(date) {
   const today = new Date();
   const dateObj = new Date(date);
 

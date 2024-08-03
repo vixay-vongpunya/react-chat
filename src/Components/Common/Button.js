@@ -6,7 +6,6 @@ const StyledButton = styled.button`
   border-radius: 4px;
   margin: 3px;
   padding: 8px 16px;
-
   cursor: ${(props) => (props.disabled ? "text" : "pointer")};
   color: ${(props) => (props.$primary ? "white" : `var(--primary-color)`)};
   background-color: ${(props) =>

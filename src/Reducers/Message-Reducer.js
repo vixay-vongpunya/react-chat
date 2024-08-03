@@ -25,12 +25,10 @@ export default (state = defaultState, action = {}) => {
         data: action.payload,
       };
     }
-    case "DELETE_MESSAGE": {
-      return {
-        ...state,
-        data: state.data.filter((message) => message.id !== action.payload.id),
-      };
+    case "RESET": {
+      return defaultState;
     }
+
     default:
       return state;
   }
