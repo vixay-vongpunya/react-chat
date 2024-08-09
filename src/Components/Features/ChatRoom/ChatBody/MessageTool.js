@@ -15,16 +15,23 @@ const Container = styled.ul`
   }
 `;
 function MessageTool({ message, user, deleteMessage }) {
-  const handleDownload = (fileUrl) => {
-    const url = window.URL.createObjectURL(new Blob([fileUrl]));
-    const link = document.createElement("a");
-    link.href = url;
-    link.setAttribute("download", message.content); // Set the download attribute with the filename
-    document.body.appendChild(link);
-    link.click();
+  const handleDownload = async () => {
+    try {
+      const fileName = message.file.split("/").pop();
+      const response = await server.get(`/message/download/${fileName}`, {
+        responseType: "blob",
+      });
 
-    // Clean up the link element
-    link.parentNode.removeChild(link);
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", message.content);
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+    } catch (error) {
+      console.error("Error downloading file:", error);
+    }
   };
   return (
     <Container>
@@ -34,9 +41,7 @@ function MessageTool({ message, user, deleteMessage }) {
       <li onClick={() => navigator.clipboard.writeText(message.content)}>
         Copy
       </li>
-      {message.file && (
-        <li onClick={() => handleDownload(message.file)}>Download</li>
-      )}
+      {message.file && <li onClick={() => handleDownload()}>Download</li>}
 
       {message.sender.id === user.id && (
         <li onClick={() => deleteMessage(message)}>Remove </li>
