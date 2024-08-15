@@ -23,7 +23,10 @@ const GuestRoute = ({ element }) => {
 const ProtectedRoute = ({ element }) => {
   const { isAuthenticated, loading } = useAuth();
   console.log("auth", isAuthenticated);
-  return isAuthenticated && !loading ? element : <Navigate to="/login" />;
+  if (loading) {
+    return;
+  }
+  return isAuthenticated ? element : <Navigate to="/login" />;
 };
 
 function App() {

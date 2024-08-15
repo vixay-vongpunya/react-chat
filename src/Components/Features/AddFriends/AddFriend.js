@@ -41,33 +41,41 @@ function AddFriend({ friends }) {
     const searchParams = new URLSearchParams(location.search);
     const query = searchParams.get("email");
     if (query) {
-      const data = { email: query };
+      console.log("new send");
+      searchFriend(query);
+    }
+  }, [location.search]);
+  const searchFriend = (email) => {
+    console.log("email", email);
+    const found = friends.find((data) => data?.email === email);
+    if (!found) {
+      console.log("d");
       server
-        .post("/friends/search", data)
+        .post("/friends/search", { email: email })
         .then((response) => {
           console.log(response.data.data);
-          const found = friends.some(
-            (data) => data.id === response.data.data.id
-          );
-          if (found) {
-            console.log("found");
-            setIsFriend(true);
-          }
           setFriend(response.data.data);
-          setEmail(query);
-          setLoading(false);
         })
         .catch((error) => {
-          if (error.response && error.response.status === 404) {
+          if (error.response && error.status === 404) {
             alert("user not found");
           }
         });
+    } else {
+      console.log("found", found);
+      setFriend(found);
     }
-  }, [location.search]);
+
+    setLoading(false);
+    setEmail(email);
+  };
   const findFriend = (event) => {
+    console.log("triggered");
     if (email.trim() !== "" && event.key === "Enter") {
       setLoading(true);
-      navigate(`/friends/search?email=${email}`);
+      searchFriend(email);
+
+      // navigate(`/friends/search?email=${email}`);
     }
   };
   return (
@@ -84,7 +92,7 @@ function AddFriend({ friends }) {
           {loading ? (
             <Spinner animation="border" />
           ) : (
-            <FriendCard friend={friend} isFriend={isFriend} />
+            <FriendCard friend={friend} />
           )}
         </div>
       </Wrapper>
