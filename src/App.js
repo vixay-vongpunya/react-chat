@@ -16,20 +16,14 @@ import Loading from "./Pages/Loading";
 import { Navigate } from "react-router-dom";
 
 const GuestRoute = ({ element }) => {
-  const { isAuthenticated, loading } = useAuth();
-  if (loading) {
-    return;
-  }
+  const { isAuthenticated } = useAuth();
   return isAuthenticated ? <Navigate to="/home" /> : element;
 };
 
 const ProtectedRoute = ({ element }) => {
   const { isAuthenticated, loading } = useAuth();
   console.log("auth", isAuthenticated);
-  if (loading) {
-    return;
-  }
-  return isAuthenticated ? element : <Navigate to="/login" />;
+  return isAuthenticated && !loading ? element : <Navigate to="/login" />;
 };
 
 function App() {
@@ -40,28 +34,16 @@ function App() {
           path="/signup"
           element={<GuestRoute element={<Signup />} />}
         ></Route>
-        <Route path="/login" element={<Login />}></Route>
-        <Route path="/pending/authentification" element={<Loading />}></Route>
-        <Route element={<Layout />}>
-          <Route
-            path="/home"
-            element={<ProtectedRoute element={<Home />} />}
-          ></Route>
-          <Route
-            path="friends"
-            element={<ProtectedRoute element={<Friends />} />}
-          >
+        <Route path="/login" element={<Login />} />
+        <Route path="/pending/authentification" element={<Loading />} />
+        <Route element={<ProtectedRoute element={<Layout />} />}>
+          <Route path="/home" element={<Home />}></Route>
+          <Route path="friends" element={<Friends />}>
             <Route index element={<FriendRequest />} />
             <Route path="search" element={<AddFriend />} />
           </Route>
-          <Route
-            path="/create/group"
-            element={<ProtectedRoute element={<CreateGroup />} />}
-          ></Route>
-          <Route
-            path="/user/profile"
-            element={<ProtectedRoute element={<UserProfile />} />}
-          ></Route>
+          <Route path="/create/group" element={<CreateGroup />} />
+          <Route path="/user/profile" element={<UserProfile />} />
         </Route>
       </Routes>
     </AuthProvider>
