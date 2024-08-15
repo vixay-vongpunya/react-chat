@@ -1,5 +1,6 @@
 import ChatImage from "./../Common/ChatImage";
 import styled from "styled-components";
+import SlicedFilename from "./../../Utils/SlicedFilename";
 const RoomListCardDiv = styled.div`
   display: flex;
   width: 100%;
@@ -10,6 +11,10 @@ const RoomListCardDiv = styled.div`
     props.$friend.email
       ? "user" + props.$friend.id === props.clickedId && "var(--hover-color)"
       : "group" + props.$friend.id === props.clickedId && "var(--hover-color)"};
+
+  p {
+    margin: 0px;
+  }
 `;
 const RoomDetail = styled.div`
   display: grid;
@@ -21,6 +26,9 @@ const MessageContainer = styled.div`
   display: flex;
   p {
     color: grey;
+  }
+  .created-time {
+    margin-left: 5px;
   }
 `;
 function RoomListCard({ friend, onClick, clickedId }) {
@@ -37,20 +45,23 @@ function RoomListCard({ friend, onClick, clickedId }) {
         size="--medium-image"
       />
       <RoomDetail>
-        <p>{friend.name}</p>
-        <MessageContainer>
-          <p>
-            {friend.latest_message?.content && (
-              <>
-                {friend.latest_message.content.slice(0, 10)}
-                {friend.latest_message.content.length > 10 && "..."}
-                {"・"}
-              </>
+        <p className="flex-1">{friend.name}</p>
+        {friend.latest_message && (
+          <MessageContainer>
+            {friend.latest_message.message_type === "file" ? (
+              <p>{SlicedFilename(friend.latest_message.content)}</p>
+            ) : (
+              <p>
+                {friend.latest_message.content.slice(0, 30)}
+                {friend.latest_message.content.length > 30 && "..."}
+              </p>
             )}
-            {friend.latest_message?.format_date &&
-              friend.latest_message?.format_date}
-          </p>
-        </MessageContainer>
+            <p className="created-time">
+              {friend.latest_message?.format_date &&
+                friend.latest_message?.format_date}
+            </p>
+          </MessageContainer>
+        )}
       </RoomDetail>
     </RoomListCardDiv>
   );

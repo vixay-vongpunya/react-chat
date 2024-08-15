@@ -10,7 +10,6 @@ import { styled } from "styled-components";
 
 const Container = styled.div`
   height: 100%;
-  padding: 0px 5px;
 `;
 const Wrapper = styled.div`
   height: 100%;

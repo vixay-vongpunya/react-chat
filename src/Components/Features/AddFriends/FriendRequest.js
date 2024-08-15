@@ -27,6 +27,7 @@ const ActionContainer = styled.div`
     display: flex;
     width: 100%;
     padding-bottom: 5px;
+    gap: 2px;
   }
 `;
 const Wrapper = styled.div`
@@ -38,8 +39,6 @@ const Wrapper = styled.div`
 const RequestContainer = styled.div`
   display: flex;
   flex-direction: column;
-  background-color: var(--background-color);
-  border-radius: 0.5rem;
   padding: 8px 10px;
 `;
 const RequestWrapper = styled.div`

@@ -1,8 +1,14 @@
 import ChatImage from "../../../Common/ChatImage";
 import { styled } from "styled-components";
+import ChatHeaderRight from "./ChatHeaderRight";
 const Container = styled.div`
   display: flex;
   padding: 10px 15px;
+  .daterange-container {
+    position: absolute;
+    right: 1rem;
+    top: 1.2rem;
+  }
 `;
 const Wrapper = styled.div`
   display: flex;
@@ -33,7 +39,12 @@ function ChatHeader({ profile_image, room, handleProfileOpened }) {
           <p>active</p>
         </NameBox>
       </Wrapper>
-      <div className="absolute right-0"></div>
+      <div className="daterange-container">
+        <ChatHeaderRight
+          roomId={room.pivot ? room.id : room.friendship_id}
+          roomType={room.pivot ? "group" : "private"}
+        />
+      </div>
     </Container>
   );
 }

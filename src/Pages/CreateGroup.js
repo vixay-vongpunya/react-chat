@@ -21,6 +21,9 @@ const Wrapper = styled.div`
   .input-container {
     padding: 8px 10px;
   }
+  .btn-box {
+    padding: 4px 8px;
+  }
 `;
 const SelectedContainer = styled.div`
   overflow-x: auto;
@@ -55,7 +58,7 @@ const FormContainer = styled.div`
 
   box-sizing: border-box;
   & > :nth-child(1) {
-    margin-bottom: 10px;
+    margin-bottom: 0.3rem;
   }
 `;
 function CreateGroup(props) {
@@ -138,7 +141,7 @@ function CreateGroup(props) {
         </Wrapper>
         <Wrapper>
           <GroupFriendList onClick={onClick} roomList={roomList} />
-          <div className="flex justify-end  pr-5 pb-2">
+          <div className="btn-box">
             <Button onClick={createGroup} text="create" primary />
           </div>
         </Wrapper>

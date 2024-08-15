@@ -1,4 +1,5 @@
 import Button from "../../Common/Button";
+import styled from "styled-components";
 import { connect } from "react-redux";
 import GroupProfileBottom from "./GroupProfileBottom";
 import FriendProfileBottom from "./FriendProfileBottom";
@@ -7,6 +8,17 @@ import { leaveGroup } from "../../../Actions/Group-Action";
 import { unFriend } from "../../../Actions/Friend-Action";
 import { useNavigate } from "react-router-dom";
 import { changeRoom } from "../../../Actions/Room-Action";
+const Container = styled.div`
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  .btn-box {
+    width: 100%;
+    padding-bottom: 8px;
+    padding: 4px 8px;
+  }
+`;
+
 function RoomProfile({
   room,
   leaveGroup,
@@ -28,28 +40,25 @@ function RoomProfile({
     await changeRoom(null);
     navigate("/home");
   };
-  console.log("3de", room);
 
   return (
-    <div className="h-full w-full flex flex-col">
+    <Container>
       <ProfileImage room={room} handleProfileOpened={handleProfileOpened} />
-      <div className="h-3/5 w-full overflow-auto">
+      <div className="flex-1 w-full ">
         {room.email ? (
           <FriendProfileBottom friend={room} />
         ) : (
           <GroupProfileBottom room={room} />
         )}
       </div>
-      <div className="p-2 ">
-        <hr />
+      <div className="btn-box">
         {/* text color not working */}
         <Button
           text={room.email ? "unfriend" : "leave group"}
           onClick={handleClick}
         />
       </div>
-    </div>
+    </Container>
   );
 }
-
 export default connect(null, { leaveGroup, unFriend, changeRoom })(RoomProfile);

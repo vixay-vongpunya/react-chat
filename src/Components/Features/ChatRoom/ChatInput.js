@@ -13,17 +13,43 @@ const Container = styled.div`
   align-items: center;
   padding: 4px;
   gap: 5px;
-  .file-input {
-    display: none;
-  }
-  .file-icon {
-    cursor: pointer;
-  }
 `;
 
 const Wrapper = styled.div`
   width: 100%;
   display: flex;
+  align-items: flex-end;
+  gap: 10px;
+  textarea {
+    width: 100%;
+    max-height: 150px;
+    outline: none;
+    resize: none;
+    padding: 5px;
+  }
+  .input-bar {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    background-color: white;
+    border-radius: var(--border-radius);
+    gap: 10px;
+    padding: 5px;
+  }
+  .mic-box {
+    height: 100%;
+    display: flex;
+    align-items: flex-end;
+  }
+  .file-input {
+    display: none;
+  }
+  .file-icon {
+    cursor: pointer;
+    margin-left: 5px;
+    margin-bottom: 5px;
+  }
 `;
 
 const FileBox = styled.div`
@@ -56,10 +82,13 @@ function ChatInput({ room, sendMessage, setToolsOpened }) {
   const [files, setFiles] = useState([]);
 
   const fileRef = useRef(null);
+  const textareaRef = useRef(null);
 
   const handleEnter = (event) => {
     setMessage(event.target.value);
-    if (event.key === "Enter") {
+    if (event.shiftKey && event.key === "Enter") {
+      setMessage((prev) => prev + "\n");
+    } else if (event.key === "Enter") {
       event.preventDefault();
       if (message.trim() !== "") {
         const data = {
@@ -76,6 +105,12 @@ function ChatInput({ room, sendMessage, setToolsOpened }) {
       }
     }
   };
+
+  useEffect(() => {
+    const textarea = textareaRef.current;
+    textarea.style.height = "auto";
+    textarea.style.height = `${textarea.scrollHeight}px`;
+  }, [message]);
 
   useEffect(() => {
     if (files.length !== 0) {
@@ -129,31 +164,32 @@ function ChatInput({ room, sendMessage, setToolsOpened }) {
     <Container>
       {files.length > 0 && <FileBox>{FileList}</FileBox>}
       <Wrapper>
-        <div>
-          <VscFileCode
-            size="32"
-            className="file-icon"
-            onClick={() => {
-              fileRef.current.click();
-            }}
-          />
-          <input
-            type="file"
-            ref={fileRef}
-            className="file-input"
-            onChange={FileSelected}
-          />
-        </div>
-        <div className="h-full w-full px-2 ">
+        <VscFileCode
+          size="32"
+          className="file-icon"
+          onClick={() => {
+            fileRef.current.click();
+          }}
+        />
+        <input
+          type="file"
+          ref={fileRef}
+          className="file-input"
+          onChange={FileSelected}
+        />
+        <div className="input-bar">
           <textarea
+            rows="1"
             value={message}
             type="text"
-            className="no-scrollbar w-full rounded-xl outline-none resize-none px-4 py-2"
+            ref={textareaRef}
             onChange={(event) => setMessage(event.target.value)}
             onKeyDown={handleEnter}
           ></textarea>
+          <div className="mic-box">
+            <VscMic size="32" />
+          </div>
         </div>
-        <VscMic size="32" />
       </Wrapper>
     </Container>
   );

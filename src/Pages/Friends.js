@@ -3,7 +3,6 @@ import { connect } from "react-redux";
 import { styled } from "styled-components";
 import { BsSearch } from "react-icons/bs";
 import { BsLink45Deg } from "react-icons/bs";
-import { Dropdown } from "semantic-ui-react";
 import { GoPaperclip } from "react-icons/go";
 import { useState, useRef, useEffect } from "react";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
@@ -12,9 +11,9 @@ const Container = styled.div`
   width: 100%;
   display: grid;
   position: relative;
+  grid-template-rows: 1fr 4fr;
+  gap: 0.3rem;
   overflow: hidden;
-  grid-template-rows: 1fr 5fr;
-  gap: 10px;
 
   .slide-enter {
     transform: translateX(100%);
@@ -69,6 +68,9 @@ const MenuContainer = styled.div`
     border: solid var(--background-color) 2px;
     padding: 5px;
   }
+  a {
+    text-decoration: none;
+  }
 `;
 
 const MenuCard = styled.div`
@@ -82,9 +84,10 @@ const MenuCard = styled.div`
 `;
 
 const Wrapper = styled.div`
-  position: absolute;
   width: 100%;
   height: 100%;
+  border-radius: var(--border-radius);
+  background-color: var(--background-color);
 `;
 function Friends({ user }) {
   const [showLink, setShowLink] = useState(false);

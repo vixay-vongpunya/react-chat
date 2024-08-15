@@ -6,8 +6,8 @@ import reportWebVitals from "./reportWebVitals";
 import { Provider } from "react-redux";
 import store from "./store";
 import Pusher from "pusher-js";
-import "semantic-ui-css/semantic.min.css";
 import { BrowserRouter } from "react-router-dom";
+import "bootstrap/dist/css/bootstrap.min.css";
 window.Pusher = Pusher;
 
 const root = ReactDOM.createRoot(document.getElementById("root"));

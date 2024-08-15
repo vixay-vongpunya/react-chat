@@ -22,9 +22,10 @@ const Wrapper = styled.div`
   position: relative;
 `;
 const ChatroomContainer = styled.div`
-  height: 90vh;
+  height: 95vh;
   transition: width 0.2s ease-in;
   display: grid;
+  position: relative;
   width: ${(props) => (props.$profileOpened ? "65%" : "100%")};
   grid-template-rows: ${(props) =>
     props.$toolsOpened ? "2fr 11fr 4fr" : "2fr 14fr 1fr"};

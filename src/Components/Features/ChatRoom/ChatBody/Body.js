@@ -1,4 +1,3 @@
-import MessageTool from "./MessageTool";
 import { connect } from "react-redux";
 import { useEffect, useState, useRef } from "react";
 import { server } from "./../../../../Actions/Index";
@@ -8,7 +7,7 @@ import {
   fetchMessage,
   updateRoomMessage,
 } from "../../../../Actions/Message-Action";
-import File from "../../File";
+import Message from "./Message";
 
 const SenderDiv = styled.div`
   display: flex;
@@ -37,20 +36,7 @@ const MessageContainer = styled.div`
   justify-content: flex-end;
   padding: 2px;
 `;
-const MessageBox = styled.div`
-  display: flex;
-  align-items: center;
-  flex-direction: row;
-  height: 100%;
-  width: 80%;
-  .message {
-    border: solid 1px black;
-    border-radius: var(--border-radius);
-    padding: 2px 5px;
-    display: block;
-    margin: 0px;
-  }
-`;
+
 function Body(props) {
   const {
     user,
@@ -60,7 +46,7 @@ function Body(props) {
     updateRoomMessage,
     groups,
   } = props;
-  const [HoveredIndex, setHoveredIndex] = useState(null);
+  const [hoveredIndex, setHoveredIndex] = useState(null);
   const [messages, setMessages] = useState([]);
   const [room, setRoom] = useState();
 
@@ -136,37 +122,14 @@ function Body(props) {
       <div key={message.id}>
         {user.id === message.sender_id ? (
           <MessageContainer>
-            <MessageBox>
-              <div className="w-full h-full flex justify-end">
-                <div className="flex items-center">
-                  <div
-                    className={` ${
-                      HoveredIndex === index ? "visible" : "invisible"
-                    }`}
-                    onMouseEnter={() => setHoveredIndex(index)}
-                    onMouseLeave={() => setHoveredIndex(null)}
-                  >
-                    <MessageTool
-                      message={message}
-                      user={user}
-                      deleteMessage={deleteMessage}
-                    />
-                  </div>
-                </div>
-
-                <div
-                  className="message"
-                  onMouseEnter={() => setHoveredIndex(index)}
-                  onMouseLeave={() => setHoveredIndex(null)}
-                >
-                  {message.message_type === "file" ? (
-                    <File file={message.file} file_name={message.content} />
-                  ) : (
-                    <p>{message.content}</p>
-                  )}
-                </div>
-              </div>
-            </MessageBox>
+            <Message
+              index={index}
+              user={user}
+              message={message}
+              deleteMessage={deleteMessage}
+              hoveredIndex={hoveredIndex}
+              setHoveredIndex={setHoveredIndex}
+            />
           </MessageContainer>
         ) : (
           <SenderDiv
@@ -174,34 +137,14 @@ function Body(props) {
             $isPrevId={isPrevId}
           >
             <p className="sender-name">{message.sender.name}</p>
-            <MessageBox>
-              <div
-                className="message"
-                onMouseEnter={() => setHoveredIndex(index)}
-                onMouseLeave={() => setHoveredIndex(null)}
-              >
-                {message.message_type === "file" ? (
-                  <File file={message.file} file_name={message.content} />
-                ) : (
-                  <p>{message.content}</p>
-                )}
-              </div>
-              <div className="flex h-full">
-                <div
-                  className={`${
-                    HoveredIndex === index ? "visible" : "invisible"
-                  }`}
-                  onMouseEnter={() => setHoveredIndex(index)}
-                  onMouseLeave={() => setHoveredIndex(null)}
-                >
-                  <MessageTool
-                    message={message}
-                    user={user}
-                    deleteMessage={deleteMessage}
-                  />
-                </div>
-              </div>
-            </MessageBox>
+            <Message
+              index={index}
+              user={user}
+              message={message}
+              deleteMessage={deleteMessage}
+              hoveredIndex={hoveredIndex}
+              setHoveredIndex={setHoveredIndex}
+            />
           </SenderDiv>
         )}
       </div>

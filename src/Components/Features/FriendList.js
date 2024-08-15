@@ -4,7 +4,7 @@ import { useMemo, useState, useEffect } from "react";
 import RoomListCard from "../Custom/RoomListCard";
 import SearchBar from "../Custom/SearchBar";
 const RoomListDiv = styled.div`
-  height: 640px;
+  height: 680px;
 `;
 const Container = styled.div`
   width: 100%;

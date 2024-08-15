@@ -10,14 +10,15 @@ import { fetchMessage } from "../Actions/Message-Action";
 import { useAuth } from "./../Utils/useAuth";
 import InitializePusher from "../InitializePusher";
 import { server } from "./../Actions/Index";
-import "semantic-ui-css/semantic.min.css";
+import MobileMenu from "./../Components/Features/MobileMenu";
+import { VscMenu } from "react-icons/vsc";
 const Container = styled.div`
   height: 100vh;
   width: 100vw;
   display: grid;
   grid-template-columns: 2fr 5fr 11fr;
   background-color: white;
-  .chat-room-container {
+  .chatroom-container {
     display: flex;
     width: 100%;
     align-items: center;
@@ -25,16 +26,37 @@ const Container = styled.div`
     padding-right: 10px;
   }
   .outlet-container {
-    height: fit;
+    height: 100%;
     display: flex;
     align-items: center;
     width: 100%;
+    padding: 0 0.3rem;
+  }
+  .outlet-wrapper {
+    height: 95%;
+    width: 100%;
+    border-radius: 0.5rem;
+  }
+  .side-bar {
+    display: block;
+  }
+  .hamburger-icon {
+    display: none;
+  }
 
-    padding: 0 0.5rem;
+  @media (max-width: 391px) {
+    display: flex;
+    .chatroom-container {
+      display: none;
+    }
+    .side-bar {
+      display: none;
+    }
     .outlet-wrapper {
-      height: 90%;
-      width: 100%;
-      border-radius: 0.5rem;
+      height: 100%;
+    }
+    .hamburger-icon {
+      display: block;
     }
   }
 `;
@@ -131,13 +153,16 @@ function Layout({
 
   return (
     <Container>
-      <SideBar />
+      <div className="side-bar">
+        <SideBar />
+      </div>
       <div className="outlet-container">
         <div className="outlet-wrapper">
+          <VscMenu className="hamburger-icon" size={22} />
           <Outlet context={{ message }} />
         </div>
       </div>
-      <div className="chat-room-container">
+      <div className="chatroom-container">
         {selectedRoom && selectedRoom.id ? (
           <ChatRoom message={message} />
         ) : (

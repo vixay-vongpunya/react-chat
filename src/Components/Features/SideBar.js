@@ -21,6 +21,7 @@ const Nav = styled.nav`
     display: flex;
     flex-direction: column;
     gap: 5px;
+    padding: 0px;
     padding-top: 20px;
     padding-right: 5px;
   }
@@ -33,6 +34,10 @@ const Nav = styled.nav`
   }
   .menu {
     color: var(--text-color);
+    margin: 0px;
+  }
+  a {
+    text-decoration: none;
   }
 `;
 const StyledItem = styled.div`
@@ -49,11 +54,12 @@ const StyledItem = styled.div`
   }
   p {
     color: red;
+    margin: 0px;
   }
 `;
 
 function SideBar({ user, clearState }) {
-  const [clickedItem, setClickedItem] = useState("");
+  const [clickedItem, setClickedItem] = useState("/home");
   const { logout } = useAuth();
   return (
     <Nav>

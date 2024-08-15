@@ -16,13 +16,12 @@ const Container = styled.div`
 `;
 const Wrapper = styled.div`
   border-radius: 0.5rem;
-  max-height: 450px;
+  max-height: 480px;
   overflow-y: scroll;
   padding: 0px 5px;
 `;
 
 const RoomListDiv = styled.div`
-  // height: 430px;
   height: 100%;
   display: flex;
   flex-direction: column;

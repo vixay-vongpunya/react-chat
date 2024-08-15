@@ -1,13 +1,18 @@
 import { useState, useEffect } from "react";
+import Spinner from "react-bootstrap/Spinner";
 import { styled } from "styled-components";
 import { server } from "../../../Actions/Index";
-import FriendCard from "../FriendCard";
+import FriendCard from "./FriendCard";
 import { connect } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
+import SearchBar from "../../Custom/SearchBar";
 const Container = styled.div`
+  height: 100%;
+
   display: flex;
   flex-direction: column;
   position: relative;
+  padding: 8px 10px;
 `;
 const Wrapper = styled.div`
   width: 100%;
@@ -15,20 +20,13 @@ const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   gap: 10px;
-  padding: 10px;
   align-items: center;
-  input {
-    width: 90%;
-    border: 2px solid var(--background-color);
-    border-radius: var(--small-border-radius);
-    padding: 8px 10px;
-    outline: none;
-  }
   .friend-card-container {
-    height: 100%;
-    width: 80%;
+    height: 90%;
+    width: 100%;
     display: flex;
-    padding-top: 5%;
+    justify-content: center;
+    align-items: center;
   }
 `;
 function AddFriend({ friends }) {
@@ -76,14 +74,18 @@ function AddFriend({ friends }) {
     <Container>
       <h3>Search Friends</h3>
       <Wrapper>
-        <input
+        <SearchBar
           value={email}
           onChange={(event) => setEmail(event.target.value)}
-          placeholder="Search..."
+          placeholder="search..."
           onKeyDown={findFriend}
         />
         <div className="friend-card-container">
-          {!loading && <FriendCard friend={friend} isFriend={isFriend} />}
+          {loading ? (
+            <Spinner animation="border" />
+          ) : (
+            <FriendCard friend={friend} isFriend={isFriend} />
+          )}
         </div>
       </Wrapper>
     </Container>

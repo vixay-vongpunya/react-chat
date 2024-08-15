@@ -2,9 +2,10 @@ import { styled } from "styled-components";
 import { SlPencil } from "react-icons/sl";
 import { IoImageOutline } from "react-icons/io5";
 import { useState } from "react";
-import { connect } from "react-redux";
-import { Popup } from "semantic-ui-react";
+import Tooltip from "react-bootstrap/Tooltip";
+import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 
+import { connect } from "react-redux";
 import { server } from "./../../../Actions/Index";
 import {
   updateGroupDetail,
@@ -16,18 +17,25 @@ import Button from "./../../Common/Button";
 import Textarea from "./../../Common/Textarea";
 import Input from "./../../Common/Input";
 const StyledList = styled.div`
+  padding: 0px 10px;
+  height: 100%;
+  ul {
+    padding: 0px;
+  }
   li:not(:nth-child(3)) {
     display: flex;
-    cursor: pointer;
+    align-items: center;
     padding: 5px;
     border-radius: var(--small-border-radius);
   }
   li:not(:first-child, :nth-child(3)):hover {
     background-color: var(--hover-text);
+    cursor: pointer;
   }
   p {
     padding: 2px 0;
     padding-left: 8px;
+    margin: 0px;
   }
 
   .edit-box {
@@ -38,13 +46,17 @@ const StyledList = styled.div`
 `;
 const DescriptionBox = styled.div`
   width: 100%;
+  span {
+    font-size: var(--tiny-font);
+    padding: 1px 2px;
+    border: 1px solid black;
+    border-radius: var(--small-border-radius);
+    cursor: pointer;
+  }
 `;
-const BioActionBox = styled.div`
+const ActionContainer = styled.div`
+  width: 100%;
   display: ${(props) => (props.$editBio ? "flex" : "none")};
-  justify-content: flex-end;
-`;
-const NameActionBox = styled.div`
-  display: flex;
   justify-content: flex-end;
 `;
 const NameContainer = styled.div`
@@ -53,6 +65,18 @@ const NameContainer = styled.div`
   flex-direction: column;
   padding: 5px;
 `;
+const EditNameContainer = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+`;
+const ActionBox = styled.div`
+  display: flex;
+  width: 90%;
+  padding: 6px 0px;
+  gap: 2px;
+`;
+
 function GroupDetail({
   room,
   updateGroupDetail,
@@ -112,27 +136,30 @@ function GroupDetail({
         <ul>
           <li>
             <DescriptionBox>
-              <p>description</p>
+              <p>
+                description{" "}
+                <span onClick={() => setEditBio((prev) => !prev)}>edit</span>
+              </p>
               <div className="edit-box">
-                {/* not working */}
-
                 <Textarea
                   value={bio}
                   readOnly={!editBio}
-                  onDoubleClick={() => setEditBio((prev) => !prev)}
                   onChange={(event) => setBio(event.target.value)}
                 />
               </div>
-              <BioActionBox $editBio={editBio}>
-                <Button
-                  onClick={() => {
-                    setBio(room.bio);
-                    setEditBio(false);
-                  }}
-                  text="cancel"
-                />
-                <Button onClick={updateBio} text="update" primary />
-              </BioActionBox>
+
+              <ActionContainer $editBio={editBio}>
+                <ActionBox>
+                  <Button
+                    onClick={() => {
+                      setBio(room.bio);
+                      setEditBio(false);
+                    }}
+                    text="cancel"
+                  />
+                  <Button onClick={updateBio} text="update" primary />
+                </ActionBox>
+              </ActionContainer>
             </DescriptionBox>
           </li>
           <li
@@ -151,16 +178,18 @@ function GroupDetail({
                   onChange={(event) => setName(event.target.value)}
                 />
               </div>
-              <NameActionBox>
-                <Button
-                  onClick={() => {
-                    setName(room.name);
-                    setEditName(false);
-                  }}
-                  text="cancel"
-                />
-                <Button onClick={updateName} text="update" primary />
-              </NameActionBox>
+              <EditNameContainer>
+                <ActionBox>
+                  <Button
+                    onClick={() => {
+                      setName(room.name);
+                      setEditName(false);
+                    }}
+                    text="cancel"
+                  />
+                  <Button onClick={updateName} text="update" primary />
+                </ActionBox>
+              </EditNameContainer>
             </NameContainer>
           </li>
 

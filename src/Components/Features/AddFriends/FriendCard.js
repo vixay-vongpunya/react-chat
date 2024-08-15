@@ -1,16 +1,18 @@
-import { server } from "../../Actions/Index";
+import { server } from "../../../Actions/Index";
 import { useState, useEffect } from "react";
 import { styled } from "styled-components";
-import ProfileCard from "./../Custom/ProfileCard";
-import Button from "./../Common/Button";
+import ProfileCard from "../../Custom/ProfileCard";
+import Button from "../../Common/Button";
 const Container = styled.div`
   height: 60%;
-  width: 100%;
-  background-color: var(--background-color);
+  width: 60%;
   border-radius: var(--border-radius);
+  background-color: var(--hover-color);
+  box-shadow: 0px 0px 15px 1px var(--hover-color);
   .button-box {
     display: flex;
     justify-content: center;
+    padding: 8px 16px;
   }
 `;
 function FriendCard(props) {

@@ -1,11 +1,13 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
 @import url("https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;600&display=swap");
 
 body {
   margin: 0;
   padding: 0;
+  text-decoration:none;
   font-family: 'Roboto',-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
@@ -31,6 +33,7 @@ code {
   --font-h3: 24px;
   --font-h4: 18px;
   --font-p: 14px;
+  --tiny-font: 12px;
 
   --border-radius: 0.5rem;
   --small-border-radius: 0.2rem;
@@ -47,11 +50,14 @@ code {
 
 p, h1, h2, h3, h4, h5{
   font-family: 'Roboto';
+  
+  
 
 }
 
 p{
   font-size: var(--font-p);
+  
 }
 h1{
   font-size: var(--font-h1);
@@ -68,6 +74,15 @@ h4{
 }
 
 
+/* allow interaction with background in summarization modal */
+.modal {
+  pointer-events: none; 
+}
+.modal-dialog{
+  top:100px;
+  right:30%;
+}
+
 
 @layer utilities {
   /* for Chrome, safari, opera */
@@ -80,6 +95,10 @@ h4{
   .no-scrollbar{
     -ms-overflow-style: none;
     scrollbar-width: none;
+  }
+
+  .scrollbar {
+    scrollbar-width: thin;
   }
 }
 
