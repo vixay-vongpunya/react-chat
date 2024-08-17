@@ -1,4 +1,3 @@
-import { useRef, useEffect, useState } from "react";
 import { VscKebabVertical } from "react-icons/vsc";
 import { styled } from "styled-components";
 import CustomDropdown from "../Custom/CustomDropdown";

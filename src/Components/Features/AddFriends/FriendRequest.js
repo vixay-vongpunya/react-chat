@@ -59,14 +59,14 @@ function FriendRequest({
     if (friends.length === 0) {
       fetchPendingFriendship();
     }
-  }, []);
+  }, [fetchPendingFriendship, friends]);
   const sortedRooms = useMemo(() => {
     return friends.sort((a, b) => {
       return new Date(b.created_at) - new Date(a.created_at);
     });
   }, [friends]);
   const roomList = useMemo(() => {
-    if (keyword.trim() != "") {
+    if (keyword.trim() !== "") {
       return sortedRooms.filter((room) =>
         room.name.toLowerCase().includes(keyword.toLowerCase())
       );

@@ -59,7 +59,7 @@ function ChatRoom({ user, selectedRoom, message, fetchMessage }) {
     } else {
       setLoading(false);
     }
-  }, [selectedRoom]);
+  }, [fetchMessage, room.messages, selectedRoom]);
   return (
     <Container>
       <Wrapper>

@@ -7,10 +7,8 @@ import { styled } from "styled-components";
 import { fetchUser } from "../Actions/User-Action";
 import { addMessagesToRooms, fetchRooms } from "../Actions/Room-Action";
 import { fetchMessage } from "../Actions/Message-Action";
-import { useAuth } from "./../Utils/useAuth";
 import InitializePusher from "../InitializePusher";
 import { server } from "./../Actions/Index";
-import MobileMenu from "./../Components/Features/MobileMenu";
 import { VscMenu } from "react-icons/vsc";
 const Container = styled.div`
   height: 100vh;
@@ -71,7 +69,6 @@ function Layout({
   addMessagesToRooms,
 }) {
   const [message, setMessage] = useState("");
-  const { isAuthtenticated } = useAuth();
 
   //fetch initial data
   useEffect(() => {
@@ -82,7 +79,7 @@ function Layout({
       await fetchUser();
     };
     fetchUserData();
-  }, []);
+  }, [fetchUser]);
 
   useEffect(() => {
     InitializePusher();
@@ -107,7 +104,7 @@ function Layout({
       };
       fetchData();
     }
-  }, [user]);
+  }, [rooms, addMessagesToRooms, fetchMessage, fetchRooms, user]);
 
   //Realtime event listener
   useEffect(() => {

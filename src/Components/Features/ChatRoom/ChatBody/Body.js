@@ -38,14 +38,7 @@ const MessageContainer = styled.div`
 `;
 
 function Body(props) {
-  const {
-    user,
-    message,
-    selectedRoom,
-    userMessage,
-    updateRoomMessage,
-    groups,
-  } = props;
+  const { user, message, selectedRoom, userMessage, updateRoomMessage } = props;
   const [hoveredIndex, setHoveredIndex] = useState(null);
   const [messages, setMessages] = useState([]);
   const [room, setRoom] = useState();
@@ -75,7 +68,7 @@ function Body(props) {
 
     setMessages(selectedRoom.messages);
     setRoom(selectedRoom);
-  }, [selectedRoom]);
+  }, [messages, room, updateRoomMessage, selectedRoom]);
 
   useEffect(() => {
     if (userMessage) {
@@ -91,11 +84,11 @@ function Body(props) {
       setMessages((prev) => [message, ...prev]);
     } else if (
       message.destination_type === "user" &&
-      message.destination_id === room.friendship_id
+      message.destination_id === room.friendship.id
     ) {
       setMessages((prev) => [message, ...prev]);
     }
-  }, [message]);
+  }, [room, message]);
 
   const scrollToBottom = () => {
     if (messageEndRef.current) {

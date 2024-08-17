@@ -6,7 +6,6 @@ import ReactCrop, {
 } from "react-image-crop";
 import "react-image-crop/dist/ReactCrop.css";
 import setCanvasPreview from "../../setCanvasPreview";
-import { server } from "../../Actions/Index";
 const ASPECT_RATIO = 1;
 const MIN_DIMENSION = 150;
 

@@ -1,7 +1,7 @@
 import Accordion from "react-bootstrap/Accordion";
 import { connect } from "react-redux";
 import { server } from "../../../Actions/Index";
-import SharedFiles from "../SharedFIles";
+import SharedFiles from "../SharedFiles";
 import { fetchGroupDetail } from "../../../Actions/Group-Action";
 import { useState, useEffect } from "react";
 import GroupMember from "./GroupMember";
@@ -84,7 +84,7 @@ function GroupProfileBottom({ user, room, friends, fetchGroupDetail }) {
       setRoomDetail(room);
       setFriendList(filterFriends(room.users, friends));
     }
-  }, [room]);
+  }, [fetchGroupDetail, friends, room]);
 
   const handleOption = (value, friend, optionType) => {
     if (optionType === "friendOptions") {

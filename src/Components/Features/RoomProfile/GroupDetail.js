@@ -2,11 +2,8 @@ import { styled } from "styled-components";
 import { SlPencil } from "react-icons/sl";
 import { IoImageOutline } from "react-icons/io5";
 import { useState } from "react";
-import Tooltip from "react-bootstrap/Tooltip";
-import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 
 import { connect } from "react-redux";
-import { server } from "./../../../Actions/Index";
 import {
   updateGroupDetail,
   updateGroupProfile,

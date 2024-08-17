@@ -1,6 +1,5 @@
 import Textarea from "../../Common/Textarea";
-import Input from "../../Common/Input";
-import SharedFiles from "./../SharedFIles";
+import SharedFiles from "../SharedFiles";
 import { styled } from "styled-components";
 const FileContainer = styled.div`
   border: solid 2px var(--border-color);
