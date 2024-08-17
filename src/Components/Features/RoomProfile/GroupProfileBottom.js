@@ -1,7 +1,7 @@
 import Accordion from "react-bootstrap/Accordion";
 import { connect } from "react-redux";
 import { server } from "../../../Actions/Index";
-import SharedFiles from "../SharedFiles";
+import SharedFile from "../SharedFile";
 import { fetchGroupDetail } from "../../../Actions/Group-Action";
 import { useState, useEffect } from "react";
 import GroupMember from "./GroupMember";
@@ -218,7 +218,7 @@ function GroupProfileBottom({ user, room, friends, fetchGroupDetail }) {
                 </Title>
               </Accordion.Header>
               <Accordion.Body>
-                <SharedFiles room={room} height="290" />
+                <SharedFile room={room} height="290" />
               </Accordion.Body>
             </Accordion.Item>
           </CustomAccordion>
