@@ -4,7 +4,7 @@ const defaultState = {
   loading: false,
 };
 
-export default (state = defaultState, action = {}) => {
+function messageReducer(state = defaultState, action = {}) {
   switch (action.type) {
     case "SEND_MESSAGE": {
       return {
@@ -32,4 +32,6 @@ export default (state = defaultState, action = {}) => {
     default:
       return state;
   }
-};
+}
+
+export default messageReducer;

@@ -21,16 +21,16 @@ function Home(props) {
   useEffect(() => {
     const data = AppendMessage(props.userMessage, roomList);
     setRoomList(data);
-  }, [props.userMessage]);
+  }, [roomList, props.userMessage]);
   useEffect(() => {
     const data = AppendMessage(message, roomList);
     setRoomList(data);
-  }, [message]);
+  }, [roomList, message]);
 
   useEffect(() => {
     //this state updates alot since i append messages in background
     setRoomList(props.rooms);
-  }, [props.rooms]);
+  }, [roomList, props.rooms]);
 
   const changeRoom = (friend) => {
     setClickedId(friend.email ? "user" + friend.id : "group" + friend.id);

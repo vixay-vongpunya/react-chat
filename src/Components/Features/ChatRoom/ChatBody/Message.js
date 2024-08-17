@@ -47,7 +47,6 @@ function Message({
   deleteMessage,
 }) {
   const [translatedMessage, setTranslatedMessage] = useState(null);
-  const [dropdownOpened, setDropdownOpened] = useState(false);
   return (
     <MessageBox $isUser={message.sender.id === user.id}>
       <div className="container">
@@ -90,7 +89,6 @@ function Message({
         >
           <MessageTool
             setTranslatedMessage={setTranslatedMessage}
-            setDropdownOpened={setDropdownOpened}
             message={message}
             user={user}
             deleteMessage={deleteMessage}

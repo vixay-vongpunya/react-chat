@@ -3,7 +3,6 @@ import { connect } from "react-redux";
 import { sendMessage } from "../../../Actions/Message-Action";
 import { VscMic } from "react-icons/vsc";
 import { VscFileCode } from "react-icons/vsc";
-import { BsFileEarmarkText } from "react-icons/bs";
 import { BsX } from "react-icons/bs";
 import { styled } from "styled-components";
 import File from "./../File";
@@ -118,7 +117,7 @@ function ChatInput({ room, sendMessage, setToolsOpened }) {
     } else {
       setToolsOpened(false);
     }
-  }, [files]);
+  }, [setToolsOpened, files]);
 
   const FileSelected = (event) => {
     const file = event.target.files[0];

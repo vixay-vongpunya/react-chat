@@ -86,7 +86,7 @@ function CreateGroup(props) {
         i === index ? { ...room, clicked: !room.clicked } : room
       )
     );
-    if (selectedFriend.find((selected) => selected.id == friend.id)) {
+    if (selectedFriend.find((selected) => selected.id === friend.id)) {
       setSelectedFriend(
         selectedFriend.filter((selected) => friend !== selected)
       );

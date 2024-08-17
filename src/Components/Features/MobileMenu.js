@@ -5,11 +5,9 @@ import { BsBoxArrowLeft } from "react-icons/bs";
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import { styled } from "styled-components";
-import SmallUserCard from "./SmallUserCard";
+
 import { connect } from "react-redux";
 
-import { useEffect } from "react";
-import { fetchUser } from "../../Actions/User-Action";
 const Nav = styled.nav`
   display: flex;
   flex-direction: column;

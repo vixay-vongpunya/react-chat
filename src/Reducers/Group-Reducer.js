@@ -2,7 +2,7 @@ const defaultState = {
   data: [],
   loading: false,
 };
-export default (state = defaultState, action = {}) => {
+function groupReducer(state = defaultState, action = {}) {
   switch (action.type) {
     case "FETCH_GROUPS": {
       return {
@@ -30,4 +30,5 @@ export default (state = defaultState, action = {}) => {
     default:
       return state;
   }
-};
+}
+export default groupReducer;

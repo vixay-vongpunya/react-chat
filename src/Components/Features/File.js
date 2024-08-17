@@ -1,5 +1,4 @@
 import { BsFileEarmarkText } from "react-icons/bs";
-import { BsX } from "react-icons/bs";
 import { styled } from "styled-components";
 import SlicedFilename from "../../Utils/SlicedFilename";
 const FileContainer = styled.div`

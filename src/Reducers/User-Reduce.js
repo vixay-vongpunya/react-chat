@@ -2,7 +2,8 @@ const defaultState = {
   data: [],
   loading: false,
 };
-export default (state = defaultState, action = {}) => {
+
+function userReducer(state = defaultState, action = {}) {
   switch (action.type) {
     case "FETCH_USER_DATA": {
       console.log("check2", action.payload);
@@ -17,4 +18,6 @@ export default (state = defaultState, action = {}) => {
     default:
       return state;
   }
-};
+}
+
+export default userReducer;
