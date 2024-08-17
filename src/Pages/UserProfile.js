@@ -1,4 +1,3 @@
-import Button from "./../Components/Common/Button";
 import { useState, useEffect } from "react";
 import { server } from "../Actions/Index";
 import { VscDeviceCamera } from "react-icons/vsc";
@@ -126,7 +125,7 @@ function UserProfile({ user }) {
     console.log(user);
     setProfileImage(user.profile?.profile_image);
     setBackgroundImage(user.profile?.background_image);
-  }, []);
+  }, [user]);
 
   const updateImage = (dataUrl) => {
     if (!dataUrl) {
