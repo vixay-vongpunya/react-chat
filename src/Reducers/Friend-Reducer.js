@@ -4,7 +4,7 @@ const defaultState = {
   loading: true,
 };
 
-export default (state = defaultState, action = {}) => {
+function friendReducer(state = defaultState, action = {}) {
   switch (action.type) {
     case "FETCH_FRIENDS": {
       console.log("check data pass", action.payload);
@@ -32,7 +32,7 @@ export default (state = defaultState, action = {}) => {
         ...state,
         data: [...state.data, action.payload],
         pendingFriendship: state.pendingFriendship.filter(
-          (item) => item.friendship_id != action.payload.friendship_id
+          (item) => item.friendship_id !== action.payload.friendship_id
         ),
       };
     }
@@ -40,7 +40,7 @@ export default (state = defaultState, action = {}) => {
       return {
         ...state,
         pendingFriendship: state.pendingFriendship.filter(
-          (item) => item.friendship_id != action.payload.friendship_id
+          (item) => item.friendship_id !== action.payload.friendship_id
         ),
       };
     }
@@ -51,4 +51,5 @@ export default (state = defaultState, action = {}) => {
     default:
       return state;
   }
-};
+}
+export default friendReducer;

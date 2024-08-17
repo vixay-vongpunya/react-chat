@@ -25,7 +25,7 @@ const Wrapper = styled.div`
 function FriendList(props) {
   const [keyword, setKeyword] = useState("");
   const roomList = useMemo(() => {
-    if (keyword.trim() != "") {
+    if (keyword.trim() !== "") {
       return props.roomList.filter((room) =>
         room.name.toLowerCase().includes(keyword.toLowerCase())
       );
