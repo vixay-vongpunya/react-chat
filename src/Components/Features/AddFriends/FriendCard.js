@@ -19,8 +19,9 @@ function FriendCard(props) {
   const addFriend = () => {
     const data = { friend_id: props.friend.id };
     server.post("./friendship/request", data).then((response) => {
-      console.log(response);
-      props.friend.friendship.status = "pending";
+      const friendData = { ...props.friend, friendship: response.data.data };
+      console.log(friendData);
+      props.setFriend(friendData);
     });
   };
   return (
@@ -29,14 +30,12 @@ function FriendCard(props) {
       <div className="button-box">
         <Button
           text={
-            props.friend.friendship_id
-              ? "added"
-              : props.friend.friendship
+            props.friend.friendship
               ? props.friend.friendship.status
               : "Add Friend"
           }
-          disabled={!props.friend.friendship}
-          primary={!(props.friend.friendship_id || props.friend.friendship)}
+          disabled={props.friend.friendship}
+          primary={!props.friend.friendship}
           onClick={addFriend}
         />
       </div>

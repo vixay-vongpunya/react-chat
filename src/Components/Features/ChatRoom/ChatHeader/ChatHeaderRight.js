@@ -6,11 +6,12 @@ import { createGlobalStyle } from "styled-components";
 import { server } from "./../../../../Actions/Index";
 import moment from "moment";
 import styled from "styled-components";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import SummarizedModal from "../../../Custom/SummarizedModal";
 import CustomDropdown from "../../../Custom/CustomDropdown";
 import { VscKebabVertical } from "react-icons/vsc";
 import { Dropdown, DropdownButton } from "react-bootstrap";
+import useOutsideClick from "../../../../Hooks/useOutsideClick";
 
 const languages = [
   { text: "English", value: "eng" },
@@ -32,12 +33,22 @@ const GlobalStyle = createGlobalStyle`
 const CDropdownButton = styled(DropdownButton)`
   .btn-link {
     color: black;
+    text-decoration: none;
+  }
+  .btn:focus {
+    color: black;
   }
   .dropdown-toggle::after {
     display: none;
   }
   .dropdown-toggle {
     padding: 0px;
+  }
+
+  .dropdown-item:active,
+  .dropdown-item:focus {
+    color: black;
+    background-color: transparent;
   }
 `;
 
@@ -47,6 +58,8 @@ function ChatHeaderRight({ roomId, roomType }) {
   const [loading, setLoading] = useState(true);
   const [selectedLang, setSelectedLang] = useState(languages[0]);
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const outsideClickRef = useRef(null);
+
   const handleSummarization = async (event, picker) => {
     let startDate = moment(picker.startDate).format("MM/DD/YYYY");
     let endDate = moment(picker.endDate).format("MM/DD/YYYY");
@@ -67,6 +80,7 @@ function ChatHeaderRight({ roomId, roomType }) {
     setSelectedLang(languages.find((lang) => lang.value === value));
     setDropdownOpen(true);
   };
+  useOutsideClick(outsideClickRef, () => setDropdownOpen(false));
 
   return (
     <>
@@ -75,6 +89,7 @@ function ChatHeaderRight({ roomId, roomType }) {
         title={<VscKebabVertical />}
         show={dropdownOpen}
         onClick={() => setDropdownOpen(true)}
+        ref={outsideClickRef}
       >
         <Dropdown.Item>
           <div className="flex gap-10">

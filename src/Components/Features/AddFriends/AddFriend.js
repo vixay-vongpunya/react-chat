@@ -31,9 +31,7 @@ const Wrapper = styled.div`
 `;
 function AddFriend({ friends }) {
   const [email, setEmail] = useState("");
-  const [friend, setFriend] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [isFriend, setIsFriend] = useState(false);
+  const [friend, setFriend] = useState(null);
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -46,7 +44,6 @@ function AddFriend({ friends }) {
     }
   }, [location.search]);
   const searchFriend = (email) => {
-    console.log("email", email);
     const found = friends.find((data) => data?.email === email);
     if (!found) {
       console.log("d");
@@ -65,16 +62,11 @@ function AddFriend({ friends }) {
       console.log("found", found);
       setFriend(found);
     }
-
-    setLoading(false);
     setEmail(email);
   };
   const findFriend = (event) => {
-    console.log("triggered");
     if (email.trim() !== "" && event.key === "Enter") {
-      setLoading(true);
       searchFriend(email);
-
       // navigate(`/friends/search?email=${email}`);
     }
   };
@@ -89,11 +81,7 @@ function AddFriend({ friends }) {
           onKeyDown={findFriend}
         />
         <div className="friend-card-container">
-          {loading ? (
-            <Spinner animation="border" />
-          ) : (
-            <FriendCard friend={friend} />
-          )}
+          {friend && <FriendCard friend={friend} setFriend={setFriend} />}
         </div>
       </Wrapper>
     </Container>

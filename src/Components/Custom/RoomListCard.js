@@ -9,8 +9,9 @@ const RoomListCardDiv = styled.div`
   padding: 5px 10px;
   background-color: ${(props) =>
     props.$friend.email
-      ? "user" + props.$friend.id === props.clickedId && "var(--hover-color)"
-      : "group" + props.$friend.id === props.clickedId && "var(--hover-color)"};
+      ? "user" + props.$friend.id === props.$clickedId && "var(--hover-color)"
+      : "group" + props.$friend.id === props.$clickedId &&
+        "var(--hover-color)"};
 
   p {
     margin: 0px;
@@ -36,7 +37,7 @@ function RoomListCard({ friend, onClick, clickedId }) {
   return (
     <RoomListCardDiv
       onClick={() => onClick && onClick(friend)}
-      clickedId={clickedId}
+      $clickedId={clickedId}
       $friend={friend}
     >
       <ChatImage
