@@ -3,7 +3,8 @@ const defaultState = {
   data: [],
   loading: true,
 };
-const filterRoom = (room, data) => {
+
+function filterRoom(room, data) {
   if (room.id === data.id) {
     if (data.users && !room.email) {
       return data;
@@ -12,9 +13,9 @@ const filterRoom = (room, data) => {
     }
   }
   return room;
-};
+}
 
-export default (state = defaultState, action = {}) => {
+function roomReducer(state = defaultState, action = {}) {
   switch (action.type) {
     case "FETCH_ROOMS": {
       return {
@@ -26,15 +27,17 @@ export default (state = defaultState, action = {}) => {
     case "DELETE_FRIENDSHIP": {
       return {
         ...state,
-        rooms: state.rooms.filter(
-          (friend) => friend.friendship_id !== action.payload.friendship_id
-        ),
+        rooms: state.rooms.filter(function (friend) {
+          return friend.friendship_id !== action.payload.friendship_id;
+        }),
       };
     }
     case "LEAVE_GROUP": {
       return {
         ...state,
-        rooms: state.rooms.filter((group) => group.id !== action.payload.id),
+        rooms: state.rooms.filter(function (group) {
+          return group.id !== action.payload.id;
+        }),
       };
     }
     case "CHANGE_ROOM": {
@@ -48,16 +51,19 @@ export default (state = defaultState, action = {}) => {
     case "DELETE_MESSAGE": {
       return {
         ...state,
-        data: state.data.messages.filter(
-          (message) => message.id !== action.payload.id
-        ),
+        data: {
+          ...state.data,
+          messages: state.data.messages.filter(function (message) {
+            return message.id !== action.payload.id;
+          }),
+        },
       };
     }
 
     case "ADD_MESSAGES_TO_ROOM":
       return {
         ...state,
-        rooms: state.rooms.map((room) => {
+        rooms: state.rooms.map(function (room) {
           if (room.id === action.payload.room_id) {
             if (action.payload.is_group && !room.email) {
               return {
@@ -79,7 +85,9 @@ export default (state = defaultState, action = {}) => {
       const updatedRoom = action.payload;
       return {
         ...state,
-        rooms: state.rooms.map((room) => filterRoom(room, updatedRoom)),
+        rooms: state.rooms.map(function (room) {
+          return filterRoom(room, updatedRoom);
+        }),
       };
 
     case "UPDATE_GROUP_DETAIL":
@@ -91,8 +99,8 @@ export default (state = defaultState, action = {}) => {
       return {
         ...state,
         data: data,
-        rooms: state.rooms.map((room) => {
-          filterRoom(room, data);
+        rooms: state.rooms.map(function (room) {
+          return filterRoom(room, data);
         }),
       };
 
@@ -105,7 +113,9 @@ export default (state = defaultState, action = {}) => {
       return {
         ...state,
         data: updatedGroupProfile,
-        rooms: state.rooms.map((room) => filterRoom(room, updatedGroupProfile)),
+        rooms: state.rooms.map(function (room) {
+          return filterRoom(room, updatedGroupProfile);
+        }),
       };
     case "UPDATE_GROUP_BACKGROUND_IMAGE":
       const updatedGroupBackground = {
@@ -115,9 +125,9 @@ export default (state = defaultState, action = {}) => {
       return {
         ...state,
         data: updatedGroupBackground,
-        rooms: state.rooms.map((room) =>
-          filterRoom(room, updatedGroupBackground)
-        ),
+        rooms: state.rooms.map(function (room) {
+          return filterRoom(room, updatedGroupBackground);
+        }),
       };
     case "RESET": {
       return defaultState;
@@ -125,4 +135,6 @@ export default (state = defaultState, action = {}) => {
     default:
       return state;
   }
-};
+}
+
+export default roomReducer;
