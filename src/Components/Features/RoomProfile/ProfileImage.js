@@ -38,7 +38,7 @@ const ImageBox = styled.div`
   justify-content: end;
   h3 {
     margin: 0;
-    margin-top: 5px;
+    padding-top: 0.5rem;
   }
 `;
 function ProfileImage({ room, handleProfileOpened }) {
