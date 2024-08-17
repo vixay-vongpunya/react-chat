@@ -17,8 +17,8 @@ export const AuthProvider = ({ children }) => {
       console.log("hi");
       setIsAuthenticated(true);
       server.defaults.headers.Authorization = `Bearer ${token}`;
-      setLoading(false);
     }
+    setLoading(false);
   }, [navigate]);
 
   const login = (token) => {

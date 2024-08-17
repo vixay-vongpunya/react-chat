@@ -18,7 +18,7 @@ export function sendMessage(data) {
 }
 export function fetchMessage(room) {
   const type = room.email ? "user" : "group";
-  const id = room.email ? room.friendship_id : room.id;
+  const id = room.email ? room.friendship.id : room.id;
   return async (dispatch) => {
     const response = await server.get(`./room/${id}/messages?type=${type}`);
     const messages = response.data.data;

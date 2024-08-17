@@ -1,5 +1,5 @@
 import Button from "./../Components/Common/Button";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { server } from "../Actions/Index";
 import { VscDeviceCamera } from "react-icons/vsc";
 import { connect } from "react-redux";
@@ -7,16 +7,18 @@ import { fetchUser } from "../Actions/User-Action";
 import ChatImage from "./../Components/Common/ChatImage";
 import ImageModal from "./../Components/Features/ImageModal";
 import { styled } from "styled-components";
-
+import Textarea from "../Components/Common/Textarea";
 const Container = styled.div`
   height: 100%;
 `;
+
 const Wrapper = styled.div`
   height: 100%;
   width: 100%;
   background-color: var(--background-color);
   border-radius: var(--border-radius);
 `;
+
 const StyledBackground = styled.div`
   background-image: ${(props) => `url(${props.$backgroundImage})`};
   background-position: center;
@@ -30,6 +32,89 @@ const StyledBackground = styled.div`
   top: 0;
   content: "";
 `;
+
+const HeaderSection = styled.div`
+  height: 40%;
+  width: 100%;
+  position: relative;
+`;
+
+const BackgroundContainer = styled.div`
+  height: 100%;
+  width: 100%;
+  display: flex;
+  align-items: center;
+`;
+
+const ProfileContainer = styled.div`
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  top: 2rem;
+`;
+
+const ProfileWrapper = styled.div`
+  width: 13rem;
+  height: 13rem;
+  position: relative;
+`;
+
+const ProfileImageContainer = styled.div`
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+  position: absolute;
+`;
+
+const CameraIcon = styled(VscDeviceCamera)`
+  cursor: pointer;
+  border: 1px solid white;
+  border-radius: 50%;
+  background-color: transparent;
+  padding: 0.25rem;
+  position: absolute;
+  right: 2rem;
+  bottom: 2rem;
+`;
+
+const UserName = styled.h3`
+  padding-top: 0.5rem;
+`;
+
+const IconWrapper = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: row-reverse;
+  position: absolute;
+  bottom: 6rem;
+`;
+
+const UserInfoList = styled.ul`
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+  gap: 10px;
+
+  li {
+    display: flex;
+    flex-direction: column;
+  }
+  p {
+    width: 90%;
+    margin: 0px;
+    padding: 7px 14px;
+    border: 1px solid var(--border-color);
+    border-radius: var(--small-border-radius);
+  }
+`;
+
 function UserProfile({ user }) {
   const [modalOpen, setModalOpen] = useState(false);
   const [profileSelected, setProfileSelected] = useState(false);
@@ -72,50 +157,49 @@ function UserProfile({ user }) {
   return (
     <Container>
       <Wrapper>
-        <div className="h-2/5 w-full relative">
-          <div className="h-full w-full flex items-center ">
+        <HeaderSection>
+          <BackgroundContainer>
             <StyledBackground
               $backgroundImage={backgroundImage}
             ></StyledBackground>
-            <div className="h-full w-full flex flex-col items-center justify-center top-8 absolute">
-              <div className="w-52 h-52 relative ">
-                <div className="h-full w-full flex flex-col justify-end items-center absolute ">
+            <ProfileContainer>
+              <ProfileWrapper>
+                <ProfileImageContainer>
                   <ChatImage src={profileImage} size="--large-image" />
-                </div>
-                <VscDeviceCamera
+                </ProfileImageContainer>
+                <CameraIcon
                   size="32"
                   color="white"
-                  className="cursor-pointer border rounded-full bg-transparent p-1 flex absolute right-3 bottom-8 right-8"
                   onClick={() => {
                     setModalOpen(true);
                     setProfileSelected(true);
                   }}
                 />
-              </div>
-
-              <div className="pt-4">
-                <h3>{user.name}</h3>
-                {/* <Button onClick={storeBackgroundImage} text="save" /> */}
-              </div>
-            </div>
-            <div className="w-full flex flex-row-reverse">
-              <VscDeviceCamera
+              </ProfileWrapper>
+              <UserName>{user.name}</UserName>
+            </ProfileContainer>
+            <IconWrapper>
+              <CameraIcon
                 size="32"
                 color="white"
-                className="cursor-pointer absolute border rounded-full bg-transparent p-1 m-4 bottom-32"
                 onClick={() => {
                   setModalOpen(true);
                   setProfileSelected(false);
                 }}
               />
-            </div>
-          </div>
-        </div>
-        <hr />
-        <ul>
-          <li>{user.email}</li>
-          <li>bio</li>
-        </ul>
+            </IconWrapper>
+          </BackgroundContainer>
+        </HeaderSection>
+        <UserInfoList>
+          <li>
+            <label>email</label>
+            <p>{user.email}</p>
+          </li>
+          <li>
+            <label>Bio</label>
+            <Textarea value=" " text={user.bio} readOnly />
+          </li>
+        </UserInfoList>
       </Wrapper>
       {modalOpen && (
         <ImageModal
@@ -126,6 +210,7 @@ function UserProfile({ user }) {
     </Container>
   );
 }
+
 function mapStateToProps(state) {
   return { user: state.userStore.data };
 }
