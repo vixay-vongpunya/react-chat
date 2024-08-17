@@ -1,5 +1,5 @@
 import Textarea from "../../Common/Textarea";
-import SharedFiles from "../SharedFile";
+import SharedFile from "../SharedFile";
 import { styled } from "styled-components";
 const FileContainer = styled.div`
   border: solid 2px var(--border-color);
@@ -43,7 +43,7 @@ function FriendProfileBottom({ friend }) {
       <li className="flex-1">
         <label>shared files</label>
         <FileContainer className="scrollbar">
-          <SharedFiles room={friend} height="220" />
+          <SharedFile room={friend} height="220" />
         </FileContainer>
       </li>
     </ListContainer>

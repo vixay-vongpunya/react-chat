@@ -9,7 +9,7 @@ const Container = styled.div`
   }
 `;
 const options = [{ key: 1, text: "download", value: 1 }];
-function SharedFiles({ room, height }) {
+function SharedFile({ room, height }) {
   const handleOption = () => {};
   const fileMessages = room.messages?.filter(
     (message) => message.message_type === "file"
@@ -29,4 +29,4 @@ function SharedFiles({ room, height }) {
     </Container>
   );
 }
-export default SharedFiles;
+export default SharedFile;
