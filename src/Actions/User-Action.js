@@ -3,16 +3,20 @@ import { server } from "./Index";
 
 export const pendingLogin = (data) => async (dispatch) => {
   console.log("arrived");
-  await axios.get("http://localhost:8000/sanctum/csrf-cookie");
-  const response = await server.post("http://localhost:8000/api/login", data);
+  await axios.get(
+    "https://chatapp-backend-ftdubcg7bafzfucf.japanwest-01.azurewebsites.net/sanctum/csrf-cookie"
+  );
+  const response = await server.post("./login", data);
   console.log("here", response.data.token);
   return response.data.token;
 };
 
 export const signup = (data) => async (dispatch) => {
   console.log("arrived");
-  await axios.get("http://localhost:8000/sanctum/csrf-cookie");
-  const response = await server.post("http://localhost:8000/api/signup", data);
+  await axios.get(
+    "https://chatapp-backend-ftdubcg7bafzfucf.japanwest-01.azurewebsites.net/sanctum/csrf-cookie"
+  );
+  const response = await server.post("./signup", data);
   console.log("here", response.data.token);
   return response.data.token;
 };
