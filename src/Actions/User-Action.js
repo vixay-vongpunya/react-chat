@@ -1,8 +1,10 @@
 import axios from "axios";
 import { server } from "./Index";
-
+axios.defaults.withCredentials = true;
+axios.defaults.withXSRFToken = true;
 export const pendingLogin = (data) => async (dispatch) => {
   console.log("arrived");
+
   await axios.get(
     "https://chatapp-backend-ftdubcg7bafzfucf.japanwest-01.azurewebsites.net/sanctum/csrf-cookie"
   );
