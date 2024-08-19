@@ -11,7 +11,7 @@ function InitializePusher() {
     window.Echo = new Echo({
       broadcaster: "pusher",
       authEndpoint:
-        "https://chatapp-backend-ftdubcg7bafzfucf.japanwest-01.azurewebsites.net/api/broadcasting/auth",
+        "https://chat-backend-d7d0f6b7hcdmcbdd.uaenorth-01.azurewebsites.net/api/broadcasting/auth",
       auth: {
         headers: {
           Authorization: "Bearer " + localStorage.getItem("chat_token"),
