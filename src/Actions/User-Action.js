@@ -5,9 +5,7 @@ axios.defaults.withXSRFToken = true;
 export const pendingLogin = (data) => async (dispatch) => {
   console.log("arrived");
 
-  await axios.get(
-    "https://chat-backend-d7d0f6b7hcdmcbdd.uaenorth-01.azurewebsites.net/sanctum/csrf-cookie"
-  );
+  await axios.get(`${process.env.BACKEND_API_URL}/sanctum/csrf-cookie`);
   const response = await server.post("./login", data);
   console.log("here", response.data.token);
   return response.data.token;
@@ -15,9 +13,7 @@ export const pendingLogin = (data) => async (dispatch) => {
 
 export const signup = (data) => async (dispatch) => {
   console.log("arrived");
-  await axios.get(
-    "https://chat-backend-d7d0f6b7hcdmcbdd.uaenorth-01.azurewebsites.net/sanctum/csrf-cookie"
-  );
+  await axios.get(`${process.env.BACKEND_API_URL}/sanctum/csrf-cookie`);
   const response = await server.post("./signup", data);
   console.log("here", response.data.token);
   return response.data.token;
