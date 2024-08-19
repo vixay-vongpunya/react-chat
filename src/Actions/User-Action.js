@@ -6,7 +6,7 @@ export const pendingLogin = (data) => async (dispatch) => {
   console.log("arrived");
 
   await axios.get(
-    "https://chatapp-backend-ftdubcg7bafzfucf.japanwest-01.azurewebsites.net/sanctum/csrf-cookie"
+    "https://chat-backend-d7d0f6b7hcdmcbdd.uaenorth-01.azurewebsites.net/sanctum/csrf-cookie"
   );
   const response = await server.post("./login", data);
   console.log("here", response.data.token);
@@ -16,7 +16,7 @@ export const pendingLogin = (data) => async (dispatch) => {
 export const signup = (data) => async (dispatch) => {
   console.log("arrived");
   await axios.get(
-    "https://chatapp-backend-ftdubcg7bafzfucf.japanwest-01.azurewebsites.net/sanctum/csrf-cookie"
+    "https://chat-backend-d7d0f6b7hcdmcbdd.uaenorth-01.azurewebsites.net/sanctum/csrf-cookie"
   );
   const response = await server.post("./signup", data);
   console.log("here", response.data.token);
