@@ -54,7 +54,7 @@ function GroupFriendList(props) {
         }
       });
     }
-  }, [props.message, roomList, props.userMessage]);
+  }, [props.message]);
   const friendList = roomList.map((friend, index) => (
     <GroupRoomListCard
       key={friend?.pivot ? "pivot" + friend.id : friend.id}

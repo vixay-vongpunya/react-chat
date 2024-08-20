@@ -1,4 +1,5 @@
 import { server } from "../../../Actions/Index";
+import { useState, useEffect } from "react";
 import { styled } from "styled-components";
 import ProfileCard from "../../Custom/ProfileCard";
 import Button from "../../Common/Button";
