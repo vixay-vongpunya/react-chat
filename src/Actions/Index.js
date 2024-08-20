@@ -4,7 +4,6 @@ axios.defaults.withCredentials = true;
 axios.defaults.withXSRFToken = true;
 
 export const server = axios.create({
-  baseURL:
-    "https://chatapp-backend-ftdubcg7bafzfucf.japanwest-01.azurewebsites.net/api",
+  baseURL: `${process.env.BACKEND_API_URL}/api`,
   withCredentials: true,
 });

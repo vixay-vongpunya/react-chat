@@ -10,8 +10,7 @@ function InitializePusher() {
     Pusher.logToConsole = true;
     window.Echo = new Echo({
       broadcaster: "pusher",
-      authEndpoint:
-        "https://chatapp-backend-ftdubcg7bafzfucf.japanwest-01.azurewebsites.net/api/broadcasting/auth",
+      authEndpoint: `${process.env.BACKEND_API_URL}/api/broadcasting/auth`,
       auth: {
         headers: {
           Authorization: "Bearer " + localStorage.getItem("chat_token"),

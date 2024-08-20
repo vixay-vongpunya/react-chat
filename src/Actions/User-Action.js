@@ -1,18 +1,20 @@
 import axios from "axios";
 import { server } from "./Index";
-
+axios.defaults.withCredentials = true;
+axios.defaults.withXSRFToken = true;
 export const pendingLogin = (data) => async (dispatch) => {
   console.log("arrived");
-  await axios.get("http://localhost:8000/sanctum/csrf-cookie");
-  const response = await server.post("http://localhost:8000/api/login", data);
+
+  await axios.get(`${process.env.BACKEND_API_URL}/sanctum/csrf-cookie`);
+  const response = await server.post("./login", data);
   console.log("here", response.data.token);
   return response.data.token;
 };
 
 export const signup = (data) => async (dispatch) => {
   console.log("arrived");
-  await axios.get("http://localhost:8000/sanctum/csrf-cookie");
-  const response = await server.post("http://localhost:8000/api/signup", data);
+  await axios.get(`${process.env.BACKEND_API_URL}/sanctum/csrf-cookie`);
+  const response = await server.post("./signup", data);
   console.log("here", response.data.token);
   return response.data.token;
 };
