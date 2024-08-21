@@ -19,14 +19,6 @@ jobs:
         with:
           submodules: true
           lfs: false
-<<<<<<< HEAD
-=======
-      - name: Build Application
-        run: |
-          npm install
-          npm run build
-          
->>>>>>> parent of 9339131 (added-routes-to-public)
       - name: Build And Deploy
         id: builddeploy
         uses: Azure/static-web-apps-deploy@v1
