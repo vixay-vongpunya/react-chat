@@ -80,6 +80,11 @@ function roomReducer(state = defaultState, action = {}) {
           return room;
         }),
       };
+    case "UPDATE_ROOMS":
+      return {
+        ...state,
+        rooms: action.payload,
+      };
 
     case "UPDATE_ROOM_MESSAGE":
       const updatedRoom = action.payload;

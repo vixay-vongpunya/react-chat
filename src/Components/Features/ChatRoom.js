@@ -47,7 +47,7 @@ function ChatRoom({ user, selectedRoom, message, fetchMessage }) {
   const [room, setRoom] = useState({});
   useEffect(() => {
     setRoom(selectedRoom);
-    if (!room.messages) {
+    if (!selectedRoom.messages) {
       setLoading(true);
       const fetchData = async () => {
         console.log("selectedRoom", selectedRoom);
@@ -59,7 +59,7 @@ function ChatRoom({ user, selectedRoom, message, fetchMessage }) {
     } else {
       setLoading(false);
     }
-  }, [fetchMessage, room.messages, selectedRoom]);
+  }, [selectedRoom, fetchMessage]);
   return (
     <Container>
       <Wrapper>

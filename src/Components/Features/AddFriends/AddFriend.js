@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect } from "react";
+import { useCallback, useState, useEffect } from "react";
 import { styled } from "styled-components";
 import { server } from "../../../Actions/Index";
 import FriendCard from "./FriendCard";
@@ -37,17 +37,20 @@ function AddFriend({ friends }) {
     (email) => {
       const found = friends.find((data) => data?.email === email);
       if (!found) {
+        console.log("d");
         server
           .post("/friends/search", { email: email })
           .then((response) => {
+            console.log(response.data.data);
             setFriend(response.data.data);
           })
           .catch((error) => {
-            if (error.response && error.response.status === 404) {
-              alert("user not found");
+            if (error.response && error.status === 404) {
+              alert("User not found");
             }
           });
       } else {
+        console.log("found", found);
         setFriend(found);
       }
       setEmail(email);

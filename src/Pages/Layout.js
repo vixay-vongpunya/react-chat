@@ -5,7 +5,7 @@ import { connect } from "react-redux";
 import { useState, useEffect } from "react";
 import { styled } from "styled-components";
 import { fetchUser } from "../Actions/User-Action";
-import { addMessagesToRooms, fetchRooms } from "../Actions/Room-Action";
+import { fetchRooms, updateRooms } from "../Actions/Room-Action";
 import { fetchMessage } from "../Actions/Message-Action";
 import InitializePusher from "../InitializePusher";
 import { server } from "./../Actions/Index";
@@ -66,7 +66,7 @@ function Layout({
   fetchUser,
   fetchRooms,
   fetchMessage,
-  addMessagesToRooms,
+  updateRooms,
 }) {
   const [message, setMessage] = useState("");
 
@@ -89,22 +89,25 @@ function Layout({
     if (rooms.length === 0) {
       const fetchData = async () => {
         const rooms = await fetchRooms();
-        console.log("before", rooms);
+        console.log("!");
         try {
-          for (const room of rooms) {
-            const messages = await fetchMessage(room);
-            const isGroup = room.email ? false : true;
-            addMessagesToRooms(messages, room.id, isGroup);
-            console.log("msg", messages);
-          }
-          console.log("times");
+          const roomList = await Promise.all(
+            rooms.map(async (room, index) => {
+              if (index < 5) {
+                const messages = await fetchMessage(room);
+                return { ...room, messages: messages };
+              }
+              return room;
+            })
+          );
+          updateRooms(roomList);
         } catch (error) {
           console.log(error);
         }
       };
       fetchData();
     }
-  }, [rooms, addMessagesToRooms, fetchMessage, fetchRooms, user]);
+  }, [rooms, fetchMessage, fetchRooms, updateRooms]);
 
   //Realtime event listener
   useEffect(() => {
@@ -181,5 +184,5 @@ export default connect(mapStateToProps, {
   fetchUser,
   fetchRooms,
   fetchMessage,
-  addMessagesToRooms,
+  updateRooms,
 })(Layout);

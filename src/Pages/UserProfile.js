@@ -122,7 +122,6 @@ function UserProfile({ user }) {
 
   useEffect(() => {
     if (!user) fetchUser();
-    console.log(user);
     setProfileImage(user.profile?.profile_image);
     setBackgroundImage(user.profile?.background_image);
   }, [user]);
