@@ -59,3 +59,12 @@ export function addMessagesToRooms(messages, roomId, isGroup) {
     });
   };
 }
+
+export function updateRooms(rooms) {
+  return (dispatch) => {
+    dispatch({
+      type: "UPDATE_ROOMS",
+      payload: rooms,
+    });
+  };
+}

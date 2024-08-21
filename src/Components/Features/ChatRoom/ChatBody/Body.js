@@ -41,34 +41,31 @@ function Body(props) {
   const { user, message, selectedRoom, userMessage, updateRoomMessage } = props;
   const [hoveredIndex, setHoveredIndex] = useState(null);
   const [messages, setMessages] = useState([]);
+  // have room usestate here to match prior and current room
   const [room, setRoom] = useState();
-
   const messageEndRef = useRef([]);
-
   useEffect(() => {
     // need the check room.id since when updating profile image causes unexpected outdated data update. referred to at room-reducer(update_group_profile)
     // group and normal room can possibly have the same id, so message wont change
-    if (room && selectedRoom.id !== room.id) {
-      // in case the room doesnt have latest_message
-      // i dont want to update redux everytime. So, only update just before selectedRoom is changed
-      let latest_message = null;
-      if (messages.length !== 0) {
-        const formattedDate = FormatDate(messages[0].created_at);
-        latest_message = { ...messages[0], format_date: formattedDate };
-      }
 
-      const newRoomData = {
-        ...room,
-        messages: messages,
-        latest_message: latest_message,
-      };
-      console.log("new data", newRoomData);
-      updateRoomMessage(newRoomData);
+    // in case the room doesnt have latest_message
+    // i dont want to update redux everytime. So, only update just before selectedRoom is changed
+    let latest_message = null;
+    if (messages.length !== 0) {
+      const formattedDate = FormatDate(messages[0].created_at);
+      latest_message = { ...messages[0], format_date: formattedDate };
     }
 
+    //this is where room is needed
+    const oldRoomData = {
+      ...room,
+      messages: messages,
+      latest_message: latest_message,
+    };
+    updateRoomMessage(oldRoomData);
     setMessages(selectedRoom.messages);
     setRoom(selectedRoom);
-  }, [messages, room, updateRoomMessage, selectedRoom]);
+  }, [selectedRoom, messages, room, updateRoomMessage]);
 
   useEffect(() => {
     if (userMessage) {
@@ -107,7 +104,6 @@ function Body(props) {
         setMessages((prev) => prev.filter((msg) => msg.id !== message.id))
       );
   };
-
   const messageList = messages.map((message, index) => {
     let isPrevId = message.sender_id === messages[index + 1]?.sender_id;
     return (

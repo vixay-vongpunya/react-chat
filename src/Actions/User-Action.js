@@ -20,8 +20,8 @@ export const signup = (data) => async (dispatch) => {
 };
 
 export function fetchUser() {
-  console.log("times");
   return (dispatch) => {
+    console.log("before 3");
     server.get("./self").then((response) => {
       console.log("user", response);
       dispatch({ type: "FETCH_USER_DATA", payload: response.data.data });

@@ -53,8 +53,8 @@ function RoomListCard({ friend, onClick, clickedId }) {
               <p>{SlicedFilename(friend.latest_message.content)}</p>
             ) : (
               <p>
-                {friend.latest_message.content.slice(0, 30)}
-                {friend.latest_message.content.length > 30 && "..."}
+                {friend.latest_message.content.slice(0, 25)}
+                {friend.latest_message.content.length > 25 && "..."}
               </p>
             )}
             <p className="created-time">
