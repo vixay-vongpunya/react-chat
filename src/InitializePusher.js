@@ -9,7 +9,7 @@ function InitializePusher() {
     Pusher.logToConsole = true;
     window.Echo = new Echo({
       broadcaster: "pusher",
-      authEndpoint: `${process.env.BACKEND_API_URL}/api/broadcasting/auth`,
+      authEndpoint: `${process.env.REACT_APP_BACKEND_API_URL}/api/broadcasting/auth`,
       auth: {
         headers: {
           Authorization: "Bearer " + localStorage.getItem("chat_token"),
