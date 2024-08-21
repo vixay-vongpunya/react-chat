@@ -94,7 +94,7 @@ function Friends({ user }) {
   const location = useLocation();
   const dropdownRef = useRef(null);
   const createInvitationLink = (email) => {
-    const baseUrl = "localhost:3000/friends/search";
+    const baseUrl = `${process.env.REACT_APP_FRONTEND_API_URL}/friends/search`;
     return `${baseUrl}?email=${encodeURIComponent(email)}`;
   };
 
