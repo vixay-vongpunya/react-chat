@@ -50,7 +50,7 @@ function FriendList(props) {
         }
       });
     }
-  }, [props.message]);
+  }, [props.message, props.userMessage, roomList]);
   const friendList = roomList.map((friend) => (
     <RoomListCard
       key={friend?.pivot ? "pivot" + friend.id : friend.id}

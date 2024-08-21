@@ -1,6 +1,5 @@
 import Echo from "laravel-echo";
 import Pusher from "pusher-js";
-import Config from "./Config";
 import { server } from "./Actions/Index";
 //for pusher, user-user and user-group event is only broadcast toOthers since i can just update event at frontend on sender side
 // only, messages,
@@ -17,8 +16,8 @@ function InitializePusher() {
         },
       },
 
-      key: Config.REACT_APP_PUSHER_APP_KEY,
-      cluster: Config.REACT_APP_PUSHER_APP_CLUSTER,
+      key: process.env.REACT_APP_PUSHER_APP_KEY,
+      cluster: process.env.REACT_APP_PUSHER_APP_CLUSTER,
       forceTLS: true,
       encrypted: true,
     });

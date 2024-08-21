@@ -1,6 +1,5 @@
 import "./App.css";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { CSSTransition, TransitionGroup } from "react-transition-group";
+import { Routes, Route } from "react-router-dom";
 import { AuthProvider, useAuth } from "./Utils/useAuth";
 
 import Home from "./Pages/Home";

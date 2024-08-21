@@ -1,10 +1,9 @@
-import { useState, useEffect } from "react";
-import Spinner from "react-bootstrap/Spinner";
+import { useCallback, useState, useEffect } from "react";
 import { styled } from "styled-components";
 import { server } from "../../../Actions/Index";
 import FriendCard from "./FriendCard";
 import { connect } from "react-redux";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import SearchBar from "../../Custom/SearchBar";
 const Container = styled.div`
   height: 100%;
@@ -33,8 +32,31 @@ function AddFriend({ friends }) {
   const [email, setEmail] = useState("");
   const [friend, setFriend] = useState(null);
   const location = useLocation();
-  const navigate = useNavigate();
 
+  const searchFriend = useCallback(
+    (email) => {
+      const found = friends.find((data) => data?.email === email);
+      if (!found) {
+        console.log("d");
+        server
+          .post("/friends/search", { email: email })
+          .then((response) => {
+            console.log(response.data.data);
+            setFriend(response.data.data);
+          })
+          .catch((error) => {
+            if (error.response && error.status === 404) {
+              alert("User not found");
+            }
+          });
+      } else {
+        console.log("found", found);
+        setFriend(found);
+      }
+      setEmail(email);
+    },
+    [friends]
+  );
   useEffect(() => {
     const searchParams = new URLSearchParams(location.search);
     const query = searchParams.get("email");
@@ -42,28 +64,8 @@ function AddFriend({ friends }) {
       console.log("new send");
       searchFriend(query);
     }
-  }, [location.search]);
-  const searchFriend = (email) => {
-    const found = friends.find((data) => data?.email === email);
-    if (!found) {
-      console.log("d");
-      server
-        .post("/friends/search", { email: email })
-        .then((response) => {
-          console.log(response.data.data);
-          setFriend(response.data.data);
-        })
-        .catch((error) => {
-          if (error.response && error.status === 404) {
-            alert("user not found");
-          }
-        });
-    } else {
-      console.log("found", found);
-      setFriend(found);
-    }
-    setEmail(email);
-  };
+  }, [location.search, searchFriend]);
+
   const findFriend = (event) => {
     if (email.trim() !== "" && event.key === "Enter") {
       searchFriend(email);
