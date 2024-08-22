@@ -107,7 +107,7 @@ function Layout({
       };
       fetchData();
     }
-  }, [rooms, fetchMessage, fetchRooms, updateRooms]);
+  }, [rooms.length, fetchMessage, fetchRooms, updateRooms]);
 
   //Realtime event listener
   useEffect(() => {
