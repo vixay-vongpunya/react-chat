@@ -40,11 +40,12 @@ const ProfileContainer = styled.div`
   transition: right 0.2s ease-in;
   border-left: 2px solid white;
 `;
-function ChatRoom({ user, selectedRoom, message, fetchMessage }) {
+function ChatRoom({ selectedRoom, message, fetchMessage, userMessage }) {
   const [profileOpened, setProfileOpened] = useState(false);
   const [toolsOpened, setToolsOpened] = useState(false);
   const [loading, setLoading] = useState(true);
   const [room, setRoom] = useState({});
+  const [messages, setMessages] = useState([]);
   useEffect(() => {
     setRoom(selectedRoom);
     if (!selectedRoom.messages) {
@@ -60,6 +61,29 @@ function ChatRoom({ user, selectedRoom, message, fetchMessage }) {
       setLoading(false);
     }
   }, [selectedRoom, fetchMessage]);
+
+  //reason for moving realtime mgs here is, when the selecetdRoom doesnt have messages, it will trigger body to re-render, causing userMessage
+  // to run again making userMessage saved on the new clicked room
+
+  useEffect(() => {
+    if (userMessage) {
+      console.log("he");
+      setMessages((prev) => [userMessage, ...prev]);
+    }
+  }, [userMessage]);
+  useEffect(() => {
+    if (
+      message.destination_type === "group" &&
+      message.destination_id === selectedRoom.id
+    ) {
+      setMessages((prev) => [message, ...prev]);
+    } else if (
+      message.destination_type === "user" &&
+      message.destination_id === selectedRoom.friendship.id
+    ) {
+      setMessages((prev) => [message, ...prev]);
+    }
+  }, [message, selectedRoom]);
   return (
     <Container>
       <Wrapper>
@@ -68,8 +92,8 @@ function ChatRoom({ user, selectedRoom, message, fetchMessage }) {
           $profileOpened={profileOpened}
         >
           <ChatHeader
-            room={room}
-            profile_image={room.profile?.profile_image}
+            room={selectedRoom}
+            profile_image={selectedRoom.profile?.profile_image}
             handleProfileOpened={() => setProfileOpened((prev) => !prev)}
           />
           {loading ? (
@@ -77,7 +101,12 @@ function ChatRoom({ user, selectedRoom, message, fetchMessage }) {
               <p>loading...</p>
             </div>
           ) : (
-            <Body selectedRoom={room} message={message} />
+            <Body
+              selectedRoom={room}
+              message={message}
+              setMessages={setMessages}
+              messages={messages}
+            />
           )}
 
           <ChatInput room={room} setToolsOpened={setToolsOpened} />
@@ -94,6 +123,8 @@ function ChatRoom({ user, selectedRoom, message, fetchMessage }) {
   );
 }
 function mapStateToProps(state) {
-  return { selectedRoom: state.roomStore.data };
+  return {
+    userMessage: state.messageStore.userMessage,
+  };
 }
 export default connect(mapStateToProps, { fetchMessage })(ChatRoom);

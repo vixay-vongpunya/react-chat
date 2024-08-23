@@ -38,9 +38,10 @@ const MessageContainer = styled.div`
 `;
 
 function Body(props) {
-  const { user, message, selectedRoom, userMessage, updateRoomMessage } = props;
+  const { user, selectedRoom, setMessages, messages, updateRoomMessage } =
+    props;
   const [hoveredIndex, setHoveredIndex] = useState(null);
-  const [messages, setMessages] = useState([]);
+
   // have room usestate here to match prior and current room
   const [room, setRoom] = useState();
   const messageEndRef = useRef([]);
@@ -65,27 +66,7 @@ function Body(props) {
     updateRoomMessage(oldRoomData);
     setMessages(selectedRoom.messages);
     setRoom(selectedRoom);
-  }, [selectedRoom, messages, room, updateRoomMessage]);
-
-  useEffect(() => {
-    if (userMessage) {
-      setMessages((prev) => [userMessage, ...prev]);
-    }
-  }, [userMessage]);
-
-  useEffect(() => {
-    if (
-      message.destination_type === "group" &&
-      message.destination_id === room.id
-    ) {
-      setMessages((prev) => [message, ...prev]);
-    } else if (
-      message.destination_type === "user" &&
-      message.destination_id === room.friendship.id
-    ) {
-      setMessages((prev) => [message, ...prev]);
-    }
-  }, [room, message]);
+  }, [selectedRoom]);
 
   const scrollToBottom = () => {
     if (messageEndRef.current) {
@@ -106,6 +87,7 @@ function Body(props) {
   };
   const messageList = messages.map((message, index) => {
     let isPrevId = message.sender_id === messages[index + 1]?.sender_id;
+
     return (
       //make ul later
       <div key={message.id}>
@@ -148,7 +130,6 @@ function Body(props) {
 }
 function mapStateToProps(state) {
   return {
-    userMessage: state.messageStore.userMessage,
     loading: state.messageStore.loading,
     user: state.userStore.data,
     groups: state.groupStore.data,

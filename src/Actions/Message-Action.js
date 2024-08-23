@@ -31,6 +31,8 @@ export function addMessage(message) {
     dispatch({ type: "ADD_MESSAGE", payload: message });
   };
 }
+
+//go to room reducer
 export function updateRoomMessage(room) {
   return (dispatch) => {
     dispatch({

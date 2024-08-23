@@ -91,7 +91,7 @@ function ChatHeaderRight({ roomId, roomType }) {
         onClick={() => setDropdownOpen(true)}
         ref={outsideClickRef}
       >
-        <Dropdown.Item>
+        <Dropdown.Item as="div">
           <div className="flex gap-10">
             <CustomDropdown
               options={languages}
@@ -115,7 +115,6 @@ function ChatHeaderRight({ roomId, roomType }) {
             </DateRangePicker>
           </div>
         </Dropdown.Item>
-        <Dropdown.Item></Dropdown.Item>
       </CDropdownButton>
 
       <GlobalStyle />

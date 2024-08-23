@@ -1,5 +1,5 @@
 import FriendList from "../Components/Features/FriendList";
-import { changeRoom } from "../Actions/Room-Action";
+import { changeRoom, updateRooms } from "../Actions/Room-Action";
 import { connect } from "react-redux";
 import { useEffect, useState } from "react";
 import { useOutletContext } from "react-router-dom";
@@ -19,22 +19,21 @@ function Home(props) {
 
   //append new message
   useEffect(() => {
-    const data = AppendMessage(props.userMessage, roomList);
-    setRoomList(data);
-  }, [roomList, props.userMessage]);
+    setRoomList((prev) => AppendMessage(props.userMessage, prev));
+  }, [props.userMessage]);
   useEffect(() => {
-    const data = AppendMessage(message, roomList);
-    setRoomList(data);
-  }, [roomList, message]);
+    setRoomList((prev) => AppendMessage(message, prev));
+  }, [message]);
 
   useEffect(() => {
-    //this state updates alot since i append messages in background
     setRoomList(props.rooms);
-  }, [roomList, props.rooms]);
+  }, [props.rooms]);
 
   const changeRoom = (friend) => {
     setClickedId(friend.email ? "user" + friend.id : "group" + friend.id);
     console.log("data2", friend);
+    //updateRooms, to update the order of chatrooms
+    props.updateRooms(roomList);
     props.changeRoom(friend);
   };
 
@@ -58,4 +57,5 @@ function mapStateToProps(state) {
 }
 export default connect(mapStateToProps, {
   changeRoom,
+  updateRooms,
 })(Home);
