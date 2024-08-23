@@ -74,7 +74,7 @@ function AddFriend({ friends }) {
   };
   return (
     <Container>
-      <h3>Search Friends</h3>
+      <h4>Search Friends</h4>
       <Wrapper>
         <SearchBar
           value={email}

@@ -1,7 +1,7 @@
 import { connect } from "react-redux";
 import styled from "styled-components";
 import { useMemo, useState, useEffect } from "react";
-import GroupRoomListCard from "./GroupRoomListCard";
+import GroupFriendListCard from "./GroupFriendListCard";
 import SearchBar from "../../Custom/SearchBar";
 
 const Container = styled.div`
@@ -56,8 +56,8 @@ function GroupFriendList(props) {
     }
   }, [props.message, props.userMessage, roomList]);
   const friendList = roomList.map((friend, index) => (
-    <GroupRoomListCard
-      key={friend?.pivot ? "pivot" + friend.id : friend.id}
+    <GroupFriendListCard
+      key={index}
       friend={friend}
       onClick={props.onClick}
       clickedId={props.clickedId}

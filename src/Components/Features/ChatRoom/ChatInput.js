@@ -92,7 +92,7 @@ function ChatInput({ room, sendMessage, setToolsOpened }) {
       if (message.trim() !== "") {
         const data = {
           receiver_id: room.id,
-          destination_id: room.email ? room.friendship_id : room.id,
+          destination_id: room.email ? room.friendship.id : room.id,
           destination_type: room.email ? "user" : "group",
           content: message,
         };
@@ -131,7 +131,7 @@ function ChatInput({ room, sendMessage, setToolsOpened }) {
     const data = new FormData();
     data.append("file", file);
     data.append("receiver_id", room.id);
-    data.append("destination_id", room.email ? room.friendship_id : room.id);
+    data.append("destination_id", room.email ? room.friendship.id : room.id);
     data.append("destination_type", room.email ? "user" : "group");
     data.append("content", file.file_name);
     sendMessage(data);

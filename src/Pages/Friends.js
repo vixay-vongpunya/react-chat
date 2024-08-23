@@ -1,11 +1,11 @@
-import { Link, Outlet, useLocation } from "react-router-dom";
+import { Link, Outlet } from "react-router-dom";
 import { connect } from "react-redux";
 import { styled } from "styled-components";
 import { BsSearch } from "react-icons/bs";
 import { BsLink45Deg } from "react-icons/bs";
 import { GoPaperclip } from "react-icons/go";
 import { useState, useRef, useEffect } from "react";
-import { CSSTransition, TransitionGroup } from "react-transition-group";
+// import { CSSTransition, TransitionGroup } from "react-transition-group";
 const Container = styled.div`
   height: 100%;
   width: 100%;
@@ -91,7 +91,6 @@ const Wrapper = styled.div`
 `;
 function Friends({ user }) {
   const [showLink, setShowLink] = useState(false);
-  const location = useLocation();
   const dropdownRef = useRef(null);
   const createInvitationLink = (email) => {
     const baseUrl = `${process.env.REACT_APP_FRONTEND_API_URL}/friends/search`;
@@ -137,13 +136,13 @@ function Friends({ user }) {
           </Link>
         </MenuContainer>
       </AddFriendContainer>
-      <TransitionGroup>
-        <CSSTransition key={location.pathname} timeout={500} classNames="slide">
-          <Wrapper>
-            <Outlet />
-          </Wrapper>
-        </CSSTransition>
-      </TransitionGroup>
+      {/* <TransitionGroup>
+        <CSSTransition key={location.pathname} timeout={500} classNames="slide"> */}
+      <Wrapper>
+        <Outlet />
+      </Wrapper>
+      {/* </CSSTransition>
+      </TransitionGroup> */}
     </Container>
   );
 }

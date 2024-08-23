@@ -36,7 +36,7 @@ const MessageBox = styled.div`
 const ToolWrapper = styled.div`
   display: flex;
   align-items: center;
-  visibility: ${(props) => (props.hovered ? "visible" : "hidden")};
+  visibility: ${(props) => (props.$hovered ? "visible" : "hidden")};
 `;
 function Message({
   index,
@@ -81,7 +81,7 @@ function Message({
           )}
         </div>
         <ToolWrapper
-          hovered={hoveredIndex === index}
+          $hovered={hoveredIndex === index ? true : undefined}
           onMouseEnter={() => setHoveredIndex(index)}
           onMouseLeave={() => {
             setHoveredIndex(null);

@@ -164,7 +164,7 @@ function Layout({
       </div>
       <div className="chatroom-container">
         {selectedRoom && selectedRoom.id ? (
-          <ChatRoom message={message} />
+          <ChatRoom message={message} selectedRoom={selectedRoom} />
         ) : (
           <p>welcome!</p>
         )}

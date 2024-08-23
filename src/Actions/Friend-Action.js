@@ -22,7 +22,7 @@ export function sendFriendRequest() {
 export function unFriend(friend) {
   return (dispatch) => {
     server
-      .delete(`./friendship/delete/${friend.friendship_id}`)
+      .delete(`./friendship/delete/${friend.friendship.id}`)
       .then((response) => {
         console.log(response);
         dispatch({ type: "DELETE_FRIENDSHIP", payload: friend });
@@ -44,7 +44,7 @@ export function fetchPendingFriendship() {
 export function acceptFriendship(friend) {
   return (dispatch) => {
     server
-      .post(`./friendship/accept/${friend.friendship_id}`)
+      .post(`./friendship/accept/${friend.friendship.id}`)
       .then((response) => {
         console.log("accept", response);
         dispatch({ type: "ACCEPT_FRIENDSHIP", payload: friend });
@@ -54,7 +54,7 @@ export function acceptFriendship(friend) {
 export function declineFriendship(friend) {
   return (dispatch) => {
     server
-      .post(`./friendship/decline/${friend.friendship_id}`)
+      .post(`./friendship/decline/${friend.friendship.id}`)
       .then((response) => {
         console.log("decline", response);
         dispatch({ type: "DECLINE_FRIENDSHIP", payload: friend });

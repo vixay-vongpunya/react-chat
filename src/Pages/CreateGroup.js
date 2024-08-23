@@ -86,12 +86,13 @@ function CreateGroup(props) {
         i === index ? { ...room, clicked: !room.clicked } : room
       )
     );
+
     if (selectedFriend.find((selected) => selected.id === friend.id)) {
-      setSelectedFriend(
-        selectedFriend.filter((selected) => friend !== selected)
+      setSelectedFriend((prev) =>
+        prev.filter((selected) => friend.id !== selected.id)
       );
     } else {
-      setSelectedFriend([...selectedFriend, friend]);
+      setSelectedFriend((prev) => [...prev, friend]);
     }
   };
   const groupNameHandler = (event) => {
@@ -123,9 +124,8 @@ function CreateGroup(props) {
           <SelectedContainer className="no-scrollbar">
             <div className="list-container">
               {selectedFriend.map((friend, index) => (
-                <div className="selected-box">
+                <div className="selected-box" key={friend?.id}>
                   <ChatImage
-                    key={friend?.id}
                     src={friend.profile?.profile_image}
                     size="--medium-image"
                   />

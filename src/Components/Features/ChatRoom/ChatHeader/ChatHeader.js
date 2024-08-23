@@ -41,7 +41,7 @@ function ChatHeader({ profile_image, room, handleProfileOpened }) {
       </Wrapper>
       <div className="daterange-container">
         <ChatHeaderRight
-          roomId={room.pivot ? room.id : room.friendship_id}
+          roomId={room.pivot ? room.id : room.friendship.id}
           roomType={room.pivot ? "group" : "private"}
         />
       </div>
