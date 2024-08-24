@@ -15,6 +15,7 @@ const DetailBox = styled.div`
   padding-left: 5px;
   p {
     margin: 2px;
+    color: var(--text-color);
   }
 `;
 function SmallUserCard(props) {

@@ -82,10 +82,6 @@ function Layout({
   }, [fetchUser]);
 
   useEffect(() => {
-    InitializePusher();
-  }, [user]);
-
-  useEffect(() => {
     if (rooms.length === 0) {
       const fetchData = async () => {
         const rooms = await fetchRooms();
@@ -106,6 +102,7 @@ function Layout({
         }
       };
       fetchData();
+      InitializePusher();
     }
   }, [rooms.length, fetchMessage, fetchRooms, updateRooms]);
 
@@ -121,10 +118,7 @@ function Layout({
           console.log("group Message", response);
           setMessage(response.message);
         });
-        groupMessageListener.listen("MessageDeleted", (response) => {
-          console.log("group Message", response);
-          setMessage(response.message);
-        });
+        groupMessageListener.listen("MessageDeleted", (response) => {});
         return groupMessageListener;
       });
 
@@ -137,9 +131,11 @@ function Layout({
     }
   }, [groups]);
   useEffect(() => {
-    if (user.length > 0) {
+    console.log(user);
+    if (user) {
       const userMessage = window.Echo.private(`message.${user.id}`);
       userMessage.listen("MessageSent", (response) => {
+        console.log("message received", response);
         setMessage(response.message);
       });
       userMessage.listen("MessageDeleted", (response) => {});
@@ -159,12 +155,16 @@ function Layout({
       <div className="outlet-container">
         <div className="outlet-wrapper">
           <VscMenu className="hamburger-icon" size={22} />
-          <Outlet context={{ message }} />
+          <Outlet context={{ message, setMessage }} />
         </div>
       </div>
       <div className="chatroom-container">
         {selectedRoom && selectedRoom.id ? (
-          <ChatRoom message={message} selectedRoom={selectedRoom} />
+          <ChatRoom
+            message={message}
+            setMessage={setMessage}
+            selectedRoom={selectedRoom}
+          />
         ) : (
           <p>welcome!</p>
         )}

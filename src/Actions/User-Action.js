@@ -32,6 +32,11 @@ export function fetchUser() {
     });
   };
 }
+export function updateUserProfile(profile) {
+  return (dispatch) => {
+    dispatch({ type: "UPDATE_USER_PROFILE", payload: profile });
+  };
+}
 
 export function clearState() {
   return (dispatch) => {

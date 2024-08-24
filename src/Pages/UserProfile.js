@@ -2,11 +2,12 @@ import { useState, useEffect } from "react";
 import { server } from "../Actions/Index";
 import { VscDeviceCamera } from "react-icons/vsc";
 import { connect } from "react-redux";
-import { fetchUser } from "../Actions/User-Action";
+import { fetchUser, updateUserProfile } from "../Actions/User-Action";
 import ChatImage from "./../Components/Common/ChatImage";
 import ImageModal from "./../Components/Features/ImageModal";
 import { styled } from "styled-components";
 import Textarea from "../Components/Common/Textarea";
+
 const Container = styled.div`
   height: 100%;
 `;
@@ -114,7 +115,7 @@ const UserInfoList = styled.ul`
   }
 `;
 
-function UserProfile({ user }) {
+function UserProfile({ user, updateUserProfile }) {
   const [modalOpen, setModalOpen] = useState(false);
   const [profileSelected, setProfileSelected] = useState(false);
   const [profileImage, setProfileImage] = useState(null);
@@ -126,27 +127,37 @@ function UserProfile({ user }) {
     setBackgroundImage(user.profile?.background_image);
   }, [user]);
 
-  const updateImage = (dataUrl) => {
+  const updateImage = async (dataUrl) => {
     if (!dataUrl) {
       return;
     }
-    console.log(dataUrl);
     const data = new FormData();
 
     try {
+      let bgImage = backgroundImage;
+      let proImage = profileImage;
       if (profileSelected) {
         data.append("profile_image", dataUrl);
-        server.post("/user/profile", data).then((response) => {
-          setProfileImage(dataUrl);
-          console.log(response);
-        });
+        await server.post("/user/profile", data);
+        setProfileImage(dataUrl);
+        proImage = dataUrl;
       } else {
         data.append("background_image", dataUrl);
-        server.post("/user/background", data).then((response) => {
-          setBackgroundImage(dataUrl);
-          console.log(response);
-        });
+        await server.post("/user/background", data);
+        setBackgroundImage(dataUrl);
+        bgImage = dataUrl;
       }
+
+      const profileData = {
+        ...user,
+        profile: {
+          ...user.profile,
+          background_image: bgImage,
+          profile_image: proImage,
+        },
+      };
+
+      updateUserProfile(profileData);
     } catch (error) {
       console.log(error);
     }
@@ -213,4 +224,6 @@ function mapStateToProps(state) {
   return { user: state.userStore.data };
 }
 
-export default connect(mapStateToProps, { fetchUser })(UserProfile);
+export default connect(mapStateToProps, { fetchUser, updateUserProfile })(
+  UserProfile
+);

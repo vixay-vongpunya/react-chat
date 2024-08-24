@@ -2,7 +2,7 @@ import { connect } from "react-redux";
 import { useEffect, useState, useRef } from "react";
 import { server } from "./../../../../Actions/Index";
 import { styled } from "styled-components";
-import FormatDate from "../../../../Utils/FormatDate";
+
 import {
   fetchMessage,
   updateRoomMessage,
@@ -38,35 +38,39 @@ const MessageContainer = styled.div`
 `;
 
 function Body(props) {
-  const { user, selectedRoom, setMessages, messages, updateRoomMessage } =
-    props;
+  const { user, setMessages, messages } = props;
   const [hoveredIndex, setHoveredIndex] = useState(null);
 
   // have room usestate here to match prior and current room
-  const [room, setRoom] = useState();
+
   const messageEndRef = useRef([]);
-  useEffect(() => {
-    // need the check room.id since when updating profile image causes unexpected outdated data update. referred to at room-reducer(update_group_profile)
-    // group and normal room can possibly have the same id, so message wont change
+  // useEffect(() => {
+  //already update at home.js so no need for this, but kept just in case
+  //   // need the check room.id since when updating profile image causes unexpected outdated data update. referred to at room-reducer(update_group_profile)
+  //   // group and normal room can possibly have the same id, so message wont change
 
-    // in case the room doesnt have latest_message
-    // i dont want to update redux everytime. So, only update just before selectedRoom is changed
-    let latest_message = null;
-    if (messages.length !== 0) {
-      const formattedDate = FormatDate(messages[0].created_at);
-      latest_message = { ...messages[0], format_date: formattedDate };
-    }
+  //   // in case the room doesnt have latest_message
+  //   // i dont want to update redux everytime. So, only update just before selectedRoom is changed
 
-    //this is where room is needed
-    const oldRoomData = {
-      ...room,
-      messages: messages,
-      latest_message: latest_message,
-    };
-    updateRoomMessage(oldRoomData);
-    setMessages(selectedRoom.messages);
-    setRoom(selectedRoom);
-  }, [selectedRoom]);
+  //   if (room === undefined || selectedRoom.id !== room.id) {
+  //     let latest_message = null;
+  //     if (messages.length !== 0) {
+  //       const formattedDate = FormatDate(messages[0].created_at);
+  //       latest_message = { ...messages[0], format_date: formattedDate };
+  //     }
+
+  //     //this is where room is needed
+  //     const oldRoomData = {
+  //       ...room,
+  //       messages: messages,
+  //       latest_message: latest_message,
+  //     };
+  //     console.log("latestMsg", latest_message);
+  //     updateRoomMessage(oldRoomData);
+  //     setMessages(selectedRoom.messages);
+  //     setRoom(selectedRoom);
+  //   }
+  // }, [selectedRoom, updateRoomMessage, setMessages, messages, room]);
 
   const scrollToBottom = () => {
     if (messageEndRef.current) {
@@ -85,7 +89,8 @@ function Body(props) {
         setMessages((prev) => prev.filter((msg) => msg.id !== message.id))
       );
   };
-  const messageList = messages.map((message, index) => {
+  console.log("the msg", messages);
+  const messageList = messages?.map((message, index) => {
     let isPrevId = message.sender_id === messages[index + 1]?.sender_id;
 
     return (

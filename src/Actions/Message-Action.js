@@ -16,6 +16,7 @@ export function sendMessage(data) {
       });
   };
 }
+
 export function fetchMessage(room) {
   const type = room.email ? "user" : "group";
   const id = room.email ? room.friendship.id : room.id;
@@ -31,7 +32,11 @@ export function addMessage(message) {
     dispatch({ type: "ADD_MESSAGE", payload: message });
   };
 }
-
+export function emptyUserMessage() {
+  return (dispatch) => {
+    dispatch({ type: "EMPTY_MESSAGE" });
+  };
+}
 //go to room reducer
 export function updateRoomMessage(room) {
   return (dispatch) => {
