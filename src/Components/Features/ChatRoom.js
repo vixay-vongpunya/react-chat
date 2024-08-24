@@ -77,12 +77,10 @@ function ChatRoom({
   useEffect(() => {
     if (selectedRoom.friendship) {
       if (userMessage.destination_id === selectedRoom.friendship.id) {
-        console.log(messages);
         setMessages((prev) => [userMessage, ...prev]);
       }
     } else {
       if (userMessage.destination_id === selectedRoom.id) {
-        console.log(messages);
         setMessages((prev) => [userMessage, ...prev]);
       }
     }
