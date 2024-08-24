@@ -17,7 +17,12 @@ function AppendMessage(message, roomList) {
   });
 
   if (index !== -1) {
-    const updatedRoom = { ...updatedRooms[index], latest_message: msg };
+    const messages = [message, ...updatedRooms[index].messages];
+    const updatedRoom = {
+      ...updatedRooms[index],
+      messages: messages,
+      latest_message: msg,
+    };
     updatedRooms.splice(index, 1);
     updatedRooms.unshift(updatedRoom);
   }

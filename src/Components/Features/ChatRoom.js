@@ -2,7 +2,7 @@ import ChatHeader from "./ChatRoom/ChatHeader/ChatHeader";
 import Body from "./ChatRoom/ChatBody/Body";
 import ChatInput from "./ChatRoom/ChatInput";
 import RoomProfile from "./RoomProfile/RoomProfile";
-import { fetchMessage } from "../../Actions/Message-Action";
+import { emptyUserMessage, fetchMessage } from "../../Actions/Message-Action";
 import { connect } from "react-redux";
 import { useState, useEffect } from "react";
 import { styled } from "styled-components";
@@ -40,7 +40,13 @@ const ProfileContainer = styled.div`
   transition: right 0.2s ease-in;
   border-left: 2px solid white;
 `;
-function ChatRoom({ selectedRoom, message, fetchMessage, userMessage }) {
+function ChatRoom({
+  selectedRoom,
+  message,
+  fetchMessage,
+  userMessage,
+  emptyUserMessage,
+}) {
   const [profileOpened, setProfileOpened] = useState(false);
   const [toolsOpened, setToolsOpened] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -48,40 +54,48 @@ function ChatRoom({ selectedRoom, message, fetchMessage, userMessage }) {
   const [messages, setMessages] = useState([]);
   useEffect(() => {
     setRoom(selectedRoom);
+    emptyUserMessage();
     if (!selectedRoom.messages) {
       setLoading(true);
       const fetchData = async () => {
         console.log("selectedRoom", selectedRoom);
         const messages = await fetchMessage(selectedRoom);
+
         setRoom((prev) => ({ ...prev, messages: messages }));
+        setMessages(selectedRoom.messages);
         setLoading(false);
       };
       fetchData();
     } else {
+      setMessages(selectedRoom.messages);
       setLoading(false);
     }
-  }, [selectedRoom, fetchMessage]);
+  }, [selectedRoom, fetchMessage, emptyUserMessage]);
 
   //reason for moving realtime mgs here is, when the selecetdRoom doesnt have messages, it will trigger body to re-render, causing userMessage
   // to run again making userMessage saved on the new clicked room
-
   useEffect(() => {
-    if (userMessage) {
-      console.log("he");
-      setMessages((prev) => [userMessage, ...prev]);
+    if (selectedRoom.friendship) {
+      if (userMessage.destination_id === selectedRoom.friendship.id) {
+        console.log(messages);
+        setMessages((prev) => [userMessage, ...prev]);
+      }
+    } else {
+      if (userMessage.destination_id === selectedRoom.id) {
+        console.log(messages);
+        setMessages((prev) => [userMessage, ...prev]);
+      }
     }
-  }, [userMessage]);
+  }, [userMessage, selectedRoom]);
   useEffect(() => {
-    if (
-      message.destination_type === "group" &&
-      message.destination_id === selectedRoom.id
-    ) {
-      setMessages((prev) => [message, ...prev]);
-    } else if (
-      message.destination_type === "user" &&
-      message.destination_id === selectedRoom.friendship.id
-    ) {
-      setMessages((prev) => [message, ...prev]);
+    if (selectedRoom.friendship) {
+      if (message.destination_id === selectedRoom.friendship.id) {
+        setMessages((prev) => [message, ...prev]);
+      }
+    } else {
+      if (message.destination_id === selectedRoom.id) {
+        setMessages((prev) => [message, ...prev]);
+      }
     }
   }, [message, selectedRoom]);
   return (
@@ -127,4 +141,6 @@ function mapStateToProps(state) {
     userMessage: state.messageStore.userMessage,
   };
 }
-export default connect(mapStateToProps, { fetchMessage })(ChatRoom);
+export default connect(mapStateToProps, { fetchMessage, emptyUserMessage })(
+  ChatRoom
+);

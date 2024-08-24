@@ -1,5 +1,6 @@
 const defaultState = {
   userMessage: "",
+  message: "",
   data: [],
   loading: false,
 };
@@ -25,6 +26,12 @@ function messageReducer(state = defaultState, action = {}) {
         data: action.payload,
       };
     }
+    case "EMPTY_MESSAGE":
+      return {
+        ...state,
+        userMessage: "",
+        message: "",
+      };
     case "RESET": {
       return defaultState;
     }

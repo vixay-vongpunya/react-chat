@@ -75,8 +75,8 @@ function FriendRequest({
     }
   }, [keyword, sortedRooms]);
   const friendList = roomList.map((friend) => (
-    <CardWrapper>
-      <RoomListCard key={friend.id} friend={friend} />
+    <CardWrapper key={friend.id}>
+      <RoomListCard friend={friend} />
       <ActionContainer>
         <div className="button-box">
           <Button

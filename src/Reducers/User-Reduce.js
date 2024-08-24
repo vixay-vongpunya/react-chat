@@ -12,6 +12,13 @@ function userReducer(state = defaultState, action = {}) {
         data: action.payload,
       };
     }
+    case "UPDATE_USER_PROFILE": {
+      console.log("go here");
+      return {
+        ...state,
+        data: action.payload,
+      };
+    }
     case "RESET": {
       return defaultState;
     }

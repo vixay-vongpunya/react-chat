@@ -15,14 +15,18 @@ const Container = styled.div`
 function Home(props) {
   const [roomList, setRoomList] = useState([]);
   const [clickedId, setClickedId] = useState(null);
-  const { message } = useOutletContext();
+  const { message, setMessage } = useOutletContext();
 
   //append new message
   useEffect(() => {
-    setRoomList((prev) => AppendMessage(props.userMessage, prev));
+    if (props.userMessage) {
+      setRoomList((prev) => AppendMessage(props.userMessage, prev));
+    }
   }, [props.userMessage]);
   useEffect(() => {
-    setRoomList((prev) => AppendMessage(message, prev));
+    if (message) {
+      setRoomList((prev) => AppendMessage(message, prev));
+    }
   }, [message]);
 
   useEffect(() => {
@@ -33,6 +37,7 @@ function Home(props) {
     setClickedId(friend.email ? "user" + friend.id : "group" + friend.id);
     console.log("data2", friend);
     //updateRooms, to update the order of chatrooms
+    setMessage("");
     props.updateRooms(roomList);
     props.changeRoom(friend);
   };

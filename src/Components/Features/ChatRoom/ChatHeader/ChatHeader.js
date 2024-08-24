@@ -22,6 +22,9 @@ const NameBox = styled.div`
   display: grid;
   align-items: center;
   padding-left: 10px;
+  p {
+    margin: 0px;
+  }
 `;
 function ChatHeader({ profile_image, room, handleProfileOpened }) {
   return (

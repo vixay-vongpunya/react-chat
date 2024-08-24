@@ -42,6 +42,7 @@ export function fetchPendingFriendship() {
 }
 
 export function acceptFriendship(friend) {
+  console.log(friend);
   return (dispatch) => {
     server
       .post(`./friendship/accept/${friend.friendship.id}`)
