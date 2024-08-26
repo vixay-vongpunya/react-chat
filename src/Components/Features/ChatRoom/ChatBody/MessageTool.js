@@ -4,7 +4,7 @@ import { BsTranslate } from "react-icons/bs";
 import { server } from "./../../../../Actions/Index";
 import CustomDropdown from "../../../Custom/CustomDropdown";
 const languages = [
-  { text: "English", value: "eng" },
+  { text: "English", value: "en" },
   { text: "Japanes", value: "ja" },
   { text: "Spanish", value: "es" },
   { text: "Lao", value: "lo" },
