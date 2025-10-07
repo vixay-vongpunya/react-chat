@@ -36,25 +36,31 @@ const Container = styled.div`
     border-radius: 0.5rem;
   }
   .side-bar {
+    height: 100%;
+
+    z-index: 1000;
     display: block;
   }
   .hamburger-icon {
     display: none;
   }
 
-  @media (max-width: 391px) {
+  @media (max-width: 576px) {
     display: flex;
     .chatroom-container {
       display: none;
     }
     .side-bar {
-      display: none;
+      flex: 1;
+      width: 40%;
+      position: absolute;
+      display: ${(props) => (props.showHam ? "block" : "none")};
     }
     .outlet-wrapper {
       height: 100%;
     }
     .hamburger-icon {
-      display: block;
+      display: ${(props) => (props.showHam ? "none" : "block")};
     }
   }
 `;
@@ -69,6 +75,8 @@ function Layout({
   updateRooms,
 }) {
   const [message, setMessage] = useState("");
+  const [showHam, setShowHam] = useState(false);
+  //then use ref to close
 
   //fetch initial data
   useEffect(() => {
@@ -148,13 +156,17 @@ function Layout({
   }, [user]);
 
   return (
-    <Container>
+    <Container showHam={showHam}>
       <div className="side-bar">
         <SideBar />
       </div>
       <div className="outlet-container">
         <div className="outlet-wrapper">
-          <VscMenu className="hamburger-icon" size={22} />
+          <VscMenu
+            className="hamburger-icon"
+            size={22}
+            onClick={() => setShowHam(true)}
+          />
           <Outlet context={{ message, setMessage }} />
         </div>
       </div>

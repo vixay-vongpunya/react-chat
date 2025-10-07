@@ -10,7 +10,7 @@ const Container = styled.div`
   height: 100%;
   width: 100%;
   display: grid;
-  position: relative;
+  // position: relative;
   grid-template-rows: 1fr 4fr;
   gap: 0.3rem;
   overflow: hidden;
