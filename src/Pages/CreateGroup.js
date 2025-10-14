@@ -9,21 +9,20 @@ import { useNavigate } from "react-router-dom";
 import { connect } from "react-redux";
 import { styled } from "styled-components";
 const Container = styled.div`
+  height: 100vh;
   display: flex;
   flex-direction: column;
-  height: 100%;
+  padding: 2rem 1rem;
+  overflow:hidden;
 `;
 const Wrapper = styled.div`
   display: flex;
+  flex:1;
   flex-direction: column;
-  background-color: var(--background-color);
+  background-color: white;
   border-radius: var(--border-radius);
-  .input-container {
-    padding: 8px 10px;
-  }
-  .btn-box {
-    padding: 4px 8px;
-  }
+  padding: 1rem 1rem 0 1rem; 
+  overflow: auto;
 `;
 const SelectedContainer = styled.div`
   overflow-x: auto;
@@ -32,12 +31,13 @@ const SelectedContainer = styled.div`
     flex-direction: row;
     align-items: center;
     gap: 10px;
-    margin: 0px 10px;
+    margin: 10px 10px;
     padding: 5px;
   }
   .selected-box {
     position: relative;
     display: flex;
+    align-items: centet;
     justify-content: flex-end;
     flex-shrink: 0;
   }
@@ -52,11 +52,12 @@ const SelectedContainer = styled.div`
 `;
 
 const FormContainer = styled.div`
-  height: 100%;
   display: grid;
   grid-template-rows: 2fr 8fr;
-
+  gap: 0.5rem;
+  flex:1;
   box-sizing: border-box;
+  overflow: hidden;
   & > :nth-child(1) {
     margin-bottom: 0.3rem;
   }
@@ -110,7 +111,7 @@ function CreateGroup(props) {
   };
   return (
     <Container>
-      <h2>Create Group</h2>
+      <h4>Create group</h4>
       <FormContainer>
         <Wrapper>
           <div className="input-container">
@@ -127,7 +128,7 @@ function CreateGroup(props) {
                 <div className="selected-box" key={friend?.id}>
                   <ChatImage
                     src={friend.profile?.profile_image}
-                    size="--medium-image"
+                    size="--small-image"
                   />
                   <BsX
                     className="icon"
@@ -141,11 +142,10 @@ function CreateGroup(props) {
         </Wrapper>
         <Wrapper>
           <GroupFriendList onClick={onClick} roomList={roomList} />
-          <div className="btn-box">
-            <Button onClick={createGroup} text="create" primary />
-          </div>
         </Wrapper>
+        <Button onClick={createGroup} text="create" primary />
       </FormContainer>
+      
     </Container>
   );
 }

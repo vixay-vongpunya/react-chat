@@ -1,4 +1,4 @@
-import { Link, Outlet } from "react-router-dom";
+import { Link, Outlet, useLocation } from "react-router-dom";
 import { connect } from "react-redux";
 import { styled } from "styled-components";
 import { BsSearch } from "react-icons/bs";
@@ -7,45 +7,45 @@ import { GoPaperclip } from "react-icons/go";
 import { useState, useRef, useEffect } from "react";
 // import { CSSTransition, TransitionGroup } from "react-transition-group";
 const Container = styled.div`
-  height: 100%;
+  height: 100vh;
   width: 100%;
   display: grid;
   // position: relative;
-  grid-template-rows: 1fr 4fr;
-  gap: 0.3rem;
-  overflow: hidden;
+  grid-template-rows: 1fr 5fr;
+  padding: 1rem;
 
-  .slide-enter {
-    transform: translateX(100%);
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    transition: transform 300ms ease-in-out;
-    z-index: 1;
-  }
+  // .slide-enter {
+  //   transform: translateX(100%);
+  //   position: absolute;
+  //   width: 100%;
+  //   height: 100%;
+  //   transition: transform 300ms ease-in-out;
+  //   z-index: 1;
+  // }
 
-  .slide-enter-active {
-    transform: translateX(0);
-  }
+  // .slide-enter-active {
+  //   transform: translateX(0);
+  // }
 
-  .slide-exit {
-    transform: translateX(-120%);
-  }
+  // .slide-exit {
+  //   transform: translateX(-120%);
+  // }
 `;
 
 const AddFriendContainer = styled.div`
   height: 100%;
   display: flex;
   flex-direction: column;
-  background-color: var(--background-color);
   border-radius: var(--border-radius);
   padding: 10px;
 `;
 const MenuContainer = styled.div`
   display: flex;
+  flex-direction: column;
+  width: auto;
   flex: 1;
   justify-content: space-evenly;
-  align-items: center;
+  align-items: flex-start;
   .link-container {
     display: ${(props) => (props.$showLink ? "flex" : "none")};
     z-index: 10;
@@ -75,23 +75,24 @@ const MenuContainer = styled.div`
 
 const MenuCard = styled.div`
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
-  gap: 5px;
+  gap: 1rem;
   cursor: pointer;
   padding: 10px;
   color: var(--text-color);
+
+  p{
+    margin: auto
+  }
 `;
 
-const Wrapper = styled.div`
-  width: 100%;
-  height: 100%;
-  border-radius: var(--border-radius);
-  background-color: var(--background-color);
-`;
+
 function Friends({ user }) {
   const [showLink, setShowLink] = useState(false);
   const dropdownRef = useRef(null);
+  const location = useLocation()
+  console.log(location.pathname)
   const createInvitationLink = (email) => {
     const baseUrl = `${process.env.REACT_APP_FRONTEND_API_URL}/friends/search`;
     return `${baseUrl}?email=${encodeURIComponent(email)}`;
@@ -112,11 +113,10 @@ function Friends({ user }) {
   return (
     <Container>
       <AddFriendContainer>
-        <h4>Add Friends</h4>
         <MenuContainer $showLink={showLink}>
           <MenuCard onClick={() => setShowLink((prev) => !prev)}>
-            <BsLink45Deg size={34} />
-            <p>Link</p>
+            <BsLink45Deg size={24} />
+            <p>Link invitaion</p>
           </MenuCard>
           <div className="link-container" ref={dropdownRef}>
             <div className="link-wrapper">
@@ -128,19 +128,17 @@ function Friends({ user }) {
               />
             </div>
           </div>
-          <Link to="search">
+          <Link to={location.pathname === "/friends" ? "search" : ""}>
             <MenuCard>
-              <BsSearch size={34} />
-              <p>search</p>
-            </MenuCard>
+              <BsSearch size={24} />
+              <p>{location.pathname === "/friends"? "Friend search" :"Friend request"}</p>
+            </MenuCard> 
           </Link>
         </MenuContainer>
       </AddFriendContainer>
       {/* <TransitionGroup>
         <CSSTransition key={location.pathname} timeout={500} classNames="slide"> */}
-      <Wrapper>
         <Outlet />
-      </Wrapper>
       {/* </CSSTransition>
       </TransitionGroup> */}
     </Container>

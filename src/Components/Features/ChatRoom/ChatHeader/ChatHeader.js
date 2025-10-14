@@ -4,13 +4,15 @@ import ChatHeaderRight from "./ChatHeaderRight";
 const Container = styled.div`
   display: flex;
   padding: 10px 15px;
+  justify-content: space-between;
+  align-items: center;
   .daterange-container {
-    position: absolute;
     right: 1rem;
     top: 1.2rem;
   }
 `;
 const Wrapper = styled.div`
+  height: 100%;
   display: flex;
   align-items: center;
   .image-box:hover {
@@ -19,9 +21,10 @@ const Wrapper = styled.div`
 `;
 const NameBox = styled.div`
   height: 100%;
-  display: grid;
-  align-items: center;
-  padding-left: 10px;
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+  justify-content: space-between;
   p {
     margin: 0px;
   }
@@ -38,7 +41,7 @@ function ChatHeader({ profile_image, room, handleProfileOpened }) {
           />
         </div>
         <NameBox>
-          <p>{room.name}</p>
+          <p className="line-clamp-1">{room.name}</p>
           <p>active</p>
         </NameBox>
       </Wrapper>

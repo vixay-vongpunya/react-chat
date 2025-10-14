@@ -34,12 +34,17 @@ const Wrapper = styled.div`
 
 function ListCard({ options, handleOption, data }) {
   const date = FormatDate(data.created_at);
+  const {name, extension} = SlicedFilename(data.content);
   return (
     <Container>
       <Wrapper key={data.id}>
         <ChatImage src="" size="--small-image" />
         <div className="profile-box">
-          <p>{SlicedFilename(data.content)}</p>
+          <div className="flex gap-0">
+            <span className="truncate max-w-[80px]">{name}</span>
+            <span className="flex-shrink-0">{extension}</span>
+          </div>
+
           <p className="date">{date}</p>
         </div>
         <div className="flex-1 flex justify-end items-center">

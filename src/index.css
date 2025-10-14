@@ -35,7 +35,8 @@ code {
   --font-p: 14px;
   --tiny-font: 12px;
 
-  --border-radius: 0.5rem;
+  --big-border-radius: 1.25rem;
+  --border-radius: 1rem;
   --small-border-radius: 0.2rem;
   --border-color: #dddddd;
   --background-color: #eeeeee;

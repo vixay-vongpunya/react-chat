@@ -12,10 +12,11 @@ import { server } from "./../Actions/Index";
 import { VscMenu } from "react-icons/vsc";
 const Container = styled.div`
   height: 100vh;
-  width: 100vw;
   display: grid;
   grid-template-columns: 2fr 5fr 11fr;
-  background-color: white;
+  background-color:var(--background-color);
+  overflow: hidden
+
   .chatroom-container {
     display: flex;
     width: 100%;
@@ -31,7 +32,7 @@ const Container = styled.div`
     padding: 0 0.3rem;
   }
   .outlet-wrapper {
-    height: 95%;
+    height: 100%;
     width: 100%;
     border-radius: 0.5rem;
   }

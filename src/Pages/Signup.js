@@ -55,6 +55,7 @@ function Signup(props) {
   const handleSubmit = async (event) => {
     event.preventDefault();
     if (password !== confirmPassword) {
+      console.log(password, confirmPassword)
       setError({ message: "password does not match", type: "password" });
       return;
     }

@@ -5,17 +5,23 @@ import { useEffect, useState } from "react";
 import { useOutletContext } from "react-router-dom";
 import { styled } from "styled-components";
 import AppendMessage from "../Utils/AppendMessage";
+import SmallUserCard from "../Components/Features/SmallUserCard"
+import { Link } from "react-router-dom";
+
 const Container = styled.div`
   width: 100%;
-  height: 100%;
+  height: 100vh;
   display: flex;
   flex-direction: column;
+  padding: 2rem 1rem;
+  gap: 1rem;
 `;
 
 function Home(props) {
   const [roomList, setRoomList] = useState([]);
   const [clickedId, setClickedId] = useState(null);
   const { message, setMessage } = useOutletContext();
+
 
   //append new message
   useEffect(() => {
@@ -44,7 +50,11 @@ function Home(props) {
 
   return (
     <Container>
-      <h2>Chats</h2>
+      <Link to="/user/Profile" className="decoration-transparent">
+        <div>
+          <SmallUserCard user={props.user}/>
+        </div>
+      </Link>
       <FriendList
         onClick={changeRoom}
         roomList={roomList}

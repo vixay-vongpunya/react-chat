@@ -12,18 +12,15 @@ const Container = styled.div`
 `;
 const Wrapper = styled.div`
   display: flex;
-  height: 100%;
   width: 100%;
   align-items: center;
-  border: solid 1px white;
-  border-radius: 10px;
-  background-color: var(--background-color);
   overflow-x: hidden;
   position: relative;
 `;
 const ChatroomContainer = styled.div`
-  height: 95vh;
+  height: 100vh;
   transition: width 0.2s ease-in;
+  padding: 2rem 0;
   display: grid;
   position: relative;
   width: ${(props) => (props.$profileOpened ? "65%" : "100%")};
@@ -36,6 +33,7 @@ const ProfileContainer = styled.div`
   right: ${(props) => (props.$profileOpened ? "0" : "-35%")};
   height: 100%;
   width: 35%;
+  padding: 0 0 2rem 0;
   overflow-x: hidden;
   transition: right 0.2s ease-in;
   border-left: 2px solid white;

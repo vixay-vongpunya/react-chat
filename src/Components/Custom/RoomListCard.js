@@ -34,6 +34,7 @@ const MessageContainer = styled.div`
 `;
 function RoomListCard({ friend, onClick, clickedId }) {
   console.log("clcikedID", clickedId);
+  const {name, extension} = SlicedFilename(friend.latest_message?.content || "");
   return (
     <RoomListCardDiv
       onClick={() => onClick && onClick(friend)}
@@ -50,11 +51,10 @@ function RoomListCard({ friend, onClick, clickedId }) {
         {friend.latest_message && (
           <MessageContainer>
             {friend.latest_message.message_type === "file" ? (
-              <p>{SlicedFilename(friend.latest_message.content)}</p>
+              <p className="line-clamp-1">{name}.{extension}</p>
             ) : (
-              <p>
-                {friend.latest_message.content.slice(0, 25)}
-                {friend.latest_message.content.length > 25 && "..."}
+              <p className="line-clamp-1">
+                {friend.latest_message.content}
               </p>
             )}
             <p className="created-time">

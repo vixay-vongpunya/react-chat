@@ -22,7 +22,6 @@ const BackgroundStyle = styled.div`
   background-position: center;
   background-size: cover;
   background-repeat: no-repeat;
-  border-top-right-radius: 10px;
   height: 60%;
   width: 100%;
   position: absolute;
@@ -39,6 +38,7 @@ const ImageBox = styled.div`
   h3 {
     margin: 0;
     padding-top: 0.5rem;
+    width: 80%;
   }
 `;
 function ProfileImage({ room, handleProfileOpened }) {
@@ -57,7 +57,7 @@ function ProfileImage({ room, handleProfileOpened }) {
         </IconBox>
         <ImageBox>
           <ChatImage src={room.profile?.profile_image} size="--large-image" />
-          <h3>{room.name}</h3>
+          <h3 className="line-clamp-1">{room.name}</h3>
         </ImageBox>
       </Wrapper>
     </Container>

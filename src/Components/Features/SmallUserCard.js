@@ -1,31 +1,37 @@
 import { styled } from "styled-components";
 import ChatImage from "../Common/ChatImage";
+import { BiBell } from "react-icons/bi";
+
 const Box = styled.div`
   display: flex;
+  justify-content: space-between;
   align-items: center;
   width: 100%;
-  height: 8%;
-  background-color: white;
-  border-radius: var(--border-radius);
+  height: auto;
   padding: 5px 10px;
 `;
 const DetailBox = styled.div`
   display: flex;
-  flex-direction: column;
-  padding-left: 5px;
+  flex-direction: row;
+  gap: 0.5rem;
   p {
     margin: 2px;
     color: var(--text-color);
+    text-decoration: none;
+    font-weight: bold;
   }
 `;
 function SmallUserCard(props) {
   return (
     <Box>
-      <ChatImage src={props.user.profile?.profile_image} size="--small-image" />
       <DetailBox>
-        <p>{props.user.name}</p>
-        <p>Notis</p>
+        <ChatImage src={props.user.profile?.profile_image} size="--small-image" />
+        <div>
+          <p>{props.user.name}</p>
+          <p>the decoration about us</p>
+        </div>
       </DetailBox>
+      <BiBell size={24} color="black"/>
     </Box>
   );
 }
