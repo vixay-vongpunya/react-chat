@@ -53,7 +53,7 @@ function Signup(props) {
   const [error, setError] = useState({ message: "", type: "" });
   const { login } = useAuth();
   const handleSubmit = async (event) => {
-    console.log(process.env.REACT_APP_BACKEND_API_URL)
+    console.log("api", process.env.REACT_APP_BACKEND_API_URL)
     event.preventDefault();
     if (password !== confirmPassword) {
       console.log(password, confirmPassword)
