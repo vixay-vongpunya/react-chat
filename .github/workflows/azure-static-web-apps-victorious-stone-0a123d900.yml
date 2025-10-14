@@ -14,11 +14,6 @@ jobs:
     if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.action != 'closed')
     runs-on: ubuntu-latest
     name: Build and Deploy Job
-    env: 
-      REACT_APP_BACKEND_API_URL: ${{ secrets.REACT_APP_BACKEND_API_URL }}
-      REACT_APP_FRONTEND_API_URL: ${{ secrets.REACT_APP_FRONTEND_API_URL }}
-      REACT_APP_PUSHER_APP_CLUSTER: ${{ secrets.REACT_APP_PUSHER_APP_CLUSTER }}
-      REACT_APP_PUSHER_APP_KEY: ${{ secrets.REACT_APP_PUSHER_APP_KEY }}
     permissions:
        id-token: write
        contents: read
@@ -42,6 +37,10 @@ jobs:
         uses: Azure/static-web-apps-deploy@v1
         with:
           azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_VICTORIOUS_STONE_0A123D900 }}
+          REACT_APP_BACKEND_API_URL: ${{ secrets.REACT_APP_BACKEND_API_URL }}
+          REACT_APP_FRONTEND_API_URL: ${{ secrets.REACT_APP_FRONTEND_API_URL }}
+          REACT_APP_PUSHER_APP_CLUSTER: ${{ secrets.REACT_APP_PUSHER_APP_CLUSTER }}
+          REACT_APP_PUSHER_APP_KEY: ${{ secrets.REACT_APP_PUSHER_APP_KEY }}
           action: "upload"
           ###### Repository/Build Configurations - These values can be configured to match your app requirements. ######
           # For more information regarding Static Web App workflow configurations, please visit: https://aka.ms/swaworkflowconfig
