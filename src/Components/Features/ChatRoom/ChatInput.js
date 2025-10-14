@@ -138,7 +138,7 @@ function ChatInput({ room, sendMessage, setToolsOpened }) {
     setFiles([]);
   };
   const removeFile = (file) => {
-    setFiles((prev) =>
+    setFiles((prev) =>  
       prev.filter((item) => item.file_name !== file.file_name)
     );
   };

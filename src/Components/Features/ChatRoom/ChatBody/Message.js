@@ -51,14 +51,15 @@ function Message({
     <MessageBox $isUser={message.sender.id === user.id}>
       <div className="container">
         <div
-          className="message"
+          
           onMouseEnter={() => setHoveredIndex(index)}
           onMouseLeave={() => setHoveredIndex(null)}
         >
           {message.message_type === "file" ? (
+            // <img src={message.file} stype='file' width="400px"/>
             <File file={message.file} file_name={message.content} />
           ) : (
-            <>
+            <div className="message">
               <p>{message.content}</p>
               {translatedMessage && (
                 <div className=" bg-color-black-200">
@@ -77,7 +78,7 @@ function Message({
                   </div>
                 </div>
               )}
-            </>
+            </div>
           )}
         </div>
         <ToolWrapper

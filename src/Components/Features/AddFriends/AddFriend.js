@@ -7,11 +7,9 @@ import { useLocation } from "react-router-dom";
 import SearchBar from "../../Custom/SearchBar";
 const Container = styled.div`
   height: 100%;
-
   display: flex;
   flex-direction: column;
   position: relative;
-  padding: 8px 10px;
 `;
 const Wrapper = styled.div`
   width: 100%;
@@ -20,6 +18,9 @@ const Wrapper = styled.div`
   flex-direction: column;
   gap: 10px;
   align-items: center;
+  background-color: white;
+  border-radius: var(--border-radius);
+  padding: 1rem;
   .friend-card-container {
     height: 90%;
     width: 100%;
@@ -74,7 +75,7 @@ function AddFriend({ friends }) {
   };
   return (
     <Container>
-      <h4>Search Friends</h4>
+      <h4>Search friends</h4>
       <Wrapper>
         <SearchBar
           value={email}

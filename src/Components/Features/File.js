@@ -4,19 +4,32 @@ import SlicedFilename from "../../Utils/SlicedFilename";
 const FileContainer = styled.div`
   display: flex;
   flex-direction: column;
-  width: 110px;
-  height: 100%;
+  width: auto;
   align-items: center;
-  background-color: var(--background-color);
-  border-radius: var(--small-border-radius);
   padding: 10px;
   gap: 5px;
 `;
-function File({ file_name }) {
+
+const image_extensions = ['.png', '.jpg', '.jpeg', '.gif', '.bmp', '.svg', '.webp'];
+
+function File({ file, file_name }) {
+  const {name, extension} = SlicedFilename(file_name);
+  const isImage = image_extensions.includes(extension);
+  console.log("extension", extension, isImage);
   return (
     <FileContainer>
-      <BsFileEarmarkText size={64} />
-      <p>{SlicedFilename(file_name)}</p>
+      {
+        isImage ?
+        <img src={file} type="file" width="400px" alt={file_name}/>
+        :
+        <>
+          <BsFileEarmarkText size={64} />
+          <div className="flex gap-0">
+            <span className="truncate max-w-[70px]">{name}</span>
+            <span className="flex-shrink-0">{extension}</span>
+          </div>
+        </>
+        }
     </FileContainer>
   );
 }

@@ -9,9 +9,6 @@ const Container = styled.div`
   height: 100%;
   display: flex;
   flex-direction: column;
-  padding: 8px 10px;
-  background-color: var(--background-color);
-  border-radius: var(--border-radius);
   gap: 10px;
 `;
 const Wrapper = styled.div`

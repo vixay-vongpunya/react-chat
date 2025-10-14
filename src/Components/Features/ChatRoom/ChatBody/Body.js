@@ -28,7 +28,7 @@ const Container = styled.div`
   flex-direction: column-reverse;
   width: full;
   overflow-y: auto;
-  padding: 0px 5px;
+  padding: 0px 10px;
 `;
 const MessageContainer = styled.div`
   width: 100%;

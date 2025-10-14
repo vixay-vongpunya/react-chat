@@ -14,10 +14,10 @@ import { Dropdown, DropdownButton } from "react-bootstrap";
 import useOutsideClick from "../../../../Hooks/useOutsideClick";
 
 const languages = [
-  { text: "English", value: "eng" },
-  { text: "Japanese", value: "ja" },
-  { text: "Spanish", value: "es" },
-  { text: "Lao", value: "lo" },
+  { text: "English", value: "English" },
+  { text: "Japanese", value: "Japanese" },
+  { text: "Spanish", value: "Spanish" },
+  { text: "Lao", value: "Lao" },
 ];
 
 const GlobalStyle = createGlobalStyle`
@@ -100,8 +100,8 @@ function ChatHeaderRight({ roomId, roomType }) {
             />
             <DateRangePicker
               initialSettings={{
-                startDate: "08/10/2024",
-                endDate: "08/15/2024",
+                startDate: "10/10/2025",
+                endDate: "10/15/2025",
                 locale: {
                   applyLabel: "Summarize",
                 },

@@ -4,24 +4,20 @@ import { useMemo, useState, useEffect } from "react";
 import RoomListCard from "../Custom/RoomListCard";
 import SearchBar from "../Custom/SearchBar";
 const RoomListDiv = styled.div`
-  height: 680px;
+  flex: 1;
+  overflow-y: auto;
 `;
-const Container = styled.div`
-  width: 100%;
-  height: 100%;
+const FriendContainer = styled.div`
   display: flex;
   flex-direction: column;
-  padding: 8px 10px;
-  background-color: var(--background-color);
+  padding: 1em;
+  background-color: white;
   border-radius: var(--border-radius);
   gap: 10px;
-`;
-const Wrapper = styled.div`
-  width: 100%;
-  border-radius: 0.5rem;
-  overflow-y: auto;
-  padding: 0px 5px;
-`;
+  overflow:hidden;
+  flex: 1;
+  `;
+
 function FriendList(props) {
   const [keyword, setKeyword] = useState("");
   const roomList = useMemo(() => {
@@ -61,16 +57,14 @@ function FriendList(props) {
   ));
 
   return (
-    <Container>
+    <FriendContainer>
       <SearchBar
         value={keyword}
         onChange={(event) => setKeyword(event.target.value)}
         placeholder="search..."
       />
-      <Wrapper className="no-scrollbar">
-        <RoomListDiv>{friendList}</RoomListDiv>
-      </Wrapper>
-    </Container>
+      <RoomListDiv className="no-scrollbar">{friendList}</RoomListDiv>
+    </FriendContainer>
   );
 }
 

@@ -1,4 +1,7 @@
 import { styled } from "styled-components";
+import { useState } from "react"; 
+import { BiSolidTrashAlt } from "react-icons/bi";
+import { BiDownload } from "react-icons/bi";
 import DownloadFile from "./../../../../Utils/DownloadFile";
 import { BsTranslate } from "react-icons/bs";
 import { server } from "./../../../../Actions/Index";
@@ -12,17 +15,23 @@ const languages = [
 const Container = styled.ul`
   display: flex;
   align-items: center;
-  gap: 5px;
   margin: 0px;
   padding: 0px 10px;
   li {
     display: flex;
     gap: 3px;
     cursor: pointer;
+    padding: 3px;
+  }
+
+  li:hover {
+    background-color: var(--hover-color);
+    border-radius: 10px;
   }
 `;
 
 function MessageTool({ message, user, setTranslatedMessage, deleteMessage }) {
+  const [copied, setCopied] = useState(false);
   const translateMessage = async (destination_language, item, optionType) => {
     const data = {
       content: message.content,
@@ -36,6 +45,12 @@ function MessageTool({ message, user, setTranslatedMessage, deleteMessage }) {
       console.error("Error while translating:", error);
     }
   };
+
+  const handleCopy = () =>{
+    navigator.clipboard.writeText(message.content)
+    setCopied(!copied)
+    setTimeout(()=>setCopied(false),1500)
+  }
   return (
     <Container>
       <li>
@@ -47,13 +62,17 @@ function MessageTool({ message, user, setTranslatedMessage, deleteMessage }) {
           />
         )}
       </li>
-      <li onClick={() => navigator.clipboard.writeText(message.content)}>
-        Copy
+      <li onClick={handleCopy}>
+        {copied ? "Copied" : "Copy" }
       </li>
-      {message.file && <li onClick={() => DownloadFile(message)}>Download</li>}
+      {message.file && <li onClick={() => DownloadFile(message)}>
+        <BiDownload  size={20}/>
+        </li>}
 
       {message.sender.id === user.id && (
-        <li onClick={() => deleteMessage(message)}>Remove </li>
+        <li onClick={() => deleteMessage(message)}>
+          <BiSolidTrashAlt color="red" size={20}/>
+        </li>
       )}
     </Container>
   );

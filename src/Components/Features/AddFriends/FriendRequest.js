@@ -12,7 +12,7 @@ import Button from "./../../Common/Button";
 import RoomListCard from "./../../Custom/RoomListCard";
 
 const RoomListDiv = styled.div`
-  height: 517px;
+  overflow: auto;
 `;
 
 const CardWrapper = styled.div`
@@ -30,22 +30,25 @@ const ActionContainer = styled.div`
     gap: 2px;
   }
 `;
-const Wrapper = styled.div`
-  width: 100%;
-  border-radius: 0.5rem;
-  overflow-y: auto;
-  padding: 0px 5px;
-`;
+
 const RequestContainer = styled.div`
   display: flex;
   flex-direction: column;
-  padding: 8px 10px;
+  flex: 1;
+  overflow: hidden;
+  padding-bottom: 1rem;
 `;
+
 const RequestWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  border-radius: var(--border-radius);
+  background-color: white;
+  padding: 1rem;
   gap: 1rem;
+  flex: 1;
+  overflow: hidden;
 `;
 
 function FriendRequest({
@@ -95,16 +98,14 @@ function FriendRequest({
   ));
   return (
     <RequestContainer>
-      <h4>Friend Requests</h4>
+      <h4>Friend requests</h4>
       <RequestWrapper>
         <SearchBar
           value={keyword}
           onChange={(event) => setKeyword(event.target.value)}
           placeholder="search..."
         />
-        <Wrapper className="no-scrollbar">
-          <RoomListDiv>{friendList}</RoomListDiv>
-        </Wrapper>
+        <RoomListDiv className="no-scrollbar">{friendList}</RoomListDiv>
       </RequestWrapper>
     </RequestContainer>
   );

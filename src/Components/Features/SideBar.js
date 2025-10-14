@@ -3,17 +3,16 @@ import { FaUserFriends } from "react-icons/fa";
 import { BsChatDots } from "react-icons/bs";
 import { BsBoxArrowLeft } from "react-icons/bs";
 import { Link } from "react-router-dom";
-import { useState } from "react";
 import { styled } from "styled-components";
-import SmallUserCard from "./SmallUserCard";
 import { connect } from "react-redux";
 import { useAuth } from "./../../Utils/useAuth";
 import { clearState } from "../../Actions/User-Action";
+import { useState } from "react";
 const Nav = styled.nav`
   height: 100%;
   display: flex;
   flex-direction: column;
-  border-right: solid 1px white;
+  // border-right: solid 1px white;
   background-color: var(--background-color);
   padding: 10px;
   padding-top: 20%;
@@ -59,16 +58,10 @@ const StyledItem = styled.div`
 `;
 
 function SideBar({ user, clearState }) {
-  const [clickedItem, setClickedItem] = useState("/home");
+    const [clickedItem, setClickedItem] = useState("/home");
   const { logout } = useAuth();
   return (
     <Nav>
-      <Link to="/user/Profile">
-        <div onClick={() => setClickedItem("/user/Profile")}>
-          <SmallUserCard user={user} />
-        </div>
-      </Link>
-
       <ul className="outer-list">
         <li>
           <Link to="/home">

@@ -10,12 +10,13 @@ import Textarea from "../Components/Common/Textarea";
 
 const Container = styled.div`
   height: 100%;
+  padding: 2rem 1rem;
 `;
 
 const Wrapper = styled.div`
   height: 100%;
   width: 100%;
-  background-color: var(--background-color);
+  background-color: white;
   border-radius: var(--border-radius);
 `;
 
@@ -101,6 +102,7 @@ const UserInfoList = styled.ul`
   flex-direction: column;
   padding: 10px;
   gap: 10px;
+  background-color: white;
 
   li {
     display: flex;
