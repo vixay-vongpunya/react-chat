@@ -11,6 +11,7 @@ function InitializePusher() {
       broadcaster: "pusher",
       authEndpoint: `${process.env.REACT_APP_BACKEND_API_URL}/api/broadcasting/auth`,
       auth: {
+        withCredentials: true,
         headers: {
           Authorization: "Bearer " + localStorage.getItem("chat_token"),
         },
