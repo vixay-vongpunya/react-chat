@@ -2,7 +2,7 @@ import FriendList from "../Components/Features/FriendList";
 import { changeRoom, updateRooms } from "../Actions/Room-Action";
 import { connect } from "react-redux";
 import { useEffect, useState } from "react";
-import { useNavigate, useOutletContext } from "react-router-dom";
+import { useOutletContext } from "react-router-dom";
 import { styled } from "styled-components";
 import AppendMessage from "../Utils/AppendMessage";
 import SmallUserCard from "../Components/Features/SmallUserCard"
