@@ -9,6 +9,7 @@ const Box = styled.div`
   width: 100%;
   height: auto;
   padding: 5px 10px;
+  margin-bottom: 1rem;
 `;
 const DetailBox = styled.div`
   display: flex;
@@ -18,16 +19,18 @@ const DetailBox = styled.div`
     margin: 2px;
     color: var(--text-color);
     text-decoration: none;
+  }
+  .name {
     font-weight: bold;
   }
-`;
+  `;
 function SmallUserCard(props) {
   return (
     <Box>
       <DetailBox>
         <ChatImage src={props.user.profile?.profile_image} size="--small-image" />
         <div>
-          <p>{props.user.name}</p>
+          <p className="name">{props.user.name}</p>
           <p>the decoration about us</p>
         </div>
       </DetailBox>

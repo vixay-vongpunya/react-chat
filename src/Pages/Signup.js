@@ -4,7 +4,7 @@ import { signup } from "../Actions/User-Action";
 import { useAuth } from "./../Utils/useAuth";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
-import { styled } from "styled-components";
+import styled from "styled-components";
 import Button from "../Components/Common/Button";
 
 const Container = styled.div`
@@ -13,34 +13,64 @@ const Container = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: gray;
-  .form {
-    height: fit;
-    width: 30%;
-    display: flex;
-    flex-direction: column;
-    border: 1px solid var(--border-color);
-    border-radius: var(--border-radius);
-    padding: 16px 32px;
-    gap: 10px;
+  background: linear-gradient(135deg, #ece9e6, #ffffff);
+  background-image: url('/default.jpg');
+`;
+
+const Card = styled.form`
+  background-color: #fff;
+  width: 400px;
+  display: flex;
+  flex-direction: column;
+  border-radius: 16px;
+  padding: 40px 32px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+  gap: 20px;
+  transition: all 0.3s ease;
+
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.12);
   }
+
+  h2 {
+    text-align: center;
+    font-size: 1.6rem;
+    color: #333;
+    margin-bottom: 10px;
+  }
+
   label {
     display: flex;
     flex-direction: column;
+    gap: 6px;
+    font-size: 0.9rem;
+    color: #555;
   }
-  input-box {
-    display: grid;
-    grid-template-columns: 1fr 3fr;
-    align-items: center;
-  }
-  .button {
-    height: 30px;
-    border: solid 1px var(--border-color);
-    border-radius: var(--small-border-radius);
-    cursor: pointer;
-  }
+
   .error {
     color: red;
+    font-size: 0.85rem;
+    margin-top: 4px;
+  }
+
+  .footer {
+    display: flex;
+    justify-content: center;
+    gap: 6px;
+    font-size: 0.9rem;
+  }
+
+  a {
+    color: #0078ff;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.2s;
+  }
+
+  a:hover {
+    color: #0056cc;
+    text-decoration: underline;
   }
 `;
 
@@ -52,91 +82,98 @@ function Signup(props) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState({ message: "", type: "" });
   const { login } = useAuth();
+
   const handleSubmit = async (event) => {
-    console.log("api", process.env.REACT_APP_BACKEND_API_URL)
     event.preventDefault();
+
     if (password !== confirmPassword) {
-      console.log(password, confirmPassword)
-      setError({ message: "password does not match", type: "password" });
+      setError({ message: "Passwords do not match", type: "password" });
       return;
     }
-    const data = {
-      name,
-      email,
-      password,
-    };
+
+    const data = { name, email, password };
+
     try {
       setLoading(true);
       const token = await props.signup(data);
       if (token) {
-        console.log("token", token);
         login(token);
       }
-    } catch (error) {
-      if (error.response.status === 422) {
-        setError({ message: error.response.data.message, type: "email" });
+    } catch (err) {
+      if (err.response?.status === 422) {
+        setError({ message: err.response.data.message, type: "email" });
+      } else {
+        setError({ message: "An unexpected error occurred", type: "general" });
       }
     } finally {
       setLoading(false);
     }
   };
+
   return (
     <Container>
-      <form onSubmit={handleSubmit} className="form">
+      <Card onSubmit={handleSubmit}>
+        <h2>Create an Account</h2>
+
         <label>
-          <span>Username</span>
+          Username
           <Input
             type="text"
             value={name}
             width="100%"
-            onChange={(event) => setName(event.target.value)}
+            onChange={(e) => setName(e.target.value)}
           />
         </label>
+
         <label>
-          <span>Email</span>
+          Email
           <Input
             type="text"
             value={email}
             width="100%"
-            onChange={(event) => setEmail(event.target.value)}
+            onChange={(e) => setEmail(e.target.value)}
           />
-
           {error.type === "email" && <p className="error">{error.message}</p>}
         </label>
+
         <label>
-          <span>Password</span>
+          Password
           <Input
             type="password"
             value={password}
             width="100%"
-            onChange={(event) => setPassword(event.target.value)}
+            onChange={(e) => setPassword(e.target.value)}
           />
         </label>
+
         <label>
-          <span>Confirm Password</span>
+          Confirm Password
           <Input
             type="password"
             value={confirmPassword}
             width="100%"
-            onChange={(event) => setConfirmPassword(event.target.value)}
+            onChange={(e) => setConfirmPassword(e.target.value)}
           />
           {error.type === "password" && (
             <p className="error">{error.message}</p>
           )}
         </label>
+
+        {error.type === "general" && <p className="error">{error.message}</p>}
+
         <Button
           type="submit"
-          text={loading ? "loading..." : "Sign Up"}
+          text={loading ? "Loading..." : "Sign Up"}
           primary={!loading}
         />
-        <div className="flex justify-center gap-2">
+
+        <div className="footer">
           <p>Already have an account?</p>
-          <Link to="/login">
-            <p className="">Login</p>
-          </Link>
+          <Link to="/login">Login</Link>
         </div>
-      </form>
+      </Card>
     </Container>
   );
 }
+
 export default connect(null, { signup })(Signup);

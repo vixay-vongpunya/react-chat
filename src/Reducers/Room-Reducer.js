@@ -41,6 +41,7 @@ function roomReducer(state = defaultState, action = {}) {
       };
     }
     case "CHANGE_ROOM": {
+      console.log("action.payload", action.payload);
       return {
         ...state,
         loading: false,

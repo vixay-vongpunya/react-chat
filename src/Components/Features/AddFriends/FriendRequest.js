@@ -13,6 +13,8 @@ import RoomListCard from "./../../Custom/RoomListCard";
 
 const RoomListDiv = styled.div`
   overflow: auto;
+  width: 100%;
+  padding: 0 1rem;
 `;
 
 const CardWrapper = styled.div`
@@ -36,7 +38,10 @@ const RequestContainer = styled.div`
   flex-direction: column;
   flex: 1;
   overflow: hidden;
-  padding-bottom: 1rem;
+  
+  h4{
+    padding-left:1rem;
+  }
 `;
 
 const RequestWrapper = styled.div`
@@ -49,6 +54,9 @@ const RequestWrapper = styled.div`
   gap: 1rem;
   flex: 1;
   overflow: hidden;
+  @media (max-width: 576px) {
+    border-radius: 0;
+  }
 `;
 
 function FriendRequest({

@@ -7,12 +7,14 @@ import { GoPaperclip } from "react-icons/go";
 import { useState, useRef, useEffect } from "react";
 // import { CSSTransition, TransitionGroup } from "react-transition-group";
 const Container = styled.div`
-  height: 100vh;
+  height: 100%;
   width: 100%;
   display: grid;
   // position: relative;
   grid-template-rows: 1fr 5fr;
   padding: 1rem;
+  padding-bottom: 2rem;
+  padding-right: 0;
 
   // .slide-enter {
   //   transform: translateX(100%);
@@ -30,14 +32,18 @@ const Container = styled.div`
   // .slide-exit {
   //   transform: translateX(-120%);
   // }
+  @media (max-width: 576px) {
+    padding: 0;
+  }
 `;
 
 const AddFriendContainer = styled.div`
   height: 100%;
   display: flex;
   flex-direction: column;
-  border-radius: var(--border-radius);
   padding: 10px;
+
+
 `;
 const MenuContainer = styled.div`
   display: flex;
@@ -71,6 +77,8 @@ const MenuContainer = styled.div`
   a {
     text-decoration: none;
   }
+
+
 `;
 
 const MenuCard = styled.div`
@@ -92,7 +100,7 @@ function Friends({ user }) {
   const [showLink, setShowLink] = useState(false);
   const dropdownRef = useRef(null);
   const location = useLocation()
-  console.log(location.pathname)
+   
   const createInvitationLink = (email) => {
     const baseUrl = `${process.env.REACT_APP_FRONTEND_API_URL}/friends/search`;
     return `${baseUrl}?email=${encodeURIComponent(email)}`;

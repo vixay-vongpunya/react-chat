@@ -16,7 +16,7 @@ const RoomDetail = styled.div`
 `;
 
 function GroupRoomListCard({ friend, onClick, clickedId, index }) {
-  console.log("clcikedID", clickedId);
+   
   return (
     <RoomListCardDiv
       onClick={() => onClick(friend, index)}

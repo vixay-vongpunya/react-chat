@@ -12,9 +12,9 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     setLoading(true);
     const token = localStorage.getItem("chat_token");
-    console.log("buddy", token);
+   
     if (token) {
-      console.log("hi");
+   
       setIsAuthenticated(true);
       server.defaults.headers.Authorization = `Bearer ${token}`;
     }

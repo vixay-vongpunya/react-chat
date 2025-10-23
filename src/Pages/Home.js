@@ -2,7 +2,7 @@ import FriendList from "../Components/Features/FriendList";
 import { changeRoom, updateRooms } from "../Actions/Room-Action";
 import { connect } from "react-redux";
 import { useEffect, useState } from "react";
-import { useOutletContext } from "react-router-dom";
+import { useNavigate, useOutletContext } from "react-router-dom";
 import { styled } from "styled-components";
 import AppendMessage from "../Utils/AppendMessage";
 import SmallUserCard from "../Components/Features/SmallUserCard"
@@ -10,11 +10,14 @@ import { Link } from "react-router-dom";
 
 const Container = styled.div`
   width: 100%;
-  height: 100vh;
+  height: 100%;
   display: flex;
   flex-direction: column;
-  padding: 2rem 1rem;git 
+  padding: 2rem 0 2rem 1rem;
   gap: 1rem;
+  @media (max-width: 576px) {
+    padding: 0; 
+  }
 `;
 
 function Home(props) {
@@ -41,9 +44,11 @@ function Home(props) {
 
   const changeRoom = (friend) => {
     setClickedId(friend.email ? "user" + friend.id : "group" + friend.id);
-    console.log("data2", friend);
+   
     //updateRooms, to update the order of chatrooms
     setMessage("");
+    
+    
     props.updateRooms(roomList);
     props.changeRoom(friend);
   };

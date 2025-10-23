@@ -16,6 +16,11 @@ const FriendContainer = styled.div`
   gap: 10px;
   overflow:hidden;
   flex: 1;
+  @media (max-width: 576px) {
+    border-radius: 0;
+    padding-bottom:0;
+  }
+
   `;
 
 function FriendList(props) {

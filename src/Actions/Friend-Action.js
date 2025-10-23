@@ -7,14 +7,14 @@ export function fetchFriends() {
     const friends = response.data.data.sort((a, b) => {
       return new Date(b.created_at) - new Date(a.created_at);
     });
-    console.log("f", response);
+   
     dispatch({ type: "FETCH_FRIEND", payload: friends });
   };
 }
 export function sendFriendRequest() {
   return (dispatch) => {
     server.post("./friendship/request").then((response) => {
-      console.log(response);
+   
       dispatch({ type: "SENDING_FRIENDSHIP", payload: response.data.data });
     });
   };
@@ -24,7 +24,7 @@ export function unFriend(friend) {
     server
       .delete(`./friendship/delete/${friend.friendship.id}`)
       .then((response) => {
-        console.log(response);
+   
         dispatch({ type: "DELETE_FRIENDSHIP", payload: friend });
       });
   };
@@ -42,12 +42,12 @@ export function fetchPendingFriendship() {
 }
 
 export function acceptFriendship(friend) {
-  console.log(friend);
+   
   return (dispatch) => {
     server
       .post(`./friendship/accept/${friend.friendship.id}`)
       .then((response) => {
-        console.log("accept", response);
+   
         dispatch({ type: "ACCEPT_FRIENDSHIP", payload: friend });
       });
   };
@@ -57,7 +57,7 @@ export function declineFriendship(friend) {
     server
       .post(`./friendship/decline/${friend.friendship.id}`)
       .then((response) => {
-        console.log("decline", response);
+   
         dispatch({ type: "DECLINE_FRIENDSHIP", payload: friend });
       });
   };

@@ -8,12 +8,36 @@ import { connect } from "react-redux";
 import { useAuth } from "./../../Utils/useAuth";
 import { clearState } from "../../Actions/User-Action";
 import { useState } from "react";
+import { VscChevronLeft } from "react-icons/vsc";
+
+const Container = styled.div`
+  background-color: white;
+  height: 100vh;
+  padding:1rem 1rem 0 0;
+  .arrow-icon-box{
+    width: 100%;
+    display: none;
+  }
+
+  .arrow-icon{
+    cursor: pointer;
+    right:0;
+    top:1rem;
+    margin-left:auto;
+    rotate:180deg;
+  }
+  @media (max-width: 576px) {
+   .arrow-icon-box{
+    display: block;
+    }
+  }
+`;
 const Nav = styled.nav`
   height: 100%;
   display: flex;
   flex-direction: column;
   // border-right: solid 1px white;
-  background-color: var(--background-color);
+  
   padding: 10px;
   padding-top: 20%;
   ul {
@@ -34,6 +58,8 @@ const Nav = styled.nav`
   .menu {
     color: var(--text-color);
     margin: 0px;
+    font-size: 15px;
+    font-weight: 400;
   }
   a {
     text-decoration: none;
@@ -57,17 +83,30 @@ const StyledItem = styled.div`
   }
 `;
 
-function SideBar({ user, clearState }) {
+function SideBar({ user, clearState, setShowHam, showHam }) {
     const [clickedItem, setClickedItem] = useState("/home");
   const { logout } = useAuth();
+
+  const handleClick = ({item}) => {
+    setClickedItem(item);
+    if(showHam) setShowHam(false)
+  }
   return (
-    <Nav>
+    <Container>
+      <div className="arrow-icon-box">
+        <VscChevronLeft
+          className="arrow-icon"
+          size={32}
+        onClick={() => setShowHam(!showHam)}
+      />
+      </div>
+      <Nav>
       <ul className="outer-list">
         <li>
           <Link to="/home">
             <StyledItem
               $isActive={clickedItem === "/home"}
-              onClick={() => setClickedItem("/home")}
+              onClick={() => handleClick("/home")}
             >
               <span>
                 <BsChatDots size={16} color="var(--text-color)" />
@@ -80,7 +119,7 @@ function SideBar({ user, clearState }) {
           <Link to="/friends">
             <StyledItem
               $isActive={clickedItem === "/friends"}
-              onClick={() => setClickedItem("/friends")}
+              onClick={() => handleClick("/friends")}
             >
               <span>
                 <VscAccount size={16} color="var(--text-color)" />
@@ -93,7 +132,7 @@ function SideBar({ user, clearState }) {
           <Link to="/create/group">
             <StyledItem
               $isActive={clickedItem === "/create/group"}
-              onClick={() => setClickedItem("/create/group")}
+              onClick={() => handleClick("/create/group")}
             >
               <span>
                 <FaUserFriends size={16} color="var(--text-color)" />
@@ -112,7 +151,7 @@ function SideBar({ user, clearState }) {
               <Link to="/user/Profile">
                 <StyledItem
                   $isActive={clickedItem === "/user/Profile"}
-                  onClick={() => setClickedItem("/user/Profile")}
+                  onClick={() => handleClick("/user/Profile")}
                 >
                   <span>
                     <VscAccount size={16} color="var(--text-color)" />
@@ -138,6 +177,8 @@ function SideBar({ user, clearState }) {
         </li>
       </ul>
     </Nav>
+    </Container>
+    
   );
 }
 function mapStatToProps(state) {

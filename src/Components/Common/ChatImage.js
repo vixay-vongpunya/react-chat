@@ -9,10 +9,10 @@ const Image = styled.img`
 function ChatImage({ src, size }) {
   return (
     <Image
-      src={src ? src : `${process.env.PUBLIC_URL}/profile.jpg`}
+      src={src ? src : '/default.jpg'}
       $size={size}
       alt="not found"
-      loadin="lazy"
+      loading="lazy"
     />
   );
 }

@@ -33,7 +33,6 @@ const MessageContainer = styled.div`
   }
 `;
 function RoomListCard({ friend, onClick, clickedId }) {
-  console.log("clcikedID", clickedId);
   const {name, extension} = SlicedFilename(friend.latest_message?.content || "");
   return (
     <RoomListCardDiv

@@ -11,7 +11,6 @@ export function changeRoom(data) {
 
 export function fetchRooms() {
   let rooms = [];
-  console.log("once");
   return async (dispatch) => {
     //this action will be called at first connection and there is duplicate action is respect action files
     const groups = await server.get("./groups/");
@@ -20,7 +19,7 @@ export function fetchRooms() {
 
     const friends = await server.get("./friends");
     rooms = [...rooms, ...friends.data.data];
-    console.log("friends", friends);
+   
     dispatch({ type: "FETCH_FRIENDS", payload: friends.data.data });
 
     rooms = rooms.map((room) => {

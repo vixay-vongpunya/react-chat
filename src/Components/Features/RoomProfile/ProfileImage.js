@@ -15,7 +15,7 @@ const Wrapper = styled.div`
 const IconBox = styled.div`
   width: 100%;
   position: relative;
-  padding: 10px;
+  padding: 1.5rem 0 0 0.5rem ;
 `;
 const BackgroundStyle = styled.div`
   background-image: ${(props) => `url(${props.$backgroundImage})`};
@@ -35,10 +35,12 @@ const ImageBox = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: end;
+
   h3 {
     margin: 0;
     padding-top: 0.5rem;
-    width: 80%;
+    width: 100%;
+    text-align: center;
   }
 `;
 function ProfileImage({ room, handleProfileOpened }) {

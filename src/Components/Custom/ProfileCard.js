@@ -31,7 +31,7 @@ const ImageBox = styled.div`
   gap: 10px;
 `;
 function ProfileCard(props) {
-  console.log(props.friend.name);
+   
   return (
     <Container>
       <BackgroundStyle

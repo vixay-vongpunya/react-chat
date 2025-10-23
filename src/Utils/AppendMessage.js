@@ -1,7 +1,7 @@
 function AppendMessage(message, roomList) {
-  console.log("is called");
   const msg = { ...message, format_date: "Now" };
   let updatedRooms = [...roomList];
+   
   const index = updatedRooms.findIndex((room) => {
     if (room.friendship) {
       if (msg.destination_type === "user") {
@@ -15,9 +15,14 @@ function AppendMessage(message, roomList) {
       return false;
     }
   });
-
+  
   if (index !== -1) {
-    const messages = [message, ...updatedRooms[index].messages];
+   
+    let messages = [message];
+    if (Array.isArray(updatedRooms[index].messages)) {
+        messages = [message, ...updatedRooms[index].messages];
+    }
+
     const updatedRoom = {
       ...updatedRooms[index],
       messages: messages,
@@ -27,7 +32,7 @@ function AppendMessage(message, roomList) {
     updatedRooms.unshift(updatedRoom);
   }
 
-  console.log("before returnning", updatedRooms);
+   
   return updatedRooms;
 }
 

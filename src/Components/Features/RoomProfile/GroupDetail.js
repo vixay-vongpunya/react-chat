@@ -97,7 +97,7 @@ function GroupDetail({
     if (!dataUrl) {
       return;
     }
-    console.log(dataUrl);
+   
     const data = new FormData();
     try {
       if (profileSelected) {
@@ -108,7 +108,7 @@ function GroupDetail({
         updateGroupBackground(room.id, data, dataUrl);
       }
     } catch (error) {
-      console.log(error);
+   
     }
   };
   const updateBio = () => {

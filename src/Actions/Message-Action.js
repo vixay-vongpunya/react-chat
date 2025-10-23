@@ -3,7 +3,7 @@ import { server } from "./Index";
 export function sendMessage(data) {
   const socketId = window.Echo.socketId();
   return (dispatch) => {
-    console.log("hey", data);
+   
     server
       .post("/message", data, {
         headers: {
@@ -11,7 +11,7 @@ export function sendMessage(data) {
         },
       })
       .then((response) => {
-        console.log(response);
+   
         dispatch({ type: "SEND_MESSAGE", payload: response.data.data });
       });
   };

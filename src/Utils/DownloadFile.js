@@ -1,7 +1,7 @@
 import { server } from "./../Actions/Index";
 function DownloadFile(message) {
   const Download = async () => {
-    console.log(message);
+   
     try {
       const fileName = message.file.split("/").pop();
       const response = await server.get(`/message/download/${fileName}`, {

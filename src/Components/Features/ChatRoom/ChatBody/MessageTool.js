@@ -39,7 +39,7 @@ function MessageTool({ message, user, setTranslatedMessage, deleteMessage }) {
     };
     try {
       const response = await server.post("/message/translate", data);
-      console.log(response);
+   
       setTranslatedMessage(response.data.data);
     } catch (error) {
       console.error("Error while translating:", error);

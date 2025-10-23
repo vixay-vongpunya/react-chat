@@ -20,24 +20,41 @@ const Wrapper = styled.div`
 const ChatroomContainer = styled.div`
   height: 100vh;
   transition: width 0.2s ease-in;
-  padding: 2rem 0;
+  padding: 2rem 1rem;
   display: grid;
   position: relative;
   width: ${(props) => (props.$profileOpened ? "65%" : "100%")};
   grid-template-rows: ${(props) =>
-    props.$toolsOpened ? "2fr 11fr 4fr" : "2fr 14fr 1fr"};
+    props.$toolsOpened ? "1fr 11fr 4fr" : "1fr 14fr 1fr"};
+  h4 {
+    color: gray;
+  }
+
+  @media (max-width: 576px) {
+    padding: 0.5rem;
+    width: 100%;
+  }
 `;
 
 const ProfileContainer = styled.div`
   position: absolute;
-  right: ${(props) => (props.$profileOpened ? "0" : "-35%")};
+  top: 0;
   height: 100%;
   width: 35%;
-  padding: 0 0 2rem 0;
   overflow-x: hidden;
   transition: right 0.2s ease-in;
-  border-left: 2px solid white;
+
+  right: ${(props) => (props.$profileOpened ? "0" : "-35%")};
+
+  @media (max-width: 576px) {
+    width: 100vw;
+    position: fixed;
+    right: ${(props) => (props.$profileOpened ? "0" : "-100%")};
+    z-index: 2000;
+    transition: right 0.3s ease;
+  }
 `;
+
 function ChatRoom({
   selectedRoom,
   message,
@@ -50,47 +67,64 @@ function ChatRoom({
   const [loading, setLoading] = useState(true);
   const [room, setRoom] = useState({});
   const [messages, setMessages] = useState([]);
-  useEffect(() => {
-    setRoom(selectedRoom);
-    emptyUserMessage();
-    if (!selectedRoom.messages) {
-      setLoading(true);
-      const fetchData = async () => {
-        console.log("selectedRoom", selectedRoom);
-        const messages = await fetchMessage(selectedRoom);
 
-        setRoom((prev) => ({ ...prev, messages: messages }));
-        setMessages(selectedRoom.messages);
-        setLoading(false);
-      };
-      fetchData();
+  useEffect(() => {
+  if (!selectedRoom) return;
+
+  const loadMessages = async () => {
+    setLoading(true);
+    emptyUserMessage();
+
+    let messagesData = [];
+    if (!selectedRoom.messages) {
+      messagesData = await fetchMessage(selectedRoom);
     } else {
-      setMessages(selectedRoom.messages);
-      setLoading(false);
+      messagesData = selectedRoom.messages;
     }
-  }, [selectedRoom, fetchMessage, emptyUserMessage]);
+
+    setRoom(selectedRoom);
+    setMessages(messagesData);
+    setLoading(false);
+  };
+
+  loadMessages();
+}, [selectedRoom, fetchMessage, emptyUserMessage]);
+
+  
 
   //reason for moving realtime mgs here is, when the selecetdRoom doesnt have messages, it will trigger body to re-render, causing userMessage
   // to run again making userMessage saved on the new clicked room
   useEffect(() => {
     if (selectedRoom.friendship) {
       if (userMessage.destination_id === selectedRoom.friendship.id) {
-        setMessages((prev) => [userMessage, ...prev]);
+        setMessages((prev) => {
+          if (prev)  return [userMessage, ...prev]
+          else return [userMessage]
+        });
       }
     } else {
       if (userMessage.destination_id === selectedRoom.id) {
-        setMessages((prev) => [userMessage, ...prev]);
+        setMessages((prev) => {
+          if (prev)  return [userMessage, ...prev]
+          else return [userMessage]
+        });
       }
     }
   }, [userMessage, selectedRoom]);
   useEffect(() => {
     if (selectedRoom.friendship) {
       if (message.destination_id === selectedRoom.friendship.id) {
-        setMessages((prev) => [message, ...prev]);
+        setMessages((prev) => {
+          if (prev)  return [message, ...prev]
+          else return [message]
+        });
       }
     } else {
       if (message.destination_id === selectedRoom.id) {
-        setMessages((prev) => [message, ...prev]);
+        setMessages((prev) => {
+          if (prev)  return [message, ...prev]
+          else return [message]
+        });
       }
     }
   }, [message, selectedRoom]);
@@ -108,7 +142,7 @@ function ChatRoom({
           />
           {loading ? (
             <div className="w-full h-full flex justify-center items-center">
-              <p>loading...</p>
+              <h4>loading...</h4>
             </div>
           ) : (
             <Body

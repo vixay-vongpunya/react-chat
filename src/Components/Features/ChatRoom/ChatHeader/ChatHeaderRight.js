@@ -72,7 +72,7 @@ function ChatHeaderRight({ roomId, roomType }) {
       setSummarizedContent(response.data.data);
       setLoading(false);
     } catch (e) {
-      console.log("error", e);
+   
     }
   };
 

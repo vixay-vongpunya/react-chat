@@ -14,15 +14,14 @@ const Container = styled.div`
   height: 100vh;
   display: grid;
   grid-template-columns: 2fr 5fr 11fr;
-  background-color:var(--background-color);
-  overflow: hidden
+  background-image: url('/default.jpg');
+  overflow: hidden;
 
   .chatroom-container {
     display: flex;
     width: 100%;
     align-items: center;
     justify-content: center;
-    padding-right: 10px;
   }
   .outlet-container {
     height: 100%;
@@ -31,11 +30,12 @@ const Container = styled.div`
     width: 100%;
     padding: 0 0.3rem;
   }
+
   .outlet-wrapper {
-    height: 100%;
+    height: 100vh;
     width: 100%;
-    border-radius: 0.5rem;
   }
+
   .side-bar {
     height: 100%;
 
@@ -47,24 +47,85 @@ const Container = styled.div`
   }
 
   @media (max-width: 576px) {
-    display: flex;
     .chatroom-container {
-      display: none;
+      position: fixed;  
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: 2000;    
+      background-image: url('/default.jpg'); 
+      flex-direction: column;
+      transition: transform 0.2s ease-in-out;
+      transform: ${({ selectedroom }) => (selectedroom ? "translateX(0)" : "translateX(100%)")};
     }
     .side-bar {
       flex: 1;
-      width: 40%;
+      width: 100%;
+      left: 0;
       position: absolute;
-      display: ${(props) => (props.showHam ? "block" : "none")};
+      transform: ${({ showHam }) =>
+        showHam ? "translateX(0)" : "translateX(-100%)"};
+      transition: transform 0.3s ease-in-out;
+      z-index: 1000;
     }
+
     .outlet-wrapper {
-      height: 100%;
+      height: 95vh;
+      width: 100vw;
+      margin-top: 5vh;
     }
+
+    .outlet-container {
+      padding:0;
+    }
+
     .hamburger-icon {
+      position: fixed;
+      top: 1rem;
+      left: 1rem;
       display: ${(props) => (props.showHam ? "none" : "block")};
     }
+}
+
+  @media(orientation: landscape) and (max-width: 1367px) {
+    grid-template-columns: 3fr 6fr;
+    .hamburger-icon {
+        position: fixed;
+        top: 1rem;
+        left: 1rem;
+        display: ${(props) => (props.showHam ? "none" : "block")};
+        
+      }
+    .side-bar {
+      flex: 1;
+      width: 20%;
+      left: 0;
+      position: absolute;
+      transform: ${({ showHam }) =>
+        showHam ? "translateX(0)" : "translateX(-100%)"};
+      transition: transform 0.3s ease-in-out;
+      z-index: 1000;
+    }
+      .outlet-wrapper {
+        height: 97vh;
+      }
   }
 `;
+
+
+const WelcomeBox = styled.div`
+  height: 100%;
+  display: flex;
+  align-items: center;  
+  justify-content: center;
+  h4 {
+    color: gray;
+  }
+    @media (max-width: 576px) {
+    display:none
+    }
+`
 function Layout({
   user,
   rooms,
@@ -80,6 +141,7 @@ function Layout({
   //then use ref to close
 
   //fetch initial data
+  console.log(selectedRoom)
   useEffect(() => {
     const fetchUserData = async () => {
       //since useAuth detects when route is changed doesnt applied to refreshing page need to get token
@@ -94,7 +156,7 @@ function Layout({
     if (rooms.length === 0) {
       const fetchData = async () => {
         const rooms = await fetchRooms();
-        console.log("!");
+   
         try {
           const roomList = await Promise.all(
             rooms.map(async (room, index) => {
@@ -107,7 +169,7 @@ function Layout({
           );
           updateRooms(roomList);
         } catch (error) {
-          console.log(error);
+   
         }
       };
       fetchData();
@@ -117,14 +179,14 @@ function Layout({
 
   //Realtime event listener
   useEffect(() => {
-    console.log("grops", groups);
+   
     if (groups.length !== 0) {
       const groupMessageListeners = groups.map((group) => {
         const groupMessageListener = window.Echo.private(
           `group.message.${group.id}`
         );
         groupMessageListener.listen("MessageSent", (response) => {
-          console.log("group Message", response);
+   
           setMessage(response.message);
         });
         groupMessageListener.listen("MessageDeleted", (response) => {});
@@ -140,11 +202,11 @@ function Layout({
     }
   }, [groups]);
   useEffect(() => {
-    console.log(user);
+   
     if (user) {
       const userMessage = window.Echo.private(`message.${user.id}`);
       userMessage.listen("MessageSent", (response) => {
-        console.log("message received", response);
+   
         setMessage(response.message);
       });
       userMessage.listen("MessageDeleted", (response) => {});
@@ -157,19 +219,20 @@ function Layout({
   }, [user]);
 
   return (
-    <Container showHam={showHam}>
+    <Container showHam={showHam} selectedroom={!!selectedRoom?.id}>
       <div className="side-bar">
-        <SideBar />
+        <SideBar setShowHam={setShowHam} showHam={showHam} />
       </div>
       <div className="outlet-container">
+        <VscMenu
+          className="hamburger-icon"
+          size={22}
+          onClick={() => setShowHam(true)}
+        />
         <div className="outlet-wrapper">
-          <VscMenu
-            className="hamburger-icon"
-            size={22}
-            onClick={() => setShowHam(true)}
-          />
           <Outlet context={{ message, setMessage }} />
         </div>
+        
       </div>
       <div className="chatroom-container">
         {selectedRoom && selectedRoom.id ? (
@@ -179,7 +242,9 @@ function Layout({
             selectedRoom={selectedRoom}
           />
         ) : (
-          <p>welcome!</p>
+          <WelcomeBox>
+            <h4>welcome!</h4>
+          </WelcomeBox>
         )}
       </div>
     </Container>

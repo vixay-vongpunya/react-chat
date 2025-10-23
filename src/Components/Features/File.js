@@ -15,7 +15,7 @@ const image_extensions = ['.png', '.jpg', '.jpeg', '.gif', '.bmp', '.svg', '.web
 function File({ file, file_name }) {
   const {name, extension} = SlicedFilename(file_name);
   const isImage = image_extensions.includes(extension);
-  console.log("extension", extension, isImage);
+   
   return (
     <FileContainer>
       {

@@ -9,11 +9,17 @@ import { useNavigate } from "react-router-dom";
 import { connect } from "react-redux";
 import { styled } from "styled-components";
 const Container = styled.div`
-  height: 100vh;
+  height: 100%;
   display: flex;
   flex-direction: column;
-  padding: 2rem 1rem;
+  padding: 2rem 0 2rem 1rem;
   overflow:hidden;
+
+  @media (max-width: 576px) {
+    padding:0;
+    h4 {
+      padding-left: 1rem;}
+  }
 `;
 const Wrapper = styled.div`
   display: flex;
@@ -23,6 +29,10 @@ const Wrapper = styled.div`
   border-radius: var(--border-radius);
   padding: 1rem 1rem 0 1rem; 
   overflow: auto;
+  
+  @media (max-width: 576px) {
+    border-radius: 0;
+  }
 `;
 const SelectedContainer = styled.div`
   overflow-x: auto;
@@ -61,6 +71,13 @@ const FormContainer = styled.div`
   & > :nth-child(1) {
     margin-bottom: 0.3rem;
   }
+
+  @media (max-width: 576px) {
+    gap:0;
+    & > :nth-child(1) {
+      margin-bottom: 0.5rem;
+    }
+  }
 `;
 function CreateGroup(props) {
   const [selectedFriend, setSelectedFriend] = useState([]);
@@ -77,7 +94,7 @@ function CreateGroup(props) {
       users: selectedFriend,
     };
     server.post("./group/create", data).then((response) => {
-      console.log("create group", response);
+   
       navigate("/home");
     });
   };
@@ -143,9 +160,9 @@ function CreateGroup(props) {
         <Wrapper>
           <GroupFriendList onClick={onClick} roomList={roomList} />
         </Wrapper>
-        <Button onClick={createGroup} text="create" primary />
+        
       </FormContainer>
-      
+      <Button onClick={createGroup} text="Create" primary />
     </Container>
   );
 }

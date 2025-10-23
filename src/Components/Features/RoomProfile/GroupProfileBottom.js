@@ -21,7 +21,6 @@ const Title = styled.div`
   align-content: center;
   p {
     margin: 0px;
-    margin-left: 10px;
   }
 `;
 const CustomAccordion = styled(Accordion)`
@@ -43,7 +42,6 @@ const CustomAccordion = styled(Accordion)`
   }
   .accordion-body {
     padding: 0px;
-    margin: 0px 8px;
   }
 `;
 const hasAuthMember = [

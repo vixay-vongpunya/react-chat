@@ -6,7 +6,6 @@ import { server } from "./Actions/Index";
 function InitializePusher() {
   if (localStorage.getItem("chat_token")) {
     window.Pusher = Pusher;
-    Pusher.logToConsole = true;
     window.Echo = new Echo({
       broadcaster: "pusher",
       authEndpoint: `${process.env.REACT_APP_BACKEND_API_URL}/api/broadcasting/auth`,

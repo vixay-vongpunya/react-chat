@@ -10,6 +10,10 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   position: relative;
+  
+  h4{
+    padding-left:1rem;
+  }
 `;
 const Wrapper = styled.div`
   width: 100%;
@@ -28,6 +32,10 @@ const Wrapper = styled.div`
     justify-content: center;
     align-items: center;
   }
+  @media (max-width: 576px) {
+    border-radius: 0;
+  }
+  
 `;
 function AddFriend({ friends }) {
   const [email, setEmail] = useState("");
@@ -38,11 +46,11 @@ function AddFriend({ friends }) {
     (email) => {
       const found = friends.find((data) => data?.email === email);
       if (!found) {
-        console.log("d");
+   
         server
           .post("/friends/search", { email: email })
           .then((response) => {
-            console.log(response.data.data);
+   
             setFriend(response.data.data);
           })
           .catch((error) => {
@@ -51,7 +59,7 @@ function AddFriend({ friends }) {
             }
           });
       } else {
-        console.log("found", found);
+   
         setFriend(found);
       }
       setEmail(email);
@@ -62,7 +70,7 @@ function AddFriend({ friends }) {
     const searchParams = new URLSearchParams(location.search);
     const query = searchParams.get("email");
     if (query) {
-      console.log("new send");
+   
       searchFriend(query);
     }
   }, [location.search, searchFriend]);

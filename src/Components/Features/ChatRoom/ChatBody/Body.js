@@ -28,7 +28,6 @@ const Container = styled.div`
   flex-direction: column-reverse;
   width: full;
   overflow-y: auto;
-  padding: 0px 10px;
 `;
 const MessageContainer = styled.div`
   width: 100%;
@@ -65,7 +64,7 @@ function Body(props) {
   //       messages: messages,
   //       latest_message: latest_message,
   //     };
-  //     console.log("latestMsg", latest_message);
+   
   //     updateRoomMessage(oldRoomData);
   //     setMessages(selectedRoom.messages);
   //     setRoom(selectedRoom);
@@ -89,8 +88,8 @@ function Body(props) {
         setMessages((prev) => prev.filter((msg) => msg.id !== message.id))
       );
   };
-  console.log("the msg", messages);
-  const messageList = messages?.map((message, index) => {
+   
+  const messageList =  messages?.map((message, index) => {
     let isPrevId = message.sender_id === messages[index + 1]?.sender_id;
 
     return (

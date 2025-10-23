@@ -123,7 +123,9 @@ function ChatInput({ room, sendMessage, setToolsOpened }) {
     const file = event.target.files[0];
     if (file) {
       const fileName = file.name;
-      setFiles((prev) => [...prev, { file: file, file_name: fileName }]);
+      
+      const previewUrl = URL.createObjectURL(file);
+      setFiles((prev) => [...prev, { file: file, file_name: fileName, previewUrl: previewUrl }]);
     }
   };
 
@@ -145,12 +147,12 @@ function ChatInput({ room, sendMessage, setToolsOpened }) {
 
   const FileList = files.map((file, index) => {
     return (
-      <div>
+      <div className="w-[200px]">
         <div className="remove-file-box">
           <BsX className="icon" size={24} onClick={() => removeFile(file)} />
         </div>
         <File
-          file={file}
+          file={file.file.type.startsWith("image/") ? file.previewUrl : file}
           key={index}
           removeFile={removeFile}
           file_name={file.file_name}

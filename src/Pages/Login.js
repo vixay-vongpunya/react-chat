@@ -4,7 +4,7 @@ import { pendingLogin } from "../Actions/User-Action";
 import { useAuth } from "./../Utils/useAuth";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
-import { styled } from "styled-components";
+import styled from "styled-components";
 import Button from "../Components/Common/Button";
 
 const Container = styled.div`
@@ -13,26 +13,58 @@ const Container = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: gray;
-  .form {
-    height: fit;
-    width: 30%;
-    display: flex;
-    flex-direction: column;
-    border: 1px solid var(--border-color);
-    border-radius: var(--border-radius);
-    padding: 16px 32px;
-    gap: 10px;
+  background: linear-gradient(135deg, #ece9e6, #ffffff);
+  background-image: url('/default.jpg');
+`;
+
+const Card = styled.form`
+  background-color: #fff;
+  width: 380px;
+  display: flex;
+  flex-direction: column;
+  border-radius: 16px;
+  padding: 40px 32px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+  gap: 20px;
+  transition: all 0.3s ease;
+
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.12);
   }
+
+  h2 {
+    text-align: center;
+    font-size: 1.6rem;
+    color: #333;
+    margin-bottom: 10px;
+  }
+
   label {
     display: flex;
     flex-direction: column;
+    gap: 6px;
+    font-size: 0.9rem;
+    color: #555;
   }
-  .button {
-    height: 30px;
-    border: solid 1px var(--border-color);
-    border-radius: var(--small-border-radius);
-    cursor: pointer;
+
+  .footer {
+    display: flex;
+    justify-content: center;
+    gap: 6px;
+    font-size: 0.9rem;
+  }
+
+  a {
+    color: #0078ff;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.2s;
+  }
+
+  a:hover {
+    color: #0056cc;
+    text-decoration: underline;
   }
 `;
 
@@ -41,30 +73,29 @@ function Login(props) {
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const { login } = useAuth();
+
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const data = {
-      email,
-      password,
-    };
+    const data = { email, password };
     try {
       setLoading(true);
       const token = await props.pendingLogin(data);
       if (token) {
-        console.log("token", token);
         login(token);
       }
     } catch (error) {
-      alert("log in fails ", error);
+      alert("Login failed: " + error);
     } finally {
       setLoading(false);
     }
   };
+
   return (
     <Container>
-      <form onSubmit={handleSubmit} className="form">
+      <Card onSubmit={handleSubmit}>
+        <h2>Welcome Back</h2>
         <label>
-          <span className="flex">Email</span>
+          Email
           <Input
             type="text"
             value={email}
@@ -73,7 +104,7 @@ function Login(props) {
           />
         </label>
         <label>
-          <span className="flex">Password</span>
+          Password
           <Input
             type="password"
             value={password}
@@ -83,17 +114,16 @@ function Login(props) {
         </label>
         <Button
           type="submit"
-          text={loading ? "loading..." : "Login"}
+          text={loading ? "Loading..." : "Login"}
           primary={!loading}
         />
-        <div className="flex justify-center gap-2">
-          <p>Do not have an account yet?</p>
-          <Link to="/signup">
-            <p className="">Sign Up</p>
-          </Link>
+        <div className="footer">
+          <p>Don’t have an account?</p>
+          <Link to="/signup">Sign Up</Link>
         </div>
-      </form>
+      </Card>
     </Container>
   );
 }
+
 export default connect(null, { pendingLogin })(Login);

@@ -21,11 +21,11 @@ const GuestRoute = ({ element }) => {
 
 const ProtectedRoute = ({ element }) => {
   const { isAuthenticated, loading } = useAuth();
-  console.log("auth", isAuthenticated);
+   
   if (loading) {
     return;
   }
-  console.log("passed");
+   
   return isAuthenticated ? element : <Navigate to="/login" />;
 };
 

@@ -7,7 +7,7 @@ const defaultState = {
 function friendReducer(state = defaultState, action = {}) {
   switch (action.type) {
     case "FETCH_FRIENDS": {
-      console.log("check data pass", action.payload);
+   
       return {
         ...state,
         data: action.payload,

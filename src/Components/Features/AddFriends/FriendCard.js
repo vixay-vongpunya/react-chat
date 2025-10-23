@@ -19,7 +19,7 @@ function FriendCard(props) {
     const data = { friend_id: props.friend.id };
     server.post("./friendship/request", data).then((response) => {
       const friendData = { ...props.friend, friendship: response.data.data };
-      console.log(friendData);
+   
       props.setFriend(friendData);
     });
   };

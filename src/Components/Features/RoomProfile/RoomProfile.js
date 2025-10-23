@@ -12,12 +12,20 @@ const Container = styled.div`
   height: 100%;
   display: flex;
   flex-direction: column;
+  background-color:white;
   .btn-box {
     width: 100%;
     padding-bottom: 8px;
     padding: 4px 8px;
   }
 `;
+
+const DetailWrapper = styled.div`
+  width: 100%;
+  height: 100%;
+  flex: 1;
+  padding: 0 0.5rem;
+`
 
 function RoomProfile({
   room,
@@ -44,13 +52,13 @@ function RoomProfile({
   return (
     <Container>
       <ProfileImage room={room} handleProfileOpened={handleProfileOpened} />
-      <div className="flex-1 w-full ">
+      <DetailWrapper>
         {room.email ? (
           <FriendProfileBottom friend={room} />
         ) : (
           <GroupProfileBottom room={room} />
         )}
-      </div>
+      </DetailWrapper>
       <div className="btn-box">
         {/* text color not working */}
         <Button

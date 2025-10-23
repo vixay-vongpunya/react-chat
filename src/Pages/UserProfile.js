@@ -10,7 +10,10 @@ import Textarea from "../Components/Common/Textarea";
 
 const Container = styled.div`
   height: 100%;
-  padding: 2rem 1rem;
+  padding: 2rem 0 2rem 1rem;
+  @media (max-width: 576px) {
+    padding:0;
+  }
 `;
 
 const Wrapper = styled.div`
@@ -18,6 +21,9 @@ const Wrapper = styled.div`
   width: 100%;
   background-color: white;
   border-radius: var(--border-radius);
+  @media (max-width: 576px) {
+    border-radius: 0;
+  }
 `;
 
 const StyledBackground = styled.div`
@@ -32,6 +38,9 @@ const StyledBackground = styled.div`
   position: absolute;
   top: 0;
   content: "";
+  @media (max-width: 576px) {
+    border-radius: 0;
+  }
 `;
 
 const HeaderSection = styled.div`
@@ -161,7 +170,7 @@ function UserProfile({ user, updateUserProfile }) {
 
       updateUserProfile(profileData);
     } catch (error) {
-      console.log(error);
+   
     }
   };
 
@@ -171,7 +180,7 @@ function UserProfile({ user, updateUserProfile }) {
         <HeaderSection>
           <BackgroundContainer>
             <StyledBackground
-              $backgroundImage={backgroundImage}
+              $backgroundImage={backgroundImage ? backgroundImage : "/default.jpg"}
             ></StyledBackground>
             <ProfileContainer>
               <ProfileWrapper>
